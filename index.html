@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Аскеза">
+<meta name="description" content="Трекер аскез: обіцянки собі на 7, 21, 30 днів або назавжди. Ранкова обіцянка, вечірній підсумок, карта днів, картки для сторіс.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>Аскеза</title>
+<style>
+:root{--bg:#f4f2ed;--card:#fff;--ink:#17171a;--muted:#77777d;--line:#e9e6df;--soft:#efece6;--acc:#1f9d8b;--acc2:#e6f5f2;--ok:#2f9e6b;--bad:#e05252;--shadow:0 1px 2px rgba(0,0,0,.04),0 6px 20px rgba(0,0,0,.05)}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0f1011;--card:#1b1c1f;--ink:#f3f3f4;--muted:#9a9aa1;--line:#2a2b2f;--soft:#232428;--acc2:#15302b;--shadow:none;color-scheme:dark}}
+:root[data-theme=dark]{--bg:#0f1011;--card:#1b1c1f;--ink:#f3f3f4;--muted:#9a9aa1;--line:#2a2b2f;--soft:#232428;--acc2:#15302b;--shadow:none;color-scheme:dark}
+:root[data-theme=light]{color-scheme:light}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{background:var(--bg)}
+body{margin:0;font-family:-apple-system,system-ui,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);-webkit-tap-highlight-color:transparent}
+button{font:inherit;border:0;border-radius:14px;cursor:pointer;color:inherit;background:none}
+input,textarea{font:inherit;color:var(--ink)}
+.appbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;padding:calc(12px + env(safe-area-inset-top)) 20px 10px;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.appbar .ttl{font-size:30px;font-weight:800;flex:1;letter-spacing:-.025em}
+.appbar .back{font-size:26px;width:38px;height:38px;border-radius:50%;background:var(--card);box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;line-height:1}
+.appbar.over{position:fixed;left:0;right:0;background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none}
+.appbar.over .back,.appbar.over .act{background:rgba(255,255,255,.22);color:#fff;box-shadow:none}
+.appbar .act{font-size:20px;width:38px;height:38px;border-radius:50%;background:var(--card);box-shadow:var(--shadow)}
+main{max-width:540px;margin:0 auto;padding:4px calc(16px + env(safe-area-inset-right)) calc(110px + env(safe-area-inset-bottom)) calc(16px + env(safe-area-inset-left))}
+main.full{padding-top:0}
+.view{animation:vin .22s ease}
+@keyframes vin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.card{background:var(--card);border-radius:22px;padding:18px;margin-bottom:12px;box-shadow:var(--shadow)}
+.muted{color:var(--muted)}
+.sec-t{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:22px 4px 10px}
+.hello{font-size:16px;color:var(--muted);margin:0 4px 14px}
+
+/* ritual cards */
+.ritual{display:flex;align-items:center;gap:14px;padding:16px 18px}
+.ritual .ri{font-size:32px;line-height:1}
+.ritual .rb{flex:1}
+.ritual .rb b{display:block;font-size:16px}
+.ritual .rb span{font-size:13.5px;color:var(--muted)}
+.ritual button.go{background:var(--ink);color:var(--bg);padding:10px 16px;font-weight:700;font-size:14px;white-space:nowrap}
+.ritual.done{opacity:.75}
+.ritual.morning{background:linear-gradient(135deg,color-mix(in srgb,#f2b64c 22%,var(--card)),var(--card))}
+.ritual.evening{background:linear-gradient(135deg,color-mix(in srgb,#6b5bd6 22%,var(--card)),var(--card))}
+.motd .mk{font-size:12px;font-weight:800;color:var(--acc);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+.motd .q{font-size:17px;line-height:1.45;font-weight:600}
+
+/* ascesis card */
+.ac{display:flex;gap:16px;align-items:center;cursor:pointer;padding:18px}
+.ring{position:relative;width:68px;height:68px;flex:0 0 auto}
+.ring svg{transform:rotate(-90deg)}
+.ring .ic{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:28px}
+.ac .bd{flex:1;min-width:0}
+.ac .t{font-size:18px;font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.01em}
+.ac .s{font-size:13.5px;color:var(--muted);margin-top:3px}
+.ac .big{font-size:26px;font-weight:800;color:var(--c);letter-spacing:-.02em;line-height:1.1}
+.ac .big small{font-size:13px;font-weight:600;color:var(--muted)}
+.hold{position:relative;flex:0 0 auto;width:58px;height:58px;border-radius:50%;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--muted);touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;transition:transform .15s,background .2s}
+.hold svg{position:absolute;inset:0;transform:rotate(-90deg);pointer-events:none}
+.hold svg circle{transition:stroke-dashoffset .12s linear}
+.hold.holding{transform:scale(.92)}
+.hold.holding svg circle.p{transition:stroke-dashoffset .6s linear;stroke-dashoffset:0!important}
+.hold.on{background:var(--c,var(--acc));color:#fff;animation:pop .35s ease}
+.hold.fail{background:var(--bad);color:#fff}
+.hold.wait{opacity:.35;pointer-events:none}
+@keyframes pop{50%{transform:scale(1.12)}}
+.ask{margin:0 18px 16px;padding:10px 12px;border-radius:14px;background:var(--soft);font-size:14px;display:flex;align-items:center;gap:8px}
+.ask span{flex:1}
+.ask button{padding:7px 12px;background:var(--card);font-size:14px;font-weight:600}
+
+.empty{text-align:center;padding:40px 20px}
+.empty .e{font-size:68px}
+.empty h2{margin:10px 0 6px;font-size:24px}
+.empty p{color:var(--muted);margin:0 0 22px;line-height:1.5}
+.pri{background:var(--ink);color:var(--bg);padding:16px 20px;font-weight:700;font-size:16px;width:100%}
+.sec{background:var(--soft);padding:14px 18px;font-weight:600}
+.fab{position:fixed;right:calc(20px + env(safe-area-inset-right));bottom:calc(88px + env(safe-area-inset-bottom));z-index:25;width:60px;height:60px;border-radius:50%;background:var(--acc);color:#fff;font-size:32px;line-height:1;box-shadow:0 10px 26px color-mix(in srgb,var(--acc) 45%,transparent)}
+
+/* create */
+.tpl{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tpl button{background:var(--card);box-shadow:var(--shadow);border:2px solid transparent;padding:12px 4px;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12.5px;line-height:1.2;min-height:84px;border-radius:16px}
+.tpl button b{font-size:28px;font-weight:400}
+.tpl button.on{border-color:var(--acc);background:var(--acc2)}
+.fld{display:block;margin-top:18px}
+.fld>span{display:block;font-size:13px;color:var(--muted);margin-bottom:7px;font-weight:700}
+.fld input,.fld textarea{width:100%;padding:14px;border-radius:14px;border:2px solid transparent;background:var(--card);box-shadow:var(--shadow);font-size:16px;outline:none}
+.fld input:focus,.fld textarea:focus{border-color:var(--acc)}
+.fld textarea{min-height:76px;resize:vertical}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pills button{background:var(--card);box-shadow:var(--shadow);border:2px solid transparent;padding:9px 14px;font-weight:650;font-size:15px}
+.pills button.on{border-color:var(--acc);background:var(--acc2);color:var(--acc)}
+.pills input{width:86px;padding:9px 10px;border-radius:14px;border:2px solid transparent;background:var(--card);box-shadow:var(--shadow);font-size:15px;text-align:center}
+.mode{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mode button{background:var(--card);box-shadow:var(--shadow);border:2px solid transparent;padding:12px;text-align:left}
+.mode button b{display:block;font-size:15px}
+.mode button small{color:var(--muted);font-size:12.5px;line-height:1.3;display:block;margin-top:2px}
+.mode button.on{border-color:var(--acc);background:var(--acc2)}
+.icons{display:flex;flex-wrap:wrap;gap:6px}
+.icons button{width:44px;height:44px;font-size:22px;background:var(--card);box-shadow:var(--shadow);border:2px solid transparent}
+.icons button.on{border-color:var(--acc);background:var(--acc2)}
+.colors{display:flex;gap:10px}
+.colors button{width:36px;height:36px;border-radius:50%;border:3px solid var(--bg);box-shadow:0 0 0 2px transparent}
+.colors button.on{box-shadow:0 0 0 2px var(--ink)}
+
+/* detail */
+.hero{position:relative;margin:0 -16px 14px;padding:calc(70px + env(safe-area-inset-top)) 20px 26px;text-align:center;color:#fff;background:linear-gradient(160deg,color-mix(in srgb,var(--c) 85%,#fff 15%),color-mix(in srgb,var(--c) 80%,#000 20%));border-radius:0 0 32px 32px;overflow:hidden}
+.hero:before{content:"";position:absolute;width:320px;height:320px;border-radius:50%;background:rgba(255,255,255,.08);top:-120px;right:-110px}
+.hero .bigring{position:relative;width:200px;height:200px;margin:0 auto}
+.hero .bigring svg{transform:rotate(-90deg)}
+.hero .in{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.hero .ic{font-size:36px}
+.hero .n{font-size:46px;font-weight:850;line-height:1.05;letter-spacing:-.03em}
+.hero .n small{font-size:20px;opacity:.75;font-weight:650}
+.hero .l{font-size:13px;opacity:.85}
+.hero h2{margin:16px 0 4px;font-size:25px;letter-spacing:-.02em}
+.hero .sub{opacity:.85;font-size:14px}
+.hero .badge{display:inline-block;background:rgba(255,255,255,.2);font-weight:700;font-size:13px;padding:6px 12px;border-radius:20px;margin-top:10px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.stats div{background:var(--card);box-shadow:var(--shadow);border-radius:18px;padding:14px 6px;text-align:center}
+.stats b{display:block;font-size:24px;letter-spacing:-.02em}
+.stats small{font-size:11.5px;color:var(--muted)}
+.holdbar{position:relative;width:100%;overflow:hidden;border-radius:16px;background:var(--c);color:#fff;font-weight:750;font-size:17px;padding:18px;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+.holdbar .fill{position:absolute;inset:0;background:rgba(255,255,255,.28);transform:scaleX(0);transform-origin:left;transition:transform .12s}
+.holdbar.holding .fill{transform:scaleX(1);transition:transform .6s linear}
+.holdbar span{position:relative}
+.holdbar.done{background:var(--soft);color:var(--c)}
+.hint{font-size:12.5px;color:var(--muted);text-align:center;margin-top:8px}
+.why{font-size:16px;line-height:1.45;font-style:italic}
+.lbl{font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.phase{display:flex;gap:12px;align-items:flex-start}
+.phase .pi{font-size:30px;line-height:1}
+.phase b{display:block;font-size:16px;margin-bottom:2px}
+.phase span{font-size:14px;color:var(--muted);line-height:1.45}
+.ms{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.ms span{font-size:12px;font-weight:650;padding:5px 10px;border-radius:20px;background:var(--soft);color:var(--muted)}
+.ms span.got{background:color-mix(in srgb,var(--c) 16%,var(--card));color:var(--c)}
+/* heatmap */
+.hm-wrap{overflow-x:auto;margin:4px -4px 0;padding:4px}
+.hm{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,var(--s));grid-auto-columns:var(--s);gap:4px}
+.hm div{border-radius:calc(var(--s)*.28);background:var(--soft)}
+.hm div.x{background:transparent}
+.hm div.ok{background:var(--c)}
+.hm div.fail{background:var(--bad)}
+.hm div.miss{background:transparent;box-shadow:inset 0 0 0 1.5px var(--line)}
+.hm div.today{box-shadow:inset 0 0 0 2px var(--ink)}
+.hm div.ok.today{box-shadow:inset 0 0 0 2px var(--ink)}
+.hm div.past{cursor:pointer}
+.hm-days{display:grid;grid-template-rows:repeat(7,var(--s));gap:4px;font-size:9px;color:var(--muted);margin-right:6px}
+.hm-days span{display:flex;align-items:center;height:var(--s)}
+.hm-row{display:flex;justify-content:center}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:12px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+.diary .de{display:flex;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.diary .de:first-of-type{border-top:0}
+.diary .dm{font-size:22px}
+.diary .dd{font-size:12px;color:var(--muted)}
+.diary .dn{font-size:14.5px;line-height:1.4;margin-top:2px}
+.failbtn{background:none;color:var(--bad);font-weight:650;padding:12px;width:100%;margin-top:6px}
+.danger{color:var(--bad);font-weight:650;padding:14px;width:100%}
+.sharebtn{width:100%;background:var(--card);box-shadow:var(--shadow);padding:15px;font-weight:700;margin-bottom:12px;color:var(--c)}
+
+/* tabbar */
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;justify-content:space-around;background:color-mix(in srgb,var(--card) 90%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
+.tabbar button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 0;font-size:10.5px;font-weight:650;color:var(--muted)}
+.tabbar .ti{font-size:22px;filter:grayscale(1);opacity:.5;transition:.15s}
+.tabbar button.on{color:var(--ink)}
+.tabbar button.on .ti{filter:none;opacity:1}
+
+/* sheet / modal */
+.ov{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.45);display:flex;align-items:flex-end;justify-content:center;animation:fin .15s ease}
+.ov.center{align-items:center;padding:24px}
+@keyframes fin{from{opacity:0}to{opacity:1}}
+.sheet{width:100%;max-width:540px;max-height:92vh;overflow:auto;background:var(--card);border-radius:26px 26px 0 0;padding:22px 18px calc(18px + env(safe-area-inset-bottom));animation:sup .25s ease}
+@keyframes sup{from{transform:translateY(100%)}to{transform:none}}
+.sheet h3{margin:0 0 6px;font-size:21px;letter-spacing:-.01em}
+.sheet p{color:var(--muted);margin:0 0 16px;line-height:1.45;font-size:15px}
+.sheet .col{display:flex;flex-direction:column;gap:8px}
+.ev-it{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.ev-it .ei{font-size:24px}
+.ev-it .et{flex:1;font-weight:650;font-size:15px}
+.yn{display:flex;background:var(--soft);border-radius:12px;padding:3px}
+.yn button{padding:8px 12px;font-weight:700;font-size:14px;border-radius:10px;color:var(--muted)}
+.yn button.on.y{background:var(--ok);color:#fff}
+.yn button.on.n{background:var(--bad);color:#fff}
+.moods{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.moods button{background:var(--soft);padding:12px 4px;border:2px solid transparent;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:13px;font-weight:600}
+.moods button b{font-size:28px;font-weight:400}
+.moods button.on{border-color:var(--acc);background:var(--acc2)}
+.mbox{background:var(--card);border-radius:28px;padding:30px 22px 22px;max-width:350px;width:100%;text-align:center;animation:mpop .4s cubic-bezier(.2,1.4,.4,1)}
+@keyframes mpop{from{transform:scale(.7);opacity:0}to{transform:none;opacity:1}}
+.mbox .mi{font-size:78px;line-height:1}
+.mbox .mk{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--acc);margin-top:12px}
+.mbox .mt{font-size:25px;font-weight:850;margin:6px 0;letter-spacing:-.02em}
+.mbox .md{color:var(--muted);font-size:15px;line-height:1.45;margin-bottom:20px}
+.conf{position:fixed;inset:0;pointer-events:none;z-index:61;overflow:hidden}
+.conf i{position:absolute;top:-20px;width:9px;height:14px;border-radius:2px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+.toast{width:max-content;position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:16px;font-size:14px;font-weight:650;z-index:70;max-width:90vw;text-align:center;animation:fin .2s ease;display:flex;gap:14px;align-items:center}
+.toast button{color:var(--acc);font-weight:800;padding:0}
+.seg3{display:flex;background:var(--soft);border-radius:14px;padding:3px;margin-top:12px}
+.seg3 button{flex:1;padding:11px 4px;font-weight:650;border-radius:11px;color:var(--muted);font-size:14px}
+.seg3 button.on{background:var(--card);color:var(--ink);box-shadow:var(--shadow)}
+.note{font-size:13px;color:var(--muted);line-height:1.5;margin-top:10px}
+.storyimg{width:100%;border-radius:18px;display:block;box-shadow:var(--shadow)}
+</style>
+</head>
+<body>
+
+<header class="appbar" id="bar">
+  <button class="back" id="back" hidden>‹</button>
+  <div class="ttl" id="title"></div>
+  <button class="act" id="hAct" hidden></button>
+</header>
+
+<main id="main"></main>
+<button class="fab" id="fab" hidden>+</button>
+
+<nav class="tabbar" id="tabbar">
+  <button data-tab="home"><span class="ti">🔥</span><span data-k="tabActive"></span></button>
+  <button data-tab="done"><span class="ti">🏆</span><span data-k="tabDone"></span></button>
+  <button data-tab="settings"><span class="ti">⚙️</span><span data-k="tabSettings"></span></button>
+</nav>
+<div id="layer"></div>
+
+<script>
+// =====================================================================
+// i18n
+// =====================================================================
+function pl(n,a,b,c){const x=n%10,y=n%100;return x===1&&y!==11?a:(x>=2&&x<=4&&(y<10||y>=20)?b:c);}
+const I={
+uk:{tabActive:'Аскези',tabDone:'Завершені',tabSettings:'Налаштування',
+ helloAll:'Сьогодні все відмічено. Ти молодець 💪',helloLeft:n=>`Сьогодні ще не відмічено: ${n}`,helloHint:'Затисни кружок, щоб відмітити день',
+ emptyT:'Ще немає аскез',emptyP:'Аскеза — це обіцянка собі. На 30 днів чи назавжди: без алкоголю, солодкого, соцмереж…',emptyB:'Створити аскезу',
+ newT:'Нова аскеза',pick:'Обери або створи свою',name:'Назва',namePh:'Наприклад, без солодкого',icon:'Іконка',color:'Колір',dur:'Тривалість',forever:'∞ Назавжди',daysShort:'дн.',
+ start:'Початок',today:'Сьогодні',tomorrow:'Завтра',why:'Навіщо мені це?',whyPh:'Хочу довести собі, що можу…',
+ money:'Скільки витрачав на це в день, ₴ (необов’язково)',
+ mode:'Якщо зірвусь',soft:'М’який',softD:'Зрив відмічається, аскеза триває',strict:'Суворий',strictD:'Зрив = почати спочатку',
+ create:'Почати аскезу',dayOf:(d,n)=>`День ${d} з ${n}`,startsIn:n=>n===1?'Почнеться завтра':`Почнеться через ${n} дн.`,left:n=>`ще ${n} ${pl(n,'день','дні','днів')}`,lastDay:'останній день!',
+ daysW:n=>pl(n,'день','дні','днів'),cleanFor:'без зривів',nextMs:n=>`до віхи ${n}`,firstDay:'Перший день — найважливіший',
+ yest:'Вчора тримався?',yes:'Так ✓',no:'Ні',
+ holdToday:'Затисни: сьогодні тримаюсь',marked:'✓ Сьогодні відмічено',tapUndo:'Торкнись, щоб скасувати',undo:'Скасувати',failToday:'Я зірвався сьогодні',quickTap:'Затисни й утримуй ✓',
+ streak:'днів поспіль',clean:'чистих днів',leftL:'залишилось',restarts:'перезапусків',best:'рекорд',saved:'заощаджено',relapses:'зривів',
+ map:'Карта днів',lgOk:'тримався',lgFail:'зрив',lgMiss:'не відмічено',lgToday:'сьогодні',tapPast:'Торкнись минулого дня, щоб змінити відмітку',
+ wd:['Пн','','Ср','','Пт','','Нд'],
+ failT:'Зірвався?',failSoft:'Нічого страшного. День позначиться червоним, а аскеза триває. Головне — не здаватися.',failStrict:'У суворому режимі зрив означає почати спочатку. Аскеза перезапуститься з завтрашнього дня.',
+ failForever:'Лічильник почнеться заново, але твій рекорд збережеться. Кожен може зірватися — важливо повернутися.',
+ failYes:'Так, зірвався',cancel:'Скасувати',dayT:d=>`День ${d}`,setOk:'✓ Тримався',setFail:'✗ Зірвався',setNone:'Прибрати відмітку',
+ del:'Видалити аскезу',delQ:'Видалити аскезу?',delP:'Усі відмітки зникнуть. Це не можна скасувати.',delYes:'Видалити',
+ doneK:'Аскезу завершено!',doneD:(n,c)=>`${n} ${pl(n,'день','дні','днів')} позаду, з них ${c} чистих. Ти тримав слово перед собою 🙌`,close:'Супер!',
+ doneNone:'Тут з’являться завершені аскези',doneOn:d=>`Завершено ${d}`,result:(c,n)=>`${c} з ${n} днів`,
+ langT:'🌐 Мова',themeT:'🎨 Тема',thAuto:'Авто',thLight:'Світла',thDark:'Темна',aboutT:'ℹ️ Про застосунок',
+ about:'Дані зберігаються лише на цьому пристрої. Аскеза — це про силу волі, а не про покарання: якщо зірвався, просто продовжуй.',
+ resetAll:'Скинути всі дані',resetQ:'Натисни ще раз, щоб видалити все',savedOk:'Аскезу створено. Успіхів! 💪',failedStrict:'Аскезу перезапущено. Ти зможеш! 💪',relapsed:'Лічильник оновлено. Почнемо знову 💪',
+ motdK:'💬 Думка дня',phaseL:'Де ти зараз',
+ ms:{3:'3 дні',7:'Тиждень',14:'2 тижні',21:'21 день',30:'Місяць',40:'40 днів',60:'2 місяці',90:'90 днів',100:'100 днів',180:'Пів року',365:'Рік',half:'Половина'},
+ msK:'Нова віха!',msT:{3:'Перші 3 дні позаду!',7:'Цілий тиждень!',14:'Два тижні!',21:'21 день!',30:'Місяць!',40:'40 днів!',60:'Два місяці!',90:'90 днів!',100:'100 днів!',180:'Пів року!',365:'Цілий рік!',half:'Половина шляху!'},
+ msD:'Ти тримаєш слово. Найважче вже позаду, продовжуй у тому ж дусі.',msBtn:'Далі 💪',
+ ph:[['🌱','Старт','Перші дні найважчі: звичка опирається. Просто проживи сьогодні.'],['🔥','Прорив','Найгостріший опір зазвичай минає. Ти вже довів собі, що можеш.'],['🧱','Будуєш звичку','Нова поведінка стає нормою. Обережно з думкою «один раз можна».'],['⛰','Друга половина','Більша частина шляху позаду. Згадай, навіщо ти це почав.'],['🏁','Фініш близько','Залишилось зовсім трохи. Дотисни!']],
+ phF:['🕊','Нове життя','Кожен день без старої звички робить тебе вільнішим. Ти вже не той, хто починав.'],
+ cheers:['Ще один день 💪','Так тримати! 🔥','Ти сильніший, ніж думаєш ✨','Крок за кроком 👣','Слово тримаєш 🤝','Чудово! Ще ближче до мети 🎯','Дисципліна — це свобода 🕊'],
+ mT:'Ранкова обіцянка',mD:'Пообіцяй собі витримати сьогодні',mBtn:'Обіцяю',mDone:'Обіцянку дано ✓',mDoneD:'Тримайся, ти зможеш',mToast:'Обіцянку дано. Гарного дня ☀️',
+ eT:'Вечірній підсумок',eD:'Як пройшов день? 30 секунд',eBtn:'Підбити',eDone:'День завершено',eQ:'Як пройшов день?',
+ eHeld:'Ти тримався сьогодні?',eMood:'Наскільки було важко?',moods:[['😌','Легко'],['😐','Нормально'],['😣','Важко']],eNote:'Нотатка (необов’язково)',eNotePh:'Що допомогло, що заважало, що відчуваєш…',eSave:'Зберегти підсумок',eSaved:'Підсумок збережено. Добраніч 🌙',
+ diary:'Щоденник',story:'📸 Картка для сторіс',storyT:'Картка для сторіс',storyHint:'Затисни картинку, щоб зберегти, або поділись нею.',share:'Поділитися',download:'Завантажити',
+ stDay:'день',stOf:'з',stDays:'днів',stClean:'без зривів',stDone:'Аскезу завершено!',appName:'Аскеза',
+ tpl:{alc:'Без алкоголю',sweet:'Без солодкого',sm:'Без соцмереж',coffee:'Без кави',shop:'Без покупок',swear:'Без мату',early:'Підйом о 6:00',sport:'Щодня спорт',smoke:'Без куріння',fast:'Без фастфуду',read:'Читати щодня',own:'Своя'}},
+ru:{tabActive:'Аскезы',tabDone:'Завершённые',tabSettings:'Настройки',
+ helloAll:'Сегодня всё отмечено. Ты молодец 💪',helloLeft:n=>`Сегодня ещё не отмечено: ${n}`,helloHint:'Зажми кружок, чтобы отметить день',
+ emptyT:'Пока нет аскез',emptyP:'Аскеза — это обещание себе. На 30 дней или навсегда: без алкоголя, сладкого, соцсетей…',emptyB:'Создать аскезу',
+ newT:'Новая аскеза',pick:'Выбери или создай свою',name:'Название',namePh:'Например, без сладкого',icon:'Иконка',color:'Цвет',dur:'Длительность',forever:'∞ Навсегда',daysShort:'дн.',
+ start:'Начало',today:'Сегодня',tomorrow:'Завтра',why:'Зачем мне это?',whyPh:'Хочу доказать себе, что могу…',
+ money:'Сколько тратил на это в день, ₴ (необязательно)',
+ mode:'Если сорвусь',soft:'Мягкий',softD:'Срыв отмечается, аскеза продолжается',strict:'Строгий',strictD:'Срыв = начать сначала',
+ create:'Начать аскезу',dayOf:(d,n)=>`День ${d} из ${n}`,startsIn:n=>n===1?'Начнётся завтра':`Начнётся через ${n} дн.`,left:n=>`ещё ${n} ${pl(n,'день','дня','дней')}`,lastDay:'последний день!',
+ daysW:n=>pl(n,'день','дня','дней'),cleanFor:'без срывов',nextMs:n=>`до вехи ${n}`,firstDay:'Первый день — самый важный',
+ yest:'Вчера держался?',yes:'Да ✓',no:'Нет',
+ holdToday:'Зажми: сегодня держусь',marked:'✓ Сегодня отмечено',tapUndo:'Нажми, чтобы отменить',undo:'Отменить',failToday:'Я сорвался сегодня',quickTap:'Зажми и удерживай ✓',
+ streak:'дней подряд',clean:'чистых дней',leftL:'осталось',restarts:'перезапусков',best:'рекорд',saved:'сэкономлено',relapses:'срывов',
+ map:'Карта дней',lgOk:'держался',lgFail:'срыв',lgMiss:'не отмечено',lgToday:'сегодня',tapPast:'Нажми на прошедший день, чтобы изменить отметку',
+ wd:['Пн','','Ср','','Пт','','Вс'],
+ failT:'Сорвался?',failSoft:'Ничего страшного. День отметится красным, а аскеза продолжается. Главное — не сдаваться.',failStrict:'В строгом режиме срыв означает начать сначала. Аскеза перезапустится с завтрашнего дня.',
+ failForever:'Счётчик начнётся заново, но твой рекорд сохранится. Сорваться может каждый — важно вернуться.',
+ failYes:'Да, сорвался',cancel:'Отмена',dayT:d=>`День ${d}`,setOk:'✓ Держался',setFail:'✗ Сорвался',setNone:'Убрать отметку',
+ del:'Удалить аскезу',delQ:'Удалить аскезу?',delP:'Все отметки исчезнут. Это нельзя отменить.',delYes:'Удалить',
+ doneK:'Аскеза завершена!',doneD:(n,c)=>`${n} ${pl(n,'день','дня','дней')} позади, из них ${c} чистых. Ты сдержал слово перед собой 🙌`,close:'Супер!',
+ doneNone:'Здесь появятся завершённые аскезы',doneOn:d=>`Завершена ${d}`,result:(c,n)=>`${c} из ${n} дней`,
+ langT:'🌐 Язык',themeT:'🎨 Тема',thAuto:'Авто',thLight:'Светлая',thDark:'Тёмная',aboutT:'ℹ️ О приложении',
+ about:'Данные хранятся только на этом устройстве. Аскеза — это про силу воли, а не про наказание: если сорвался, просто продолжай.',
+ resetAll:'Сбросить все данные',resetQ:'Нажми ещё раз, чтобы удалить всё',savedOk:'Аскеза создана. Удачи! 💪',failedStrict:'Аскеза перезапущена. Ты сможешь! 💪',relapsed:'Счётчик обновлён. Начнём заново 💪',
+ motdK:'💬 Мысль дня',phaseL:'Где ты сейчас',
+ ms:{3:'3 дня',7:'Неделя',14:'2 недели',21:'21 день',30:'Месяц',40:'40 дней',60:'2 месяца',90:'90 дней',100:'100 дней',180:'Полгода',365:'Год',half:'Половина'},
+ msK:'Новая веха!',msT:{3:'Первые 3 дня позади!',7:'Целая неделя!',14:'Две недели!',21:'21 день!',30:'Месяц!',40:'40 дней!',60:'Два месяца!',90:'90 дней!',100:'100 дней!',180:'Полгода!',365:'Целый год!',half:'Половина пути!'},
+ msD:'Ты держишь слово. Самое трудное уже позади, продолжай в том же духе.',msBtn:'Дальше 💪',
+ ph:[['🌱','Старт','Первые дни самые трудные: привычка сопротивляется. Просто проживи сегодня.'],['🔥','Прорыв','Самое сильное сопротивление обычно проходит. Ты уже доказал себе, что можешь.'],['🧱','Строишь привычку','Новое поведение становится нормой. Осторожно с мыслью «один раз можно».'],['⛰','Вторая половина','Большая часть пути позади. Вспомни, зачем ты это начал.'],['🏁','Финиш близко','Осталось совсем немного. Дожми!']],
+ phF:['🕊','Новая жизнь','Каждый день без старой привычки делает тебя свободнее. Ты уже не тот, кто начинал.'],
+ cheers:['Ещё один день 💪','Так держать! 🔥','Ты сильнее, чем думаешь ✨','Шаг за шагом 👣','Слово держишь 🤝','Отлично! Ещё ближе к цели 🎯','Дисциплина — это свобода 🕊'],
+ mT:'Утреннее обещание',mD:'Пообещай себе выдержать сегодня',mBtn:'Обещаю',mDone:'Обещание дано ✓',mDoneD:'Держись, ты сможешь',mToast:'Обещание дано. Хорошего дня ☀️',
+ eT:'Вечерний итог',eD:'Как прошёл день? 30 секунд',eBtn:'Подвести',eDone:'День завершён',eQ:'Как прошёл день?',
+ eHeld:'Ты держался сегодня?',eMood:'Насколько было трудно?',moods:[['😌','Легко'],['😐','Нормально'],['😣','Трудно']],eNote:'Заметка (необязательно)',eNotePh:'Что помогло, что мешало, что чувствуешь…',eSave:'Сохранить итог',eSaved:'Итог сохранён. Спокойной ночи 🌙',
+ diary:'Дневник',story:'📸 Карточка для сторис',storyT:'Карточка для сторис',storyHint:'Зажми картинку, чтобы сохранить, или поделись ею.',share:'Поделиться',download:'Скачать',
+ stDay:'день',stOf:'из',stDays:'дней',stClean:'без срывов',stDone:'Аскеза завершена!',appName:'Аскеза',
+ tpl:{alc:'Без алкоголя',sweet:'Без сладкого',sm:'Без соцсетей',coffee:'Без кофе',shop:'Без покупок',swear:'Без мата',early:'Подъём в 6:00',sport:'Каждый день спорт',smoke:'Без курения',fast:'Без фастфуда',read:'Читать каждый день',own:'Своя'}},
+en:{tabActive:'Challenges',tabDone:'Completed',tabSettings:'Settings',
+ helloAll:'Everything is checked in today. Well done 💪',helloLeft:n=>`Not checked in yet today: ${n}`,helloHint:'Press and hold the circle to check in',
+ emptyT:'No challenges yet',emptyP:'A challenge is a promise to yourself. For 30 days or forever: no alcohol, no sugar, no social media…',emptyB:'Create a challenge',
+ newT:'New challenge',pick:'Pick one or create your own',name:'Name',namePh:'For example, no sugar',icon:'Icon',color:'Color',dur:'Duration',forever:'∞ Forever',daysShort:'days',
+ start:'Start',today:'Today',tomorrow:'Tomorrow',why:'Why am I doing this?',whyPh:'I want to prove to myself that I can…',
+ money:'How much did you spend on it per day (optional)',
+ mode:'If I slip',soft:'Gentle',softD:'A slip is marked, the challenge goes on',strict:'Strict',strictD:'A slip = start over',
+ create:'Start challenge',dayOf:(d,n)=>`Day ${d} of ${n}`,startsIn:n=>n===1?'Starts tomorrow':`Starts in ${n} days`,left:n=>`${n} ${n===1?'day':'days'} left`,lastDay:'last day!',
+ daysW:n=>n===1?'day':'days',cleanFor:'clean',nextMs:n=>`to the ${n}-day mark`,firstDay:'Day one is the most important',
+ yest:'Did you hold on yesterday?',yes:'Yes ✓',no:'No',
+ holdToday:'Hold: I’m holding on today',marked:'✓ Checked in today',tapUndo:'Tap to undo',undo:'Undo',failToday:'I slipped today',quickTap:'Press and hold ✓',
+ streak:'day streak',clean:'clean days',leftL:'left',restarts:'restarts',best:'best',saved:'saved',relapses:'slips',
+ map:'Day map',lgOk:'held on',lgFail:'slip',lgMiss:'not checked',lgToday:'today',tapPast:'Tap a past day to change it',
+ wd:['Mo','','We','','Fr','','Su'],
+ failT:'Slipped?',failSoft:'That’s okay. The day turns red and the challenge goes on. What matters is not giving up.',failStrict:'In strict mode a slip means starting over. The challenge restarts tomorrow.',
+ failForever:'The counter starts over, but your best streak is kept. Anyone can slip — what matters is coming back.',
+ failYes:'Yes, I slipped',cancel:'Cancel',dayT:d=>`Day ${d}`,setOk:'✓ Held on',setFail:'✗ Slipped',setNone:'Clear',
+ del:'Delete challenge',delQ:'Delete this challenge?',delP:'All check-ins will be lost. This can’t be undone.',delYes:'Delete',
+ doneK:'Challenge complete!',doneD:(n,c)=>`${n} days done, ${c} of them clean. You kept your word to yourself 🙌`,close:'Awesome!',
+ doneNone:'Completed challenges will appear here',doneOn:d=>`Completed ${d}`,result:(c,n)=>`${c} of ${n} days`,
+ langT:'🌐 Language',themeT:'🎨 Theme',thAuto:'Auto',thLight:'Light',thDark:'Dark',aboutT:'ℹ️ About',
+ about:'Your data stays on this device only. A challenge is about willpower, not punishment: if you slip, just keep going.',
+ resetAll:'Reset all data',resetQ:'Tap again to delete everything',savedOk:'Challenge created. Good luck! 💪',failedStrict:'Challenge restarted. You can do it! 💪',relapsed:'Counter reset. Let’s go again 💪',
+ motdK:'💬 Thought of the day',phaseL:'Where you are now',
+ ms:{3:'3 days',7:'1 week',14:'2 weeks',21:'21 days',30:'1 month',40:'40 days',60:'2 months',90:'90 days',100:'100 days',180:'6 months',365:'1 year',half:'Halfway'},
+ msK:'New milestone!',msT:{3:'First 3 days done!',7:'A whole week!',14:'Two weeks!',21:'21 days!',30:'One month!',40:'40 days!',60:'Two months!',90:'90 days!',100:'100 days!',180:'Half a year!',365:'A whole year!',half:'Halfway there!'},
+ msD:'You’re keeping your word. The hardest part is behind you — keep it up.',msBtn:'Keep going 💪',
+ ph:[['🌱','Start','The first days are the hardest: the habit pushes back. Just get through today.'],['🔥','Breakthrough','The strongest resistance usually fades. You’ve already proven you can.'],['🧱','Building the habit','The new way is becoming normal. Watch out for “just this once”.'],['⛰','Second half','Most of the way is behind you. Remember why you started.'],['🏁','Almost there','Just a little more. Finish strong!']],
+ phF:['🕊','New life','Every day without the old habit makes you freer. You’re not the person who started.'],
+ cheers:['One more day 💪','Keep it up! 🔥','You’re stronger than you think ✨','Step by step 👣','You keep your word 🤝','Great! Closer to the goal 🎯','Discipline is freedom 🕊'],
+ mT:'Morning pledge',mD:'Promise yourself to hold on today',mBtn:'I promise',mDone:'Pledge made ✓',mDoneD:'Hold on, you can do it',mToast:'Pledge made. Have a good day ☀️',
+ eT:'Evening review',eD:'How was your day? 30 seconds',eBtn:'Review',eDone:'Day complete',eQ:'How was your day?',
+ eHeld:'Did you hold on today?',eMood:'How hard was it?',moods:[['😌','Easy'],['😐','Okay'],['😣','Hard']],eNote:'Note (optional)',eNotePh:'What helped, what got in the way, how you feel…',eSave:'Save review',eSaved:'Review saved. Good night 🌙',
+ diary:'Journal',story:'📸 Story card',storyT:'Story card',storyHint:'Long-press the image to save it, or share it.',share:'Share',download:'Download',
+ stDay:'day',stOf:'of',stDays:'days',stClean:'clean',stDone:'Challenge complete!',appName:'Askeza',
+ tpl:{alc:'No alcohol',sweet:'No sugar',sm:'No social media',coffee:'No coffee',shop:'No shopping',swear:'No swearing',early:'Wake up at 6:00',sport:'Daily workout',smoke:'No smoking',fast:'No fast food',read:'Read daily',own:'Custom'}}
+};
+const LOC={uk:'uk-UA',ru:'ru-RU',en:'en-US'};
+const MOTD=[
+ ['Сила волі — як м’яз: щодня трохи сильніша.','Сила воли — как мышца: каждый день немного сильнее.','Willpower is like a muscle: a little stronger every day.'],
+ ['Тобі не треба бути ідеальним. Треба просто не здаватися сьогодні.','Тебе не нужно быть идеальным. Нужно просто не сдаваться сегодня.','You don’t have to be perfect. You just have to not give up today.'],
+ ['Мотивація допомагає почати. Звичка допомагає продовжити.','Мотивация помогает начать. Привычка помогает продолжить.','Motivation gets you started. Habit keeps you going.'],
+ ['Кожне «ні» спокусі — це «так» тому, ким ти хочеш стати.','Каждое «нет» соблазну — это «да» тому, кем ты хочешь стать.','Every “no” to temptation is a “yes” to who you want to become.'],
+ ['Зрив — це не кінець. Кінець — це коли перестаєш пробувати.','Срыв — это не конец. Конец — это когда перестаёшь пытаться.','A slip isn’t the end. The end is when you stop trying.'],
+ ['Маленькі обіцянки собі будують велику довіру до себе.','Маленькие обещания себе строят большое доверие к себе.','Small promises kept build big trust in yourself.'],
+ ['Важко зараз — легко потім. Легко зараз — важко потім.','Трудно сейчас — легко потом. Легко сейчас — трудно потом.','Hard now, easy later. Easy now, hard later.'],
+ ['Не рахуй дні. Зроби так, щоб дні рахувались.','Не считай дни. Сделай так, чтобы дни считались.','Don’t count the days. Make the days count.'],
+ ['Бажання минає. Гордість за себе залишається.','Желание проходит. Гордость за себя остаётся.','Cravings pass. Pride in yourself stays.'],
+ ['Дисципліна — це пам’ятати, чого ти хочеш насправді.','Дисциплина — это помнить, чего ты хочешь на самом деле.','Discipline is remembering what you really want.'],
+ ['Один день — це небагато. Але саме з них складається результат.','Один день — это немного. Но именно из них складывается результат.','One day isn’t much. But results are made of days.'],
+ ['Ти вже не той, хто починав цю аскезу.','Ты уже не тот, кто начинал эту аскезу.','You’re no longer the person who started this challenge.'],
+ ['Свобода — це коли звичка не вирішує за тебе.','Свобода — это когда привычка не решает за тебя.','Freedom is when a habit doesn’t decide for you.'],
+ ['Тяга — це хвиля. Її можна перечекати.','Тяга — это волна. Её можно переждать.','A craving is a wave. You can ride it out.'],
+ ['Пишайся собою вже сьогодні, а не лише у фіналі.','Гордись собой уже сегодня, а не только в финале.','Be proud of yourself today, not just at the finish line.'],
+ ['Що важче тримати слово, то більше воно варте.','Чем труднее держать слово, тем больше оно стоит.','The harder a promise is to keep, the more it’s worth.'],
+ ['Ти робиш це для себе, а не для когось.','Ты делаешь это для себя, а не для кого-то.','You’re doing this for yourself, not for anyone else.'],
+ ['Найкращий час почати був учора. Другий найкращий — сьогодні.','Лучшее время начать было вчера. Второе лучшее — сегодня.','The best time to start was yesterday. The next best is today.']];
+const TPL=[['alc','🍷',30],['sweet','🍬',21],['sm','📵',7],['coffee','☕',14],['shop','🛍',30],['swear','🤐',21],['early','⏰',21],['sport','🏃',30],['smoke','🚭',0],['fast','🍔',30],['read','📖',30],['own','✨',30]];
+const ICONS=['🍷','🍺','🍬','🍰','📵','📱','☕','🛍','🤐','⏰','🏃','💪','🚭','🍔','📖','🧘','💧','🥗','🎮','💸','🌙','🧊','❤️','✨'];
+const COLORS=['#1f9d8b','#6b5bd6','#e0773a','#d9467a','#2f7fd6','#3a9d4a','#c9a227'];
+const MS_T=[3,7,14,21,30,40,60,90], MS_F=[3,7,14,30,60,90,100,180,365];
+
+// =====================================================================
+// state
+// =====================================================================
+const KEY='askeza.v1';
+let S;try{S=JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){}
+if(!S)S={items:[]};S.items=S.items||[];S.days=S.days||{};
+let L=(()=>{try{return localStorage.getItem('askeza.lang')||S.lang||'uk';}catch(e){return S.lang||'uk';}})();
+if(!I[L])L='uk';
+const T=k=>I[L][k];
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+// theme
+let TH=(()=>{try{return localStorage.getItem('askeza.theme')||'auto';}catch(e){return 'auto';}})();
+function applyTheme(){const r=document.documentElement;if(TH==='auto')r.removeAttribute('data-theme');else r.setAttribute('data-theme',TH);
+  const dark=TH==='dark'||(TH==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches);
+  document.querySelectorAll('meta[name=theme-color]').forEach(m=>m.remove());const m=document.createElement('meta');m.name='theme-color';m.content=dark?'#0f1011':'#f4f2ed';document.head.appendChild(m);}
+applyTheme();try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',applyTheme);}catch(e){}
+
+// dates
+const pad=n=>String(n).padStart(2,'0');
+const key=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const parse=s=>{const[a,b,c]=s.split('-').map(Number);return new Date(a,b-1,c);};
+const today=()=>key(new Date());
+const addDays=(s,n)=>{const d=parse(s);d.setDate(d.getDate()+n);return key(d);};
+const diff=(a,b)=>Math.round((parse(b)-parse(a))/864e5);
+const fmtDate=s=>parse(s).toLocaleDateString(LOC[L],{day:'numeric',month:'long'});
+const fmtShort=s=>parse(s).toLocaleDateString(LOC[L],{day:'numeric',month:'short',weekday:'short'});
+const money=n=>Math.round(n).toLocaleString(LOC[L])+' ₴';
+function motd(){const d=diff('2026-01-01',today());const m=MOTD[((d%MOTD.length)+MOTD.length)%MOTD.length];return m[{uk:0,ru:1,en:2}[L]];}
+
+// =====================================================================
+// model
+// =====================================================================
+const isF=it=>!!it.forever;
+function dayNo(it){return diff(it.start,today())+1;}
+function endKey(it){return addDays(it.start,it.days-1);}
+function fDays(it){return Math.max(0,diff(it.start,today()));} // full clean days (forever)
+function info(it){
+  const t=today(),d=dayNo(it),m=it.marks||{};
+  if(isF(it)){const cur=fDays(it);return {d,cur,best:Math.max(it.best||0,cur),todayMark:null,ok:cur,st:cur,fail:(it.relapses||[]).length};}
+  let ok=0,fail=0;for(let i=0;i<it.days;i++){const k=addDays(it.start,i);if(m[k]==='ok')ok++;else if(m[k]==='fail')fail++;}
+  let st=0,k=m[t]==='ok'?t:addDays(t,-1);while(k>=it.start&&m[k]==='ok'){st++;k=addDays(k,-1);}
+  return {d,ok,fail,st,todayMark:m[t],yKey:addDays(t,-1)};
+}
+function checkDone(it){
+  if(it.doneAt||isF(it))return false;
+  const t=today(),end=endKey(it),m=it.marks||{};
+  if(t>end||(t===end&&m[end])){it.doneAt=t>end?addDays(end,1):t;return true;}
+  return false;
+}
+function milestonesFor(it){
+  if(isF(it))return MS_F.map(n=>({k:String(n),n}));
+  const arr=MS_T.filter(n=>n<it.days).map(n=>({k:String(n),n}));
+  if(it.days>=10){const h=Math.ceil(it.days/2);if(!MS_T.includes(h))arr.push({k:'half',n:h});}
+  return arr.sort((a,b)=>a.n-b.n);
+}
+function progressCount(it){const f=info(it);return isF(it)?f.cur:(it.strict?f.st:f.ok);}
+function newMilestone(it){const cnt=progressCount(it);it.ms=it.ms||[];const hit=milestonesFor(it).filter(x=>x.n<=cnt&&!it.ms.includes(x.k));
+  if(!hit.length)return null;hit.forEach(x=>it.ms.push(x.k));return hit[hit.length-1];}
+function phase(it){if(isF(it)){const c=fDays(it);return c<=3?T('ph')[0]:c<=7?T('ph')[1]:c<30?T('ph')[2]:T('phF');}
+  const d=Math.max(1,dayNo(it)),p=d/it.days,P=T('ph');return d<=3?P[0]:d<=7?P[1]:p<.5?P[2]:p<.8?P[3]:P[4];}
+function nextMs(it){const c=fDays(it);return MS_F.find(n=>n>c)||Math.ceil((c+1)/365)*365;}
+function prevMs(it){const c=fDays(it);let p=0;MS_F.forEach(n=>{if(n<=c)p=n;});return p;}
+function uid(){return Math.random().toString(36).slice(2,9);}
+const byId=id=>S.items.find(i=>i.id===id);
+const active=()=>S.items.filter(i=>!i.doneAt);
+const finished=()=>S.items.filter(i=>i.doneAt).sort((a,b)=>b.doneAt.localeCompare(a.doneAt));
+const dueToday=()=>active().filter(it=>!isF(it)&&dayNo(it)>=1);
+
+// =====================================================================
+// router / chrome
+// =====================================================================
+let route={v:'home'};
+const main=document.getElementById('main'),bar=document.getElementById('bar');
+function go(v,p){route={v,...(p||{})};render();window.scrollTo(0,0);}
+document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>go(b.dataset.tab));
+document.getElementById('back').onclick=()=>go(route.from||'home');
+document.getElementById('fab').onclick=()=>go('new',{from:'home'});
+function setBar(title,back,act,over){
+  document.getElementById('title').textContent=title;
+  document.getElementById('back').hidden=!back;
+  const a=document.getElementById('hAct');a.hidden=!act;if(act){a.textContent=act[0];a.onclick=act[1];}
+  bar.classList.toggle('over',!!over);main.classList.toggle('full',!!over);
+  const tabs=['home','done','settings'].includes(route.v);
+  document.getElementById('tabbar').hidden=!tabs;
+  document.getElementById('fab').hidden=!(route.v==='home'&&active().length);
+  document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('on',b.dataset.tab===route.v));
+  document.querySelectorAll('[data-k]').forEach(e=>e.textContent=T(e.dataset.k));
+  document.documentElement.lang=L;document.title=T('appName');
+}
+let pendingMs=null;
+function render(){
+  let changed=false;S.items.forEach(it=>{if(checkDone(it))changed=true;});
+  // time-based milestones for forever items
+  if(!pendingMs)for(const it of active()){if(isF(it)){const m=newMilestone(it);if(m){pendingMs=[it,m];changed=true;break;}}}
+  if(changed)save();
+  ({home:vHome,done:vDone,settings:vSettings,new:vNew,detail:vDetail}[route.v]||vHome)();
+  if(pendingMs&&!layer.innerHTML){const [it,m]=pendingMs;pendingMs=null;milestone(it,m);}
+}
+function ringSVG(size,stroke,pct,color,track){const r=(size-stroke)/2,c=2*Math.PI*r;
+  return `<svg width="${size}" height="${size}"><circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="${track||'var(--soft)'}" stroke-width="${stroke}"/><circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="${color}" stroke-width="${stroke}" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c*(1-Math.max(0,Math.min(1,pct)))}" style="transition:stroke-dashoffset .6s ease"/></svg>`;}
+function holdSVG(){const r=26,c=2*Math.PI*r;return `<svg width="58" height="58"><circle class="p" cx="29" cy="29" r="${r}" fill="none" stroke="var(--c,var(--acc))" stroke-width="4" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c}"/></svg>`;}
+// press-and-hold helper
+function bindHold(el,onDone,onTap){let t=null,start=0;
+  const cancel=()=>{clearTimeout(t);t=null;el.classList.remove('holding');};
+  el.addEventListener('pointerdown',e=>{e.preventDefault();start=Date.now();el.classList.add('holding');t=setTimeout(()=>{t=null;el.classList.remove('holding');try{navigator.vibrate&&navigator.vibrate(25);}catch(_){}onDone();},600);});
+  el.addEventListener('pointerup',()=>{const quick=t&&Date.now()-start<250;cancel();if(quick&&onTap)onTap();});
+  el.addEventListener('pointerleave',cancel);el.addEventListener('pointercancel',cancel);
+  el.addEventListener('contextmenu',e=>e.preventDefault());}
+
+// =====================================================================
+// HOME
+// =====================================================================
+function vHome(){
+  setBar(T('tabActive'));
+  const list=active();
+  if(!list.length){main.innerHTML=`<div class="view empty"><div class="e">🔥</div><h2>${T('emptyT')}</h2><p>${T('emptyP')}</p><button class="pri" id="eNew">${T('emptyB')}</button></div>`;
+    document.getElementById('eNew').onclick=()=>go('new',{from:'home'});return;}
+  const t=today(),D=S.days[t]||{},h=new Date().getHours();
+  const due=dueToday(),unmarked=due.filter(it=>!(it.marks||{})[t]).length;
+  let html=`<div class="view"><div class="hello">${due.length?(unmarked?T('helloLeft')(unmarked)+' · '+T('helloHint'):T('helloAll')):''}</div>`;
+  // rituals
+  if(h<17||!D.pledge){html+=D.pledge?`<div class="card ritual morning done"><div class="ri">☀️</div><div class="rb"><b>${T('mDone')}</b><span>${T('mDoneD')}</span></div></div>`
+    :`<div class="card ritual morning"><div class="ri">☀️</div><div class="rb"><b>${T('mT')}</b><span>${T('mD')}</span></div><button class="go" id="pledge">${T('mBtn')}</button></div>`;}
+  if(h>=17||D.review){html+=D.review?`<div class="card ritual evening done"><div class="ri">${T('moods')[D.mood??1][0]}</div><div class="rb"><b>${T('eDone')}</b><span>${esc(D.note||T('moods')[D.mood??1][1])}</span></div><button class="go" id="review" style="background:var(--soft);color:var(--ink)">✎</button></div>`
+    :`<div class="card ritual evening"><div class="ri">🌙</div><div class="rb"><b>${T('eT')}</b><span>${T('eD')}</span></div><button class="go" id="review">${T('eBtn')}</button></div>`;}
+  html+=`<div class="card motd"><div class="mk">${T('motdK')}</div><div class="q">${motd()}</div></div>`;
+  list.forEach(it=>{const f=info(it),c=it.color||COLORS[0];
+    if(isF(it)){const nx=nextMs(it),pv=prevMs(it),pct=(f.cur-pv)/(nx-pv||1);
+      const sv=it.perDay?` · ${T('saved')} ${money(it.perDay*f.cur)}`:'';
+      html+=`<div class="card" style="--c:${c};padding:0"><div class="ac" data-open="${it.id}"><div class="ring">${ringSVG(68,7,pct,c)}<div class="ic">${it.icon}</div></div>
+      <div class="bd"><div class="t">${esc(it.title)}</div><div class="big">${f.cur} <small>${T('daysW')(f.cur)} ${T('cleanFor')}</small></div><div class="s">${f.cur?(nx-f.cur)+' '+T('daysW')(nx-f.cur)+' '+T('nextMs')(nx):T('firstDay')}${sv}</div></div></div></div>`;return;}
+    const notStarted=f.d<1,pct=notStarted?0:(it.strict?f.st:f.ok)/it.days;
+    const sub=notStarted?T('startsIn')(1-f.d):`${T('dayOf')(Math.min(f.d,it.days),it.days)} · ${f.d>=it.days?T('lastDay'):T('left')(it.days-f.d)}`;
+    const cls=notStarted?'wait':(f.todayMark==='ok'?'on':(f.todayMark==='fail'?'fail':''));
+    const askY=!notStarted&&f.d>1&&!(it.marks||{})[f.yKey];
+    html+=`<div class="card" style="--c:${c};padding:0"><div class="ac" data-open="${it.id}">
+      <div class="ring">${ringSVG(68,7,pct,c)}<div class="ic">${it.icon}</div></div>
+      <div class="bd"><div class="t">${esc(it.title)}</div><div class="s">${sub}</div></div>
+      <div class="hold ${cls}" data-hold="${it.id}">${cls===''?holdSVG():''}${f.todayMark==='fail'?'✗':'✓'}</div></div>
+      ${askY?`<div class="ask"><span>${T('yest')}</span><button data-y="${it.id}" data-v="ok">${T('yes')}</button><button data-y="${it.id}" data-v="fail">${T('no')}</button></div>`:''}
+    </div>`;});
+  main.innerHTML=html+'</div>';
+  const $=s=>main.querySelector(s);
+  if($('#pledge'))$('#pledge').onclick=()=>{S.days[t]={...(S.days[t]||{}),pledge:true};save();render();toast(T('mToast'));};
+  if($('#review'))$('#review').onclick=openReview;
+  main.querySelectorAll('[data-open]').forEach(el=>el.onclick=e=>{if(e.target.closest('[data-hold]'))return;go('detail',{id:el.dataset.open,from:'home'});});
+  main.querySelectorAll('[data-hold]').forEach(el=>{const it=byId(el.dataset.hold),m=(it.marks||{})[t];
+    el.addEventListener('click',e=>e.stopPropagation());
+    if(m){el.onclick=e=>{e.stopPropagation();toast(m==='ok'?T('marked'):'✗',[T('undo'),()=>setMark(it,t,null)]);};}
+    else bindHold(el,()=>markOk(it),()=>toast(T('quickTap')));});
+  main.querySelectorAll('[data-y]').forEach(b=>b.onclick=()=>{const it=byId(b.dataset.y),k=info(it).yKey;if(b.dataset.v==='fail')askFail(it,k);else setMark(it,k,'ok');});
+}
+function setMark(it,k,v){it.marks=it.marks||{};if(v)it.marks[k]=v;else delete it.marks[k];
+  const done=checkDone(it);let ms=null;if(v==='ok'&&!done)ms=newMilestone(it);
+  save();render();if(done)celebrate(it);else if(ms)milestone(it,ms);return !!(done||ms);}
+function markOk(it){const big=setMark(it,today(),'ok');if(!big){const c=T('cheers');toast(c[Math.floor(Math.random()*c.length)],[T('undo'),()=>setMark(it,today(),null)]);}}
+function relapse(it){const t=today();it.relapses=it.relapses||[];if(!it.relapses.includes(t))it.relapses.push(t);
+  it.best=Math.max(it.best||0,fDays(it));it.start=t;it.ms=[];save();render();toast(T('relapsed'));}
+function askFail(it,k){
+  const txt=isF(it)?T('failForever'):(it.strict?T('failStrict'):T('failSoft'));
+  sheet(`<h3>${T('failT')}</h3><p>${txt}</p><div class="col"><button class="pri" style="background:var(--bad);color:#fff" id="fy">${T('failYes')}</button><button class="sec" id="fn">${T('cancel')}</button></div>`,
+  root=>{root.querySelector('#fy').onclick=()=>{closeLayer();
+      if(isF(it))relapse(it);
+      else if(it.strict){it.restarts=(it.restarts||0)+1;it.start=addDays(today(),1);it.marks={};it.ms=[];save();render();toast(T('failedStrict'));}
+      else setMark(it,k,'fail');};
+    root.querySelector('#fn').onclick=closeLayer;});
+}
+
+// evening review
+function openReview(){
+  const t=today(),D=S.days[t]||{},items=active().filter(it=>isF(it)||dayNo(it)>=1);
+  const ans={};items.forEach(it=>{ans[it.id]=isF(it)?((it.relapses||[]).includes(t)?'fail':'ok'):((it.marks||{})[t]||'ok');});
+  let mood=D.mood??null;
+  const html=`<h3>${T('eQ')}</h3>
+   ${items.length?`<div class="lbl" style="margin-top:14px">${T('eHeld')}</div>`+items.map(it=>`<div class="ev-it"><span class="ei">${it.icon}</span><span class="et">${esc(it.title)}</span><div class="yn" data-id="${it.id}"><button class="y" data-v="ok">${T('yes').replace(' ✓','')}</button><button class="n" data-v="fail">${T('no')}</button></div></div>`).join(''):''}
+   <div class="lbl" style="margin-top:18px">${T('eMood')}</div><div class="moods">${T('moods').map((m,i)=>`<button data-m="${i}"><b>${m[0]}</b>${m[1]}</button>`).join('')}</div>
+   <label class="fld"><span>${T('eNote')}</span><textarea id="eNote" maxlength="400" placeholder="${T('eNotePh')}">${esc(D.note||'')}</textarea></label>
+   <div style="height:14px"></div><button class="pri" id="eSave">${T('eSave')}</button>`;
+  sheet(html,root=>{
+    const paint=()=>{root.querySelectorAll('.yn').forEach(y=>y.querySelectorAll('button').forEach(b=>b.classList.toggle('on',ans[y.dataset.id]===b.dataset.v)));
+      root.querySelectorAll('[data-m]').forEach(b=>b.classList.toggle('on',+b.dataset.m===mood));};paint();
+    root.querySelectorAll('.yn button').forEach(b=>b.onclick=()=>{ans[b.parentNode.dataset.id]=b.dataset.v;paint();});
+    root.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{mood=+b.dataset.m;paint();});
+    root.querySelector('#eSave').onclick=()=>{
+      S.days[t]={...(S.days[t]||{}),review:true,mood:mood??1,note:root.querySelector('#eNote').value.trim()};
+      let big=null;
+      items.forEach(it=>{const v=ans[it.id];
+        if(isF(it)){if(v==='fail'&&!(it.relapses||[]).includes(t)){it.relapses=it.relapses||[];it.relapses.push(t);it.best=Math.max(it.best||0,fDays(it));it.start=t;it.ms=[];}}
+        else if(it.strict&&v==='fail'){it.restarts=(it.restarts||0)+1;it.start=addDays(t,1);it.marks={};it.ms=[];}
+        else{it.marks=it.marks||{};it.marks[t]=v;if(checkDone(it))big=big||['done',it];else if(v==='ok'){const m=newMilestone(it);if(m)big=big||['ms',it,m];}}});
+      save();closeLayer();render();
+      if(big){big[0]==='done'?celebrate(big[1]):milestone(big[1],big[2]);}else toast(T('eSaved'));};
+  });
+}
+
+// =====================================================================
+// NEW
+// =====================================================================
+let draft=null;
+function vNew(){
+  if(!draft)draft={tpl:null,icon:'✨',title:'',days:30,forever:false,startOff:0,why:'',strict:false,perDay:'',color:COLORS[S.items.length%COLORS.length]};
+  setBar(T('newT'),true);const D=draft;
+  let h=`<div class="view"><div class="sec-t">${T('pick')}</div><div class="tpl">`;
+  TPL.forEach(([k,ic])=>{h+=`<button data-tpl="${k}" class="${D.tpl===k?'on':''}"><b>${ic}</b>${T('tpl')[k]}</button>`;});
+  const P=[7,14,21,30,40,90];
+  h+=`</div>
+  <label class="fld"><span>${T('name')}</span><input id="nTitle" maxlength="40" placeholder="${T('namePh')}" value="${esc(D.title)}"></label>
+  <div class="fld"><span>${T('icon')}</span><div class="icons">${ICONS.map(i=>`<button data-ic="${i}" class="${D.icon===i?'on':''}">${i}</button>`).join('')}</div></div>
+  <div class="fld"><span>${T('color')}</span><div class="colors">${COLORS.map(c=>`<button data-col="${c}" class="${D.color===c?'on':''}" style="background:${c}"></button>`).join('')}</div></div>
+  <div class="fld"><span>${T('dur')}</span><div class="pills">${P.map(n=>`<button data-days="${n}" class="${!D.forever&&D.days===n?'on':''}">${n}</button>`).join('')}<button data-days="0" class="${D.forever?'on':''}">${T('forever')}</button><input id="nDays" type="number" inputmode="numeric" min="1" max="365" value="${!D.forever&&!P.includes(D.days)?D.days:''}" placeholder="${T('daysShort')}"></div></div>
+  <div class="fld"><span>${T('start')}</span><div class="pills"><button data-so="0" class="${D.startOff===0?'on':''}">${T('today')}</button><button data-so="1" class="${D.startOff===1?'on':''}">${T('tomorrow')}</button></div></div>
+  <label class="fld" id="moneyF" ${D.forever?'':'hidden'}><span>${T('money')}</span><input id="nMoney" type="number" inputmode="decimal" min="0" value="${esc(D.perDay)}" placeholder="0"></label>
+  <label class="fld"><span>${T('why')}</span><textarea id="nWhy" maxlength="200" placeholder="${T('whyPh')}">${esc(D.why)}</textarea></label>
+  <div class="fld" id="modeF" ${D.forever?'hidden':''}><span>${T('mode')}</span><div class="mode">
+    <button data-mode="0" class="${!D.strict?'on':''}"><b>🌿 ${T('soft')}</b><small>${T('softD')}</small></button>
+    <button data-mode="1" class="${D.strict?'on':''}"><b>⚔️ ${T('strict')}</b><small>${T('strictD')}</small></button></div></div>
+  <div style="height:20px"></div><button class="pri" id="nGo" style="background:${D.color};color:#fff">${T('create')}</button></div>`;
+  main.innerHTML=h;const $=s=>main.querySelector(s);
+  const sel=(attr,el)=>main.querySelectorAll(`[${attr}]`).forEach(x=>x.classList.toggle('on',x===el));
+  $('#nTitle').oninput=e=>{D.title=e.target.value;e.target.style.borderColor='';};
+  $('#nWhy').oninput=e=>{D.why=e.target.value;};
+  $('#nMoney').oninput=e=>{D.perDay=e.target.value;};
+  $('#nDays').oninput=e=>{const v=parseInt(e.target.value);if(v>0){D.days=Math.min(365,v);D.forever=false;sel('data-days',null);$('#moneyF').hidden=true;$('#modeF').hidden=false;}};
+  main.querySelectorAll('[data-tpl]').forEach(b=>b.onclick=()=>{const t=TPL.find(x=>x[0]===b.dataset.tpl);D.tpl=t[0];D.icon=t[1];if(t[2]===0){D.forever=true;}else{D.forever=false;D.days=t[2];}D.title=t[0]==='own'?'':T('tpl')[t[0]];vNew();if(t[0]==='own')$('#nTitle').focus();});
+  main.querySelectorAll('[data-ic]').forEach(b=>b.onclick=()=>{D.icon=b.dataset.ic;sel('data-ic',b);});
+  main.querySelectorAll('[data-col]').forEach(b=>b.onclick=()=>{D.color=b.dataset.col;sel('data-col',b);$('#nGo').style.background=D.color;});
+  main.querySelectorAll('[data-days]').forEach(b=>b.onclick=()=>{const n=+b.dataset.days;D.forever=n===0;if(n)D.days=n;$('#nDays').value='';sel('data-days',b);$('#moneyF').hidden=!D.forever;$('#modeF').hidden=D.forever;});
+  main.querySelectorAll('[data-so]').forEach(b=>b.onclick=()=>{D.startOff=+b.dataset.so;sel('data-so',b);});
+  main.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{D.strict=b.dataset.mode==='1';sel('data-mode',b);});
+  $('#nGo').onclick=()=>{const title=D.title.trim();if(!title){$('#nTitle').focus();$('#nTitle').style.borderColor='var(--bad)';return;}
+    const st=addDays(today(),D.startOff);
+    S.items.push({id:uid(),icon:D.icon,title,days:D.forever?0:D.days,forever:D.forever,start:st,created:st,why:D.why.trim(),strict:!D.forever&&D.strict,color:D.color,marks:{},restarts:0,relapses:[],best:0,perDay:D.forever?Math.max(0,+D.perDay||0):0,ms:[]});
+    save();draft=null;go('home');toast(T('savedOk'));};
+}
+
+// =====================================================================
+// DETAIL
+// =====================================================================
+function heatmap(it){
+  const t=today(),m=it.marks||{},rel=it.relapses||[];
+  const from=isF(it)?(it.created||it.start):it.start;
+  const to=isF(it)?t:(it.doneAt?addDays(endKey(it),0):endKey(it));
+  const total=diff(from,to)+1;
+  const s=total>120?13:total>60?18:total>35?24:30;
+  const startDow=(parse(from).getDay()+6)%7; // Mon=0
+  let cells='';for(let i=0;i<startDow;i++)cells+='<div class="x"></div>';
+  for(let i=0;i<total;i++){const k=addDays(from,i);let cls='';
+    if(isF(it)){cls=k>t?'':(rel.includes(k)?'fail':(k<t?'ok':''));}
+    else{const v=m[k];cls=v==='ok'?'ok':v==='fail'?'fail':(k<t?'miss':'');if(k<=t&&!it.doneAt)cls+=' past';}
+    if(k===t)cls+=' today';
+    cells+=`<div class="${cls}" data-day="${k}" data-i="${i+1}" title="${fmtShort(k)}"></div>`;}
+  return `<div class="hm-row" style="--s:${s}px"><div class="hm-days">${T('wd').map(d=>`<span>${d}</span>`).join('')}</div><div class="hm-wrap"><div class="hm">${cells}</div></div></div>`;
+}
+function vDetail(){
+  const it=byId(route.id);if(!it){go('home');return;}
+  const f=info(it),c=it.color||COLORS[0],m=it.marks||{},t=today(),F=isF(it);
+  setBar('',true,['📸',()=>storyCard(it)],true);
+  const notStarted=!F&&f.d<1;
+  let pct,num,den,lbl;
+  if(F){const nx=nextMs(it),pv=prevMs(it);pct=(f.cur-pv)/(nx-pv||1);num=f.cur;den='';lbl=T('daysW')(f.cur)+' '+T('cleanFor');}
+  else{pct=notStarted?0:(it.strict?f.st:f.ok)/it.days;num=it.doneAt?f.ok:Math.max(0,Math.min(f.d,it.days));den='/'+it.days;lbl=it.doneAt?T('clean'):(notStarted?T('startsIn')(1-f.d):T('stDay'));}
+  let h=`<div class="view" style="--c:${c}"><div class="hero">
+    <div class="bigring">${ringSVG(200,12,pct,'#fff','rgba(255,255,255,.22)')}<div class="in"><div class="ic">${it.icon}</div><div class="n">${num}<small>${den}</small></div><div class="l">${lbl}</div></div></div>
+    <h2>${esc(it.title)}</h2><div class="sub">${F?`${T('forever')} · ${fmtDate(it.start)}`:`${fmtDate(it.start)} — ${fmtDate(endKey(it))} · ${it.strict?'⚔️ '+T('strict'):'🌿 '+T('soft')}`}</div>
+    ${it.doneAt?`<div class="badge">🏆 ${T('doneOn')(fmtDate(it.doneAt))}</div>`:''}</div>`;
+  // stats
+  if(F)h+=`<div class="stats"><div><b>${f.best}</b><small>${T('best')}</small></div><div><b>${f.fail}</b><small>${T('relapses')}</small></div><div><b>${it.perDay?money(it.perDay*f.cur):nextMs(it)-f.cur}</b><small>${it.perDay?T('saved'):T('nextMs')(nextMs(it))}</small></div></div>`;
+  else{const left=Math.max(0,it.days-Math.max(0,f.d));h+=`<div class="stats"><div><b>${f.st}</b><small>${T('streak')}</small></div><div><b>${f.ok}</b><small>${T('clean')}</small></div><div><b>${it.strict?(it.restarts||0):(it.doneAt?f.fail:left)}</b><small>${it.strict?T('restarts'):(it.doneAt?T('lgFail'):T('leftL'))}</small></div></div>`;}
+  // action
+  if(!it.doneAt&&!notStarted){
+    if(F)h+=`<div class="card"><button class="failbtn" id="dFail" style="margin:0">${T('failToday')}</button></div>`;
+    else{const tm=m[t];h+=`<div class="card">${tm?`<button class="holdbar done" id="dUndo"><span>${tm==='ok'?T('marked'):'✗ '+T('setFail')}</span></button><div class="hint">${T('tapUndo')}</div>`
+      :`<div class="holdbar" id="dHold"><div class="fill"></div><span>${T('holdToday')}</span></div><button class="failbtn" id="dFail">${T('failToday')}</button>`}</div>`;}}
+  // phase + milestones
+  if(!it.doneAt&&!notStarted){const ph=phase(it),cnt=progressCount(it);
+    h+=`<div class="card"><div class="lbl">${T('phaseL')}</div><div class="phase"><div class="pi">${ph[0]}</div><div><b>${ph[1]}</b><span>${ph[2]}</span></div></div>
+    <div class="ms">${milestonesFor(it).map(x=>`<span class="${cnt>=x.n?'got':''}">${cnt>=x.n?'✓ ':''}${T('ms')[x.k]}</span>`).join('')}${F?'':`<span>🏁 ${it.days}</span>`}</div></div>`;}
+  if(it.why)h+=`<div class="card"><div class="lbl">${T('why')}</div><div class="why">«${esc(it.why)}»</div></div>`;
+  // heatmap
+  h+=`<div class="card"><div class="lbl">${T('map')}</div>${heatmap(it)}
+   <div class="legend"><span><i style="background:${c}"></i>${T('lgOk')}</span><span><i style="background:var(--bad)"></i>${T('lgFail')}</span>${F?'':`<span><i style="box-shadow:inset 0 0 0 1.5px var(--muted)"></i>${T('lgMiss')}</span>`}<span><i style="box-shadow:inset 0 0 0 2px var(--ink)"></i>${T('lgToday')}</span></div>
+   ${!F&&!it.doneAt?`<div class="note">${T('tapPast')}</div>`:''}</div>`;
+  // diary
+  const from=F?(it.created||it.start):it.start,to=F?t:(it.doneAt||t);
+  const notes=Object.keys(S.days).filter(k=>k>=from&&k<=to&&S.days[k].review).sort().reverse().slice(0,10);
+  if(notes.length)h+=`<div class="card diary"><div class="lbl">${T('diary')}</div>${notes.map(k=>{const d=S.days[k];return `<div class="de"><div class="dm">${T('moods')[d.mood??1][0]}</div><div><div class="dd">${fmtShort(k)}</div><div class="dn">${esc(d.note||T('moods')[d.mood??1][1])}</div></div></div>`;}).join('')}</div>`;
+  h+=`<button class="sharebtn" id="dStory">${T('story')}</button><button class="danger" id="dDel">${T('del')}</button></div>`;
+  main.innerHTML=h;const $=s=>main.querySelector(s);
+  if($('#dHold'))bindHold($('#dHold'),()=>markOk(it),()=>toast(T('quickTap')));
+  if($('#dUndo'))$('#dUndo').onclick=()=>setMark(it,t,null);
+  if($('#dFail'))$('#dFail').onclick=()=>askFail(it,t);
+  $('#dStory').onclick=()=>storyCard(it);
+  if(!F)main.querySelectorAll('.hm .past').forEach(el=>el.onclick=()=>{const k=el.dataset.day;
+    sheet(`<h3>${T('dayT')(el.dataset.i)} · ${fmtDate(k)}</h3><div class="col" style="margin-top:12px">
+      <button class="pri" style="background:${c};color:#fff" data-s="ok">${T('setOk')}</button>
+      <button class="sec" style="color:var(--bad)" data-s="fail">${T('setFail')}</button>
+      ${m[k]?`<button class="sec" data-s="">${T('setNone')}</button>`:''}</div>`,
+    root=>root.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{closeLayer();const v=b.dataset.s;if(v==='fail'&&it.strict)askFail(it,k);else setMark(it,k,v||null);}));});
+  $('#dDel').onclick=()=>sheet(`<h3>${T('delQ')}</h3><p>${T('delP')}</p><div class="col"><button class="pri" style="background:var(--bad);color:#fff" id="dy">${T('delYes')}</button><button class="sec" id="dn">${T('cancel')}</button></div>`,
+    root=>{root.querySelector('#dy').onclick=()=>{S.items=S.items.filter(x=>x.id!==it.id);save();closeLayer();go(route.from||'home');};root.querySelector('#dn').onclick=closeLayer;});
+}
+
+// =====================================================================
+// DONE / SETTINGS
+// =====================================================================
+function vDone(){
+  setBar(T('tabDone'));const list=finished();
+  if(!list.length){main.innerHTML=`<div class="view empty"><div class="e">🏆</div><p>${T('doneNone')}</p></div>`;return;}
+  let h='<div class="view">';
+  list.forEach(it=>{const f=info(it),c=it.color||COLORS[0];
+    h+=`<div class="card" style="--c:${c};padding:0"><div class="ac" data-open="${it.id}"><div class="ring">${ringSVG(68,7,f.ok/it.days,c)}<div class="ic">${it.icon}</div></div>
+    <div class="bd"><div class="t">${esc(it.title)}</div><div class="s">${T('result')(f.ok,it.days)} · ${T('doneOn')(fmtDate(it.doneAt))}</div></div><div style="font-size:28px">🏆</div></div></div>`;});
+  main.innerHTML=h+'</div>';
+  main.querySelectorAll('[data-open]').forEach(el=>el.onclick=()=>go('detail',{id:el.dataset.open,from:'done'}));
+}
+function vSettings(){
+  setBar(T('tabSettings'));
+  main.innerHTML=`<div class="view"><div class="card"><b>${T('langT')}</b><div class="seg3"><button data-l="uk" class="${L==='uk'?'on':''}">Українська</button><button data-l="ru" class="${L==='ru'?'on':''}">Русский</button><button data-l="en" class="${L==='en'?'on':''}">English</button></div></div>
+  <div class="card"><b>${T('themeT')}</b><div class="seg3"><button data-th="auto" class="${TH==='auto'?'on':''}">🌓 ${T('thAuto')}</button><button data-th="light" class="${TH==='light'?'on':''}">☀️ ${T('thLight')}</button><button data-th="dark" class="${TH==='dark'?'on':''}">🌙 ${T('thDark')}</button></div></div>
+  <div class="card"><b>${T('aboutT')}</b><div class="note" style="font-size:14px">${T('about')}</div></div>
+  <button class="danger" id="sReset">${T('resetAll')}</button></div>`;
+  main.querySelectorAll('[data-th]').forEach(b=>b.onclick=()=>{TH=b.dataset.th;try{localStorage.setItem('askeza.theme',TH);}catch(e){}applyTheme();render();});
+  main.querySelectorAll('[data-l]').forEach(b=>b.onclick=()=>{L=b.dataset.l;S.lang=L;try{localStorage.setItem('askeza.lang',L);}catch(e){}save();render();});
+  let arm=0;main.querySelector('#sReset').onclick=()=>{const n=Date.now();if(n-arm>4000){arm=n;toast(T('resetQ'));return;}S={items:[],days:{},lang:L};save();go('home');};
+}
+
+// =====================================================================
+// layers: sheet, toast, modals, story
+// =====================================================================
+const layer=document.getElementById('layer');
+function closeLayer(){layer.innerHTML='';if(pendingMs){const [it,m]=pendingMs;pendingMs=null;milestone(it,m);}}
+function sheet(html,bind){layer.innerHTML=`<div class="ov"><div class="sheet">${html}</div></div>`;const ov=layer.firstChild;ov.onclick=e=>{if(e.target===ov)closeLayer();};bind&&bind(ov);}
+let tT=null;
+function toast(msg,action){const old=document.querySelector('.toast');if(old)old.remove();clearTimeout(tT);
+  const el=document.createElement('div');el.className='toast';el.innerHTML=`<span>${msg}</span>`;
+  if(action){const b=document.createElement('button');b.textContent=action[0];b.onclick=()=>{el.remove();action[1]();};el.appendChild(b);}
+  document.body.appendChild(el);tT=setTimeout(()=>el.remove(),3500);}
+function confetti(n){const cf=document.getElementById('conf'),cols=['#1f9d8b','#6b5bd6','#e0773a','#f2c94c','#d9467a','#2f7fd6'];
+  for(let i=0;i<n;i++){const p=document.createElement('i');p.style.left=Math.random()*100+'%';p.style.background=cols[i%cols.length];p.style.animationDuration=(2+Math.random()*2.2)+'s';p.style.animationDelay=(Math.random()*.6)+'s';cf.appendChild(p);}}
+function modal(icon,kick,title,desc,btn,onBtn,conf,extra){
+  layer.innerHTML=`<div class="ov center"><div class="mbox"><div class="mi">${icon}</div><div class="mk">${kick}</div><div class="mt">${title}</div><div class="md">${desc}</div><button class="pri" id="mOk" style="background:var(--acc);color:#fff">${btn}</button>${extra?`<button class="sec" id="mEx" style="width:100%;margin-top:8px">${extra[0]}</button>`:''}</div></div><div class="conf" id="conf"></div>`;
+  confetti(conf);try{navigator.vibrate&&navigator.vibrate([40,60,40]);}catch(e){}
+  document.getElementById('mOk').onclick=()=>{layer.innerHTML='';onBtn&&onBtn();};
+  if(extra)document.getElementById('mEx').onclick=()=>{layer.innerHTML='';extra[1]();};}
+function milestone(it,x){modal('🎉',T('msK'),T('msT')[x.k],`${it.icon} ${esc(it.title)}<br>${T('msD')}`,T('msBtn'),null,40,[T('story'),()=>storyCard(it)]);}
+function celebrate(it){const f=info(it);modal(it.icon,T('doneK'),esc(it.title),T('doneD')(it.days,f.ok),T('close'),()=>go('done'),90,[T('story'),()=>storyCard(it)]);}
+
+// story card (1080x1920 canvas)
+function storyCard(it){
+  const f=info(it),c=it.color||COLORS[0],F=isF(it);
+  const W=1080,H=1920,cv=document.createElement('canvas');cv.width=W;cv.height=H;const x=cv.getContext('2d');
+  const shade=(hex,p)=>{const n=parseInt(hex.slice(1),16);let r=n>>16,g=n>>8&255,b=n&255;const t=p<0?0:255,a=Math.abs(p);r=Math.round((t-r)*a+r);g=Math.round((t-g)*a+g);b=Math.round((t-b)*a+b);return `rgb(${r},${g},${b})`;};
+  const gr=x.createLinearGradient(0,0,W,H);gr.addColorStop(0,shade(c,.18));gr.addColorStop(1,shade(c,-.35));x.fillStyle=gr;x.fillRect(0,0,W,H);
+  x.fillStyle='rgba(255,255,255,.07)';x.beginPath();x.arc(W-80,260,420,0,7);x.fill();x.beginPath();x.arc(120,H-200,300,0,7);x.fill();
+  const FONT='-apple-system,system-ui,"Segoe UI",Roboto,sans-serif';
+  x.textAlign='center';x.fillStyle='#fff';
+  // ring
+  const cx=W/2,cy=820,R=330;let pct;
+  if(F){const nx=nextMs(it),pv=prevMs(it);pct=(f.cur-pv)/(nx-pv||1);}else pct=it.doneAt?f.ok/it.days:Math.min(1,Math.max(0,(it.strict?f.st:f.ok)/it.days));
+  x.lineWidth=34;x.lineCap='round';x.strokeStyle='rgba(255,255,255,.22)';x.beginPath();x.arc(cx,cy,R,0,Math.PI*2);x.stroke();
+  x.strokeStyle='#fff';x.beginPath();x.arc(cx,cy,R,-Math.PI/2,-Math.PI/2+Math.PI*2*Math.max(.001,pct));x.stroke();
+  x.font=`150px ${FONT}`;x.fillText(it.icon,cx,cy-90);
+  let big,small;
+  if(F){big=String(f.cur);small=`${T('daysW')(f.cur)} ${T('stClean')}`;}
+  else if(it.doneAt){big=`${f.ok}/${it.days}`;small=T('stDone');}
+  else{const d=Math.max(1,Math.min(f.d,it.days));big=`${d}`;small=`${T('stDay')} ${T('stOf')} ${it.days}`;}
+  x.font=`800 ${big.length>4?170:220}px ${FONT}`;x.fillText(big,cx,cy+120);
+  x.font=`600 54px ${FONT}`;x.globalAlpha=.85;x.fillText(small,cx,cy+200);x.globalAlpha=1;
+  // title
+  x.font=`800 88px ${FONT}`;const words=it.title;x.fillText(words.length>22?words.slice(0,21)+'…':words,cx,1330);
+  if(F&&it.perDay){x.font=`600 52px ${FONT}`;x.globalAlpha=.9;x.fillText(`💰 ${T('saved')} ${money(it.perDay*f.cur)}`,cx,1420);x.globalAlpha=1;}
+  else if(!F){x.font=`600 48px ${FONT}`;x.globalAlpha=.8;x.fillText(`${fmtDate(it.start)} — ${fmtDate(endKey(it))}`,cx,1420);x.globalAlpha=1;}
+  // footer
+  x.font=`800 46px ${FONT}`;x.globalAlpha=.9;x.fillText('🔥 '+T('appName').toUpperCase(),cx,H-140);x.globalAlpha=1;
+  const url=cv.toDataURL('image/png');
+  sheet(`<h3>${T('storyT')}</h3><img class="storyimg" src="${url}" alt=""><p style="margin-top:12px;text-align:center">${T('storyHint')}</p><div class="col"><button class="pri" id="stShare" style="background:${c};color:#fff">${T('share')}</button><a class="sec" id="stDl" href="${url}" download="askeza.png" style="text-align:center;text-decoration:none;border-radius:14px;color:var(--ink)">${T('download')}</a></div>`,
+   root=>{root.querySelector('#stShare').onclick=async()=>{try{const blob=await (await fetch(url)).blob();const file=new File([blob],'askeza.png',{type:'image/png'});
+      if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file]});}else{toast(T('storyHint'));}}catch(e){if(e&&e.name!=='AbortError')toast(T('storyHint'));}};});
+}
+
+render();
+let lastDay=today();setInterval(()=>{if(today()!==lastDay){lastDay=today();render();}},30000);
+if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!layer.innerHTML&&route.v!=='new')render();});
+</script>
+</body>
+</html>
