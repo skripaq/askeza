@@ -5,16 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Аскеза">
+<meta name="apple-mobile-web-app-title" content="Askezik">
 <meta name="description" content="Трекер аскез: обіцянки собі на 7, 21, 30 днів або назавжди. Ранкова обіцянка, вечірній підсумок, карта днів, картки для сторіс.">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<title>Аскеза</title>
+<title>Askezik</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f4f2ed;--card:#fff;--ink:#17171a;--muted:#77777d;--line:#e9e6df;--soft:#efece6;--acc:#1f9d8b;--acc2:#e6f5f2;--ok:#2f9e6b;--bad:#e05252;--shadow:0 1px 2px rgba(0,0,0,.04),0 6px 20px rgba(0,0,0,.05)}
-@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0f1011;--card:#1b1c1f;--ink:#f3f3f4;--muted:#9a9aa1;--line:#2a2b2f;--soft:#232428;--acc2:#15302b;--shadow:none;color-scheme:dark}}
-:root[data-theme=dark]{--bg:#0f1011;--card:#1b1c1f;--ink:#f3f3f4;--muted:#9a9aa1;--line:#2a2b2f;--soft:#232428;--acc2:#15302b;--shadow:none;color-scheme:dark}
+:root{--bg:#f3ede2;--card:#fbf8f2;--ink:#2b2622;--muted:#8a7f73;--line:#e4dacb;--soft:#ece4d6;--acc:#d9822b;--acc2:#f6e6d2;--ok:#6f8f5e;--bad:#b5523b;--shadow:0 1px 0 rgba(60,40,20,.04),0 10px 30px rgba(80,60,30,.07);--serif:'Lora',Georgia,'Times New Roman',serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0b0b0b;--card:#171615;--ink:#f4efe6;--muted:#9b948a;--line:#2a2826;--soft:#22201e;--acc:#f0a04b;--acc2:#2b2116;--shadow:none;color-scheme:dark}}
+:root[data-theme=dark]{--bg:#0b0b0b;--card:#171615;--ink:#f4efe6;--muted:#9b948a;--line:#2a2826;--soft:#22201e;--acc:#f0a04b;--acc2:#2b2116;--shadow:none;color-scheme:dark}
 :root[data-theme=light]{color-scheme:light}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
@@ -207,10 +209,150 @@ main.full{padding-top:0}
 .seg3 button.on{background:var(--card);color:var(--ink);box-shadow:var(--shadow)}
 .note{font-size:13px;color:var(--muted);line-height:1.5;margin-top:10px}
 .storyimg{width:100%;border-radius:18px;display:block;box-shadow:var(--shadow)}
+
+/* ===== zen redesign ===== */
+body{background-image:radial-gradient(color-mix(in srgb,var(--ink) 4%,transparent) .6px,transparent .6px);background-size:7px 7px}
+.appbar .ttl,.ac .t,.hero h2,.mbox .mt,.motd .q,.empty h2,.sheet h3,.zh{font-family:var(--serif);letter-spacing:-.01em}
+.appbar .ttl{font-weight:700;font-size:32px}
+.card{border-radius:28px}
+.ac .t{font-weight:600;font-size:19px}
+.motd{background:var(--card)!important;position:relative;overflow:hidden}
+.motd:after{content:"";position:absolute;right:-26px;top:-26px;width:110px;height:110px;border-radius:50%;border:10px solid color-mix(in srgb,var(--acc) 18%,transparent);border-right-color:transparent;transform:rotate(30deg)}
+.motd .mk{color:var(--acc)}
+.motd .q{font-weight:500;font-style:italic;font-size:18px}
+.ritual.morning{background:linear-gradient(135deg,color-mix(in srgb,#f2b64c 20%,var(--card)),var(--card))}
+.ritual.evening{background:linear-gradient(135deg,color-mix(in srgb,#4f6a8f 22%,var(--card)),var(--card))}
+.ritual button.go{border-radius:999px}
+.pri{border-radius:999px}
+.sec{border-radius:999px}
+.fab{width:auto;height:56px;padding:0 22px 0 18px;border-radius:999px;background:var(--ink);color:var(--bg);font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px;box-shadow:0 10px 30px rgba(0,0,0,.18)}
+.fab b{font-size:26px;font-weight:500;line-height:1}
+.ring{width:80px;height:80px}
+.ring .mk{position:absolute;inset:8px;display:flex;align-items:center;justify-content:center}
+.ring .em{position:absolute;right:-2px;bottom:-2px;width:28px;height:28px;border-radius:50%;background:var(--card);box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;font-size:15px}
+.hold{background:var(--soft)}
+.hold.on{background:var(--c,var(--acc))}
+/* hero */
+.hero{color:var(--ink);background:radial-gradient(circle at 50% 38%,color-mix(in srgb,var(--c) 26%,var(--bg)) 0,color-mix(in srgb,var(--c) 8%,var(--bg)) 45%,var(--bg) 75%);border-radius:0 0 36px 36px;padding-bottom:22px}
+.hero:before{display:none}
+.hero .bigring{width:250px;height:250px}
+.hero .in{inset:32px}
+.zn{font-size:56px;font-weight:850;letter-spacing:-.04em;line-height:1;margin-top:8px;font-variant-numeric:tabular-nums}
+.zn small{font-size:24px;color:var(--muted);font-weight:700}
+.zl{font-size:14px;color:var(--muted);margin-top:4px}
+.hero h2{font-size:28px;font-weight:600;margin:14px 0 4px}
+.hero .sub{color:var(--muted);opacity:1}
+.hero .badge{background:var(--card);color:var(--c)}
+.appbar.over .back,.appbar.over .act{background:var(--card);color:var(--ink);box-shadow:var(--shadow)}
+.speech{display:flex;gap:12px;align-items:flex-start}
+.speech .av{flex:0 0 auto;width:52px;height:52px;border-radius:50%;background:color-mix(in srgb,var(--c) 15%,var(--card));display:flex;align-items:center;justify-content:center;overflow:hidden}
+.speech .bubble{flex:1;background:var(--soft);border-radius:4px 20px 20px 20px;padding:12px 14px;font-size:15px;line-height:1.45}
+.speech .who{font-size:12px;font-weight:800;color:var(--c);letter-spacing:.04em;text-transform:uppercase;margin-bottom:3px}
+.stage{display:flex;justify-content:space-between;margin-top:14px;gap:4px}
+.stage span{flex:1;text-align:center;font-size:11px;color:var(--muted);padding-top:8px;border-top:4px solid var(--soft);border-radius:2px}
+.stage span.on{color:var(--ink);font-weight:700;border-top-color:var(--c)}
+.stage span.cur{color:var(--c)}
+/* jar (mono-style) */
+.jar{display:flex;align-items:center;gap:16px}
+.jar .jv{font-size:34px;font-weight:850;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.jar .jl{font-size:13px;color:var(--muted)}
+.holdbar{border-radius:999px;text-align:center}
+.sheet{border-radius:30px 30px 0 0;padding-top:14px}
+.sheet:before{content:"";display:block;width:40px;height:5px;border-radius:3px;background:var(--line);margin:0 auto 14px}
+.stats div{border-radius:22px}
+.stats b{font-size:26px;font-weight:850;font-variant-numeric:tabular-nums}
+.hm div.ok{background:var(--c)}
+.tpl button,.pills button,.mode button,.icons button,.fld input,.fld textarea,.pills input{border-radius:18px}
+.pills button{border-radius:999px}
+.tabbar{background:color-mix(in srgb,var(--bg) 88%,transparent)}
+.tabbar button.on{color:var(--acc)}
+.empty .monk{margin:0 auto 6px;width:180px}
+.toast{border-radius:999px;bottom:calc(160px + env(safe-area-inset-bottom))!important}
+.ring .mk svg,.hero .in svg,.speech svg{transform:none!important}
+.ring>svg,.hero .bigring>svg{position:absolute;inset:0}
+.hero .in{display:flex;align-items:center;justify-content:center}
+
+.demo{font-size:12.5px;color:var(--muted);background:var(--soft);border-radius:999px;padding:8px 14px;margin:0 0 12px;text-align:center}
+.fav{border-radius:50%;display:inline-flex;align-items:center;justify-content:center;overflow:hidden;flex:0 0 auto}
+.fav svg{transform:translateY(6%) scale(1.08)}
+.frow{display:flex;align-items:center;gap:12px}
+.card.frow{padding:14px 16px;cursor:pointer}
+.fb{flex:1;min-width:0;display:flex;flex-direction:column}
+.fb b{font-size:16px}
+.fb span{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.okt{color:var(--ok)!important;font-weight:650}
+.chev{font-size:24px;color:var(--muted)}
+.sbtn{background:var(--soft);padding:8px 14px;border-radius:999px;font-weight:650;font-size:14px}
+.sbtn.acc{background:var(--ink);color:var(--bg)}
+.fev{display:flex;gap:10px;align-items:center;padding:9px 0;border-top:1px solid var(--line);font-size:14px;line-height:1.35}
+.fev:first-child{border-top:0}
+.soc{width:100%;padding:15px;border-radius:999px;font-weight:700;font-size:16px;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:8px}
+.soc.apple{background:#000;color:#fff}
+.soc.google{background:var(--card);box-shadow:var(--shadow);color:var(--ink)}
+.orl{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13px;margin:8px 0 0}
+.orl:before,.orl:after{content:"";flex:1;height:1px;background:var(--line)}
+.pb{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:12.5px;color:var(--muted)}
+.ptb{display:inline-flex;align-items:center;gap:6px;padding:6px 14px 6px 6px!important}
+.duo-row{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:6px}
+.dc{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center}
+.dc b{font-size:15px;margin-top:4px}
+.dc span{font-size:12px;color:var(--muted)}
+.dc i{font-style:normal;font-size:13px;color:var(--muted)}
+.dj{flex:0 0 auto;text-align:center;padding:0 6px}
+.dj b{display:block;font-size:34px;font-weight:850;color:var(--c)}
+.dj span{font-size:11px;color:var(--muted)}
+.tabbar button{font-size:10px}
+
+.stk{display:inline-block;vertical-align:middle;overflow:visible}
+.tpl button b{display:flex;height:42px;align-items:center}
+.icons button{display:flex;align-items:center;justify-content:center}
+.ring .em{width:32px;height:32px;background:transparent;box-shadow:none;right:-6px;bottom:-6px}
+.ritual .ri{line-height:0}
+.lbl .stk,.mk .stk,.who .stk{margin:-4px 2px 0 0}
+.mode button b{display:flex;align-items:center;gap:6px}
+.sharebtn{display:flex;align-items:center;justify-content:center;gap:8px}
+.mbox .mi{line-height:0}
+.tabbar .ti{filter:none!important;opacity:.55;line-height:0}
+.tabbar button.on .ti{opacity:1}
+.empty .e{line-height:0;margin-bottom:6px}
+.appbar .act{display:flex;align-items:center;justify-content:center;font-size:0}
+.ev-it .ei{line-height:0}
+.ring .em svg,.ring .em .stk{transform:none!important;position:static!important}
+
+.goals{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.goals button{background:var(--card);box-shadow:var(--shadow);border:2px solid transparent;border-radius:18px;padding:10px 4px;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12.5px;font-weight:600}
+.goals button.on{border-color:var(--acc);background:var(--acc2)}
+.gl{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden}
+.gl span{overflow:hidden;text-overflow:ellipsis}
+.goalc{display:flex;gap:14px;align-items:flex-start}
+.gc-ic{flex:0 0 auto;line-height:0}
+.gc-b{flex:1;min-width:0}
+.gt{font-size:17px;font-weight:650;line-height:1.35}
+.serif{font-family:var(--serif);font-style:italic;font-weight:500}
+.gbar{height:10px;border-radius:5px;background:var(--soft);overflow:hidden;margin-top:10px}
+.gbar div{height:100%;background:var(--c,var(--acc));border-radius:5px;transition:width .6s}
+.sealed .seal-lines i{display:block;height:9px;border-radius:5px;background:var(--soft);margin:7px 0;width:100%;background-image:linear-gradient(90deg,var(--soft),color-mix(in srgb,var(--c,var(--acc)) 18%,var(--soft)),var(--soft));background-size:200% 100%;animation:shim 2.4s linear infinite}
+@keyframes shim{to{background-position:-200% 0}}
+.came{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:14px;flex-wrap:wrap}
+.came span{flex:1;color:var(--muted)}
+.came button{padding:7px 14px;border-radius:999px;background:var(--soft);font-weight:650;font-size:14px}
+.came button[data-came="1"]{background:var(--ok);color:#fff}
+.cameb{display:inline-block;margin-top:8px;font-size:13px;font-weight:700;padding:5px 12px;border-radius:999px;background:var(--soft);color:var(--muted)}
+.cameb.y{background:color-mix(in srgb,var(--ok) 18%,var(--card));color:var(--ok)}
+.sec-t .stk{margin:-4px 4px 0 0}
+
+.hold.pledged{background:transparent;box-shadow:inset 0 0 0 3px var(--c,var(--acc));outline:2px dashed color-mix(in srgb,var(--c,var(--acc)) 55%,transparent);outline-offset:3px}
+.holdbar.pledged{background:color-mix(in srgb,var(--c) 14%,var(--card));color:var(--c);display:flex;align-items:center;justify-content:center;gap:8px}
+.holdbar.pledged span{display:flex;align-items:center;gap:8px}
+.cutrow{display:flex;align-items:center;justify-content:center;gap:22px;margin:14px 0 4px}
+.cutrow button{width:46px;height:46px;border-radius:50%;background:var(--soft);font-size:22px}
+.cutrow span{font-size:30px;font-weight:800;min-width:96px;text-align:center;font-variant-numeric:tabular-nums}
+.hold .stk{position:static!important;transform:none!important;inset:auto}
 </style>
 </head>
 <body>
 
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" id="stkdefs"></svg>
 <header class="appbar" id="bar">
   <button class="back" id="back" hidden>‹</button>
   <div class="ttl" id="title"></div>
@@ -221,9 +363,10 @@ main.full{padding-top:0}
 <button class="fab" id="fab" hidden>+</button>
 
 <nav class="tabbar" id="tabbar">
-  <button data-tab="home"><span class="ti">🔥</span><span data-k="tabActive"></span></button>
-  <button data-tab="done"><span class="ti">🏆</span><span data-k="tabDone"></span></button>
-  <button data-tab="settings"><span class="ti">⚙️</span><span data-k="tabSettings"></span></button>
+  <button data-tab="home"><span class="ti" data-ti="home"></span><span data-k="tabActive"></span></button>
+  <button data-tab="friends" id="tabFr"><span class="ti" data-ti="friends"></span><span id="tabFrL"></span></button>
+  <button data-tab="done"><span class="ti" data-ti="done"></span><span data-k="tabDone"></span></button>
+  <button data-tab="settings"><span class="ti" data-ti="settings"></span><span data-k="tabSettings"></span></button>
 </nav>
 <div id="layer"></div>
 
@@ -267,7 +410,13 @@ uk:{tabActive:'Аскези',tabDone:'Завершені',tabSettings:'Нала�
  eT:'Вечірній підсумок',eD:'Як пройшов день? 30 секунд',eBtn:'Підбити',eDone:'День завершено',eQ:'Як пройшов день?',
  eHeld:'Ти тримався сьогодні?',eMood:'Наскільки було важко?',moods:[['😌','Легко'],['😐','Нормально'],['😣','Важко']],eNote:'Нотатка (необов’язково)',eNotePh:'Що допомогло, що заважало, що відчуваєш…',eSave:'Зберегти підсумок',eSaved:'Підсумок збережено. Добраніч 🌙',
  diary:'Щоденник',story:'📸 Картка для сторіс',storyT:'Картка для сторіс',storyHint:'Затисни картинку, щоб зберегти, або поділись нею.',share:'Поділитися',download:'Завантажити',
- stDay:'день',stOf:'з',stDays:'днів',stClean:'без зривів',stDone:'Аскезу завершено!',appName:'Аскеза',
+ stDay:'день',stOf:'з',stDays:'днів',stClean:'без зривів',stDone:'Аскезу завершено!',appName:'Askezik',
+ goalL:"Заради чого?",goalHint:"Необов’язково, але так мотивація сильніша",gNone:"Просто так",gReward:"Нагорода",gWish:"Бажання",gDedic:"Присвята",rewardL:"Що отримаєш, коли витримаєш?",rewardPh:"Наприклад, нові кросівки",costL:"Скільки коштує, ₴ (необов’язково)",wishL:"Загадай бажання",wishPh:"Напиши, чого бажаєш…",wishNote:"Бажання запечатається в конверт і відкриється лише у фіналі аскези.",dedicL:"Кому або чому присвячуєш?",dedicPh:"Наприклад, здоров’ю мами",cardReward:"Твоя нагорода",cardWish:"Запечатане бажання",cardDedic:"Присвята",rewardProg:"шляху до нагороди",sealedTill:"Відкриється",sealedF:"Відкриється на 30-й день без зривів",homeReward:"Нагорода:",homeWish:"Бажання запечатане",homeDedic:"Присвята:",rDoneK:"Ти заслужив!",rDoneD:"Нагорода чекає. Час її отримати — ти тримав слово.",envK:"Конверт готовий",envT:"Розпечатай бажання",envD:"Ти дійшов до фіналу. Твоє бажання чекає всередині.",envBtn:"Розпечатати",wishK:"Твоє бажання",wishD:"Ти виконав свою частину. Тепер — нехай збудеться.",dDoneK:"Присвячено",chestT:"Скриня бажань",came:"Чи збулося?",yesC:"Збулося",noC:"Ще ні",came1:"Збулося",came0:"Ще чекаю",
+ cutL:"Вечірній підсумок",cutD:"З цієї години на головній з’являється вечірній підсумок дня.",hPledge:"Затисни: обіцяю витримати",hConfirm:"Затисни: сьогодні витримав",hDo:"Затисни: виконано",pledgedBar:"Обіцянку дано",confirmAt:"Підтвердиш після",pledgeToast:"Обіцянку дано. Підтверди ввечері",pledgedTap:"Обіцянка діє. Підтвердити можна після",helloPl:"Обіцянки на сьогодні",helloConf:"Час підтвердити день",helloHintP:"Затисни кружок, щоб дати обіцянку",helloHintC:"Затисни кружок, щоб підтвердити день",confirmedT:"День підтверджено",mDoneN:"Обіцяно аскез:",
+ tipL:'💡 Порада на сьогодні',popular:'Популярні аскези',ownL:'Або створи свою',
+ stages:['Зернятко','Паросток','Бутон','Лотос','Просвітлення'],charL:'Твоя аскеза',newBtn:'Нова',
+ say:{calm:'Сьогодні ще не відмічено. Я поруч, тримаймося разом 🙏',joy:'Ще один день разом. Я росту завдяки тобі ✨',worry:'Вечір близько… Ми ж тримаємось? Відміть день 🙏',sad:'Буває. Видихни — і продовжимо разом.',sleep:'Чекаю на старт. Набираюся сил 💤',done:'Ми пройшли цей шлях. Я пишаюся тобою 🪷',free:n=>`Ми вільні вже ${n} ${pl(n,'день','дні','днів')}. Я пишаюся тобою 🪷`},
+ meet:'Познайомся: це твоя аскеза. Він росте разом із тобою — від зернятка до лотоса.',jarL:'Банка заощаджень',jarSub:n=>`до віхи ${n} днів`,
  tpl:{alc:'Без алкоголю',sweet:'Без солодкого',sm:'Без соцмереж',coffee:'Без кави',shop:'Без покупок',swear:'Без мату',early:'Підйом о 6:00',sport:'Щодня спорт',smoke:'Без куріння',fast:'Без фастфуду',read:'Читати щодня',own:'Своя'}},
 ru:{tabActive:'Аскезы',tabDone:'Завершённые',tabSettings:'Настройки',
  helloAll:'Сегодня всё отмечено. Ты молодец 💪',helloLeft:n=>`Сегодня ещё не отмечено: ${n}`,helloHint:'Зажми кружок, чтобы отметить день',
@@ -303,7 +452,13 @@ ru:{tabActive:'Аскезы',tabDone:'Завершённые',tabSettings:'На�
  eT:'Вечерний итог',eD:'Как прошёл день? 30 секунд',eBtn:'Подвести',eDone:'День завершён',eQ:'Как прошёл день?',
  eHeld:'Ты держался сегодня?',eMood:'Насколько было трудно?',moods:[['😌','Легко'],['😐','Нормально'],['😣','Трудно']],eNote:'Заметка (необязательно)',eNotePh:'Что помогло, что мешало, что чувствуешь…',eSave:'Сохранить итог',eSaved:'Итог сохранён. Спокойной ночи 🌙',
  diary:'Дневник',story:'📸 Карточка для сторис',storyT:'Карточка для сторис',storyHint:'Зажми картинку, чтобы сохранить, или поделись ею.',share:'Поделиться',download:'Скачать',
- stDay:'день',stOf:'из',stDays:'дней',stClean:'без срывов',stDone:'Аскеза завершена!',appName:'Аскеза',
+ stDay:'день',stOf:'из',stDays:'дней',stClean:'без срывов',stDone:'Аскеза завершена!',appName:'Askezik',
+ goalL:"Ради чего?",goalHint:"Необязательно, но так мотивация сильнее",gNone:"Просто так",gReward:"Награда",gWish:"Желание",gDedic:"Посвящение",rewardL:"Что получишь, когда выдержишь?",rewardPh:"Например, новые кроссовки",costL:"Сколько стоит, ₴ (необязательно)",wishL:"Загадай желание",wishPh:"Напиши, чего желаешь…",wishNote:"Желание запечатается в конверт и откроется только в финале аскезы.",dedicL:"Кому или чему посвящаешь?",dedicPh:"Например, здоровью мамы",cardReward:"Твоя награда",cardWish:"Запечатанное желание",cardDedic:"Посвящение",rewardProg:"пути к награде",sealedTill:"Откроется",sealedF:"Откроется на 30-й день без срывов",homeReward:"Награда:",homeWish:"Желание запечатано",homeDedic:"Посвящение:",rDoneK:"Ты заслужил!",rDoneD:"Награда ждёт. Пора её получить — ты сдержал слово.",envK:"Конверт готов",envT:"Распечатай желание",envD:"Ты дошёл до финала. Твоё желание ждёт внутри.",envBtn:"Распечатать",wishK:"Твоё желание",wishD:"Ты выполнил свою часть. Теперь — пусть сбудется.",dDoneK:"Посвящено",chestT:"Сундук желаний",came:"Сбылось?",yesC:"Сбылось",noC:"Ещё нет",came1:"Сбылось",came0:"Ещё жду",
+ cutL:"Вечерний итог",cutD:"С этого часа на главной появляется вечерний итог дня.",hPledge:"Зажми: обещаю выдержать",hConfirm:"Зажми: сегодня выдержал",hDo:"Зажми: выполнено",pledgedBar:"Обещание дано",confirmAt:"Подтвердишь после",pledgeToast:"Обещание дано. Подтверди вечером",pledgedTap:"Обещание действует. Подтвердить можно после",helloPl:"Обещания на сегодня",helloConf:"Пора подтвердить день",helloHintP:"Зажми кружок, чтобы дать обещание",helloHintC:"Зажми кружок, чтобы подтвердить день",confirmedT:"День подтверждён",mDoneN:"Обещано аскез:",
+ tipL:'💡 Совет на сегодня',popular:'Популярные аскезы',ownL:'Или создай свою',
+ stages:['Зёрнышко','Росток','Бутон','Лотос','Просветление'],charL:'Твоя аскеза',newBtn:'Новая',
+ say:{calm:'Сегодня ещё не отмечено. Я рядом, держимся вместе 🙏',joy:'Ещё один день вместе. Я расту благодаря тебе ✨',worry:'Вечер близко… Мы же держимся? Отметь день 🙏',sad:'Бывает. Выдохни — и продолжим вместе.',sleep:'Жду старта. Набираюсь сил 💤',done:'Мы прошли этот путь. Я горжусь тобой 🪷',free:n=>`Мы свободны уже ${n} ${pl(n,'день','дня','дней')}. Я горжусь тобой 🪷`},
+ meet:'Познакомься: это твоя аскеза. Он растёт вместе с тобой — от зёрнышка до лотоса.',jarL:'Банка сбережений',jarSub:n=>`до вехи ${n} дней`,
  tpl:{alc:'Без алкоголя',sweet:'Без сладкого',sm:'Без соцсетей',coffee:'Без кофе',shop:'Без покупок',swear:'Без мата',early:'Подъём в 6:00',sport:'Каждый день спорт',smoke:'Без курения',fast:'Без фастфуда',read:'Читать каждый день',own:'Своя'}},
 en:{tabActive:'Challenges',tabDone:'Completed',tabSettings:'Settings',
  helloAll:'Everything is checked in today. Well done 💪',helloLeft:n=>`Not checked in yet today: ${n}`,helloHint:'Press and hold the circle to check in',
@@ -339,7 +494,13 @@ en:{tabActive:'Challenges',tabDone:'Completed',tabSettings:'Settings',
  eT:'Evening review',eD:'How was your day? 30 seconds',eBtn:'Review',eDone:'Day complete',eQ:'How was your day?',
  eHeld:'Did you hold on today?',eMood:'How hard was it?',moods:[['😌','Easy'],['😐','Okay'],['😣','Hard']],eNote:'Note (optional)',eNotePh:'What helped, what got in the way, how you feel…',eSave:'Save review',eSaved:'Review saved. Good night 🌙',
  diary:'Journal',story:'📸 Story card',storyT:'Story card',storyHint:'Long-press the image to save it, or share it.',share:'Share',download:'Download',
- stDay:'day',stOf:'of',stDays:'days',stClean:'clean',stDone:'Challenge complete!',appName:'Askeza',
+ stDay:'day',stOf:'of',stDays:'days',stClean:'clean',stDone:'Challenge complete!',appName:'Askezik',
+ goalL:"What is it for?",goalHint:"Optional, but it makes motivation stronger",gNone:"Just because",gReward:"Reward",gWish:"Wish",gDedic:"Dedication",rewardL:"What will you get when you make it?",rewardPh:"For example, new sneakers",costL:"How much does it cost (optional)",wishL:"Make a wish",wishPh:"Write what you wish for…",wishNote:"Your wish will be sealed in an envelope and opened only at the finish.",dedicL:"Who or what do you dedicate it to?",dedicPh:"For example, my mom’s health",cardReward:"Your reward",cardWish:"Sealed wish",cardDedic:"Dedication",rewardProg:"of the way to your reward",sealedTill:"Opens",sealedF:"Opens on day 30 without slips",homeReward:"Reward:",homeWish:"Wish sealed",homeDedic:"For:",rDoneK:"You earned it!",rDoneD:"Your reward is waiting. Time to claim it — you kept your word.",envK:"Envelope ready",envT:"Open your wish",envD:"You made it to the finish. Your wish is waiting inside.",envBtn:"Open it",wishK:"Your wish",wishD:"You did your part. Now — may it come true.",dDoneK:"Dedicated to",chestT:"Wish chest",came:"Did it come true?",yesC:"It did",noC:"Not yet",came1:"Came true",came0:"Still waiting",
+ cutL:"Evening review",cutD:"From this hour the evening review appears on the home screen.",hPledge:"Hold: I pledge to hold on",hConfirm:"Hold: I held on today",hDo:"Hold: done",pledgedBar:"Pledge made",confirmAt:"Confirm after",pledgeToast:"Pledge made. Confirm it tonight",pledgedTap:"Your pledge is on. You can confirm after",helloPl:"Today’s pledges",helloConf:"Time to confirm your day",helloHintP:"Hold a circle to make a pledge",helloHintC:"Hold a circle to confirm the day",confirmedT:"Day confirmed",mDoneN:"Pledged:",
+ tipL:'💡 Tip for today',popular:'Popular challenges',ownL:'Or create your own',
+ stages:['Seed','Sprout','Bud','Lotus','Enlightened'],charL:'Your monk',newBtn:'New',
+ say:{calm:'Not checked in yet today. I’m right here — let’s hold on together 🙏',joy:'One more day together. I grow because of you ✨',worry:'Evening is close… We’re holding on, right? Check in 🙏',sad:'It happens. Breathe out — we’ll keep going together.',sleep:'Waiting for the start. Gathering strength 💤',done:'We made it all the way. I’m proud of you 🪷',free:n=>`We’ve been free for ${n} ${n===1?'day':'days'}. I’m proud of you 🪷`},
+ meet:'Meet your monk. He grows with you — from a seed to a lotus.',jarL:'Savings jar',jarSub:n=>`to the ${n}-day mark`,
  tpl:{alc:'No alcohol',sweet:'No sugar',sm:'No social media',coffee:'No coffee',shop:'No shopping',swear:'No swearing',early:'Wake up at 6:00',sport:'Daily workout',smoke:'No smoking',fast:'No fast food',read:'Read daily',own:'Custom'}}
 };
 const LOC={uk:'uk-UA',ru:'ru-RU',en:'en-US'};
@@ -363,9 +524,358 @@ const MOTD=[
  ['Ти робиш це для себе, а не для когось.','Ты делаешь это для себя, а не для кого-то.','You’re doing this for yourself, not for anyone else.'],
  ['Найкращий час почати був учора. Другий найкращий — сьогодні.','Лучшее время начать было вчера. Второе лучшее — сегодня.','The best time to start was yesterday. The next best is today.']];
 const TPL=[['alc','🍷',30],['sweet','🍬',21],['sm','📵',7],['coffee','☕',14],['shop','🛍',30],['swear','🤐',21],['early','⏰',21],['sport','🏃',30],['smoke','🚭',0],['fast','🍔',30],['read','📖',30],['own','✨',30]];
-const ICONS=['🍷','🍺','🍬','🍰','📵','📱','☕','🛍','🤐','⏰','🏃','💪','🚭','🍔','📖','🧘','💧','🥗','🎮','💸','🌙','🧊','❤️','✨'];
-const COLORS=['#1f9d8b','#6b5bd6','#e0773a','#d9467a','#2f7fd6','#3a9d4a','#c9a227'];
+const ICONS=['🍷','🍺','🍬','🍰','🥐','⚡','🥤','📵','📱','🎞','📰','📺','☕','🛍','🛵','🤐','🙊','⏰','😴','🏃','👟','🚿','💪','🚭','💨','🍔','📖','✍️','🗣','🧘','💧','🥗','🎮','💸','🌙','🧊','❤️','✨'];
+const COLORS=['#d9822b','#6f8f5e','#4f6a8f','#b5523b','#8a6a9e','#5f8a87','#c09a3a'];
+// "Твоя аскеза" — original monk character. stage 0..4, mood: calm|joy|worry|sad|sleep
+function monkSVG(stage,mood,color,size,uid,prop){
+  uid=uid||Math.random().toString(36).slice(2,7);
+  const robe=color||'#d9822b', skin='#f6dcc0', ink='#3a2f28', cheek='#f0a48a';
+  let eyes='',mouth='',extra='';
+  if(mood==='joy'){eyes=`<path d="M78 98 q8 -9 16 0 M106 98 q8 -9 16 0" stroke="${ink}" stroke-width="4" fill="none" stroke-linecap="round"/>`;
+    mouth=`<path d="M90 112 q10 11 20 0 z" fill="${ink}"/><path d="M93 114 q7 5 14 0" fill="#e8766a"/>`;
+    extra=`<g fill="#f2b84b"><path d="M40 70 l3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3z"/><path d="M158 60 l2.5 6 6 2.5 -6 2.5 -2.5 6 -2.5 -6 -6 -2.5 6 -2.5z"/><path d="M152 118 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2z"/></g>`;}
+  else if(mood==='worry'){eyes=`<circle cx="86" cy="98" r="4.5" fill="${ink}"/><circle cx="114" cy="98" r="4.5" fill="${ink}"/><path d="M78 88 l12 3 M122 88 l-12 3" stroke="${ink}" stroke-width="3" stroke-linecap="round"/>`;
+    mouth=`<path d="M93 115 q7 -4 14 0" stroke="${ink}" stroke-width="3.5" fill="none" stroke-linecap="round"/>`;
+    extra=`<path d="M131 80 q5 9 0 13 q-5 -4 0 -13z" fill="#8cc8f0"/>`;}
+  else if(mood==='sad'){eyes=`<path d="M78 99 q8 6 16 0 M106 99 q8 6 16 0" stroke="${ink}" stroke-width="4" fill="none" stroke-linecap="round"/>`;
+    mouth=`<path d="M92 117 q8 -7 16 0" stroke="${ink}" stroke-width="3.5" fill="none" stroke-linecap="round"/>`;
+    extra=`<path d="M82 106 q3 8 0 11 q-3 -3 0 -11z" fill="#8cc8f0"/>`;}
+  else if(mood==='sleep'){eyes=`<path d="M78 99 h16 M106 99 h16" stroke="${ink}" stroke-width="4" stroke-linecap="round"/>`;
+    mouth=`<ellipse cx="100" cy="114" rx="4" ry="3" fill="${ink}"/>`;
+    extra=`<g fill="${ink}" opacity=".55" font-family="Georgia,serif" font-weight="700"><text x="134" y="74" font-size="16">z</text><text x="146" y="58" font-size="12">z</text></g>`;}
+  else {eyes=`<path d="M78 98 q8 7 16 0 M106 98 q8 7 16 0" stroke="${ink}" stroke-width="4" fill="none" stroke-linecap="round"/>`;
+    mouth=`<path d="M93 112 q7 6 14 0" stroke="${ink}" stroke-width="3.5" fill="none" stroke-linecap="round"/>`;}
+  // head ornament by stage
+  let top='';
+  if(stage===0)top=`<ellipse cx="100" cy="52" rx="7" ry="5" fill="#a0784e"/>`;
+  if(stage===1)top=`<path d="M100 58 v-14" stroke="#6f9a52" stroke-width="4" stroke-linecap="round"/><path d="M100 46 q-14 -2 -16 -14 q13 0 16 14z" fill="#86b35f"/><path d="M100 48 q12 -4 14 -15 q-12 1 -14 15z" fill="#9cc56f"/>`;
+  if(stage===2)top=`<path d="M100 58 v-12" stroke="#6f9a52" stroke-width="4" stroke-linecap="round"/><path d="M100 22 q-14 14 -9 26 q9 4 18 0 q5 -12 -9 -26z" fill="#f2a7b4"/><path d="M100 26 q-6 10 -3 21 h6 q3 -11 -3 -21z" fill="#fbd3da"/><path d="M89 50 q-10 -6 -12 -14 q10 1 14 10z M111 50 q10 -6 12 -14 q-10 1 -14 10z" fill="#86b35f"/>`;
+  if(stage>=3)top=`<g transform="translate(100 44)"><path d="M0 -26 q-13 13 -8 26 h16 q5 -13 -8 -26z" fill="#f4a3b2"/><path d="M-6 2 q-24 -4 -28 -22 q18 -2 28 14z" fill="#f2b6c2"/><path d="M6 2 q24 -4 28 -22 q-18 -2 -28 14z" fill="#f2b6c2"/><path d="M-4 2 q-14 -14 -10 -28 q12 8 14 22z" fill="#f7c4ce"/><path d="M4 2 q14 -14 10 -28 q-12 8 -14 22z" fill="#f7c4ce"/><ellipse cx="0" cy="4" rx="20" ry="5" fill="#86b35f"/><circle cx="0" cy="-4" r="4" fill="#f6c94c"/></g>`;
+  const halo=stage>=4?`<circle cx="100" cy="98" r="78" fill="url(#halo${uid})"/>`:'';
+  return `<svg viewBox="0 0 200 200" width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <defs><radialGradient id="halo${uid}"><stop offset=".55" stop-color="#f6c94c" stop-opacity=".55"/><stop offset="1" stop-color="#f6c94c" stop-opacity="0"/></radialGradient></defs>
+  ${halo}
+  <ellipse cx="100" cy="182" rx="60" ry="9" fill="#000" opacity=".08"/>
+  <path d="M40 176 q-4 -20 14 -26 q-6 -18 18 -18 q10 -10 28 -10 q18 0 28 10 q24 0 18 18 q18 6 14 26z" fill="${robe}" opacity=".35"/>
+  <path d="M48 176 q-2 -48 52 -62 q54 14 52 62z" fill="${robe}"/>
+  <path d="M100 114 q-20 26 -14 62 h-10 q-6 -38 24 -62z" fill="#000" opacity=".12"/>
+  <path d="M100 116 q30 10 40 34" stroke="#fff" stroke-opacity=".25" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <ellipse cx="100" cy="160" rx="22" ry="11" fill="${skin}"/><path d="M84 158 q16 8 32 0" stroke="#e2bd98" stroke-width="2.5" fill="none"/>
+  <circle cx="100" cy="96" r="40" fill="${skin}"/>
+  <ellipse cx="60" cy="98" rx="6" ry="9" fill="${skin}"/><ellipse cx="140" cy="98" rx="6" ry="9" fill="${skin}"/>
+  <circle cx="80" cy="108" r="6" fill="${cheek}" opacity=".45"/><circle cx="120" cy="108" r="6" fill="${cheek}" opacity=".45"/>
+  ${eyes}${mouth}${top}${extra}
+  ${prop==='env'?'<g transform="rotate(-6 100 158)"><rect x="76" y="142" width="48" height="32" rx="4" fill="#f8ead2" stroke="#3a2f28" stroke-width="3"/><path d="M77 144 l23 17 l23 -17" fill="none" stroke="#3a2f28" stroke-width="3" stroke-linejoin="round"/><circle cx="100" cy="161" r="7.5" fill="#c4553f" stroke="#3a2f28" stroke-width="2.5"/><path d="M97 159 q3 4 6 0" stroke="#f3a9b8" stroke-width="2" fill="none"/></g>':''}
+  ${prop==='gift'?'<g><rect x="78" y="146" width="44" height="28" rx="4" fill="#e8903a" stroke="#3a2f28" stroke-width="3"/><rect x="74" y="140" width="52" height="10" rx="3" fill="#f0c04f" stroke="#3a2f28" stroke-width="3"/><path d="M100 140v34" stroke="#c4553f" stroke-width="6"/><path d="M100 140c-6-10-18-8-14 0zM100 140c6-10 18-8 14 0z" fill="#c4553f" stroke="#3a2f28" stroke-width="2.5"/></g>':''}
+  ${prop==='heart'?'<path d="M100 178c-14-10-20-17-20-25a9 9 0 0 1 20-3 9 9 0 0 1 20 3c0 8-6 15-20 25z" fill="#c4553f" stroke="#3a2f28" stroke-width="3"/>':''}
+  </svg>`;
+}
+
 const MS_T=[3,7,14,21,30,40,60,90], MS_F=[3,7,14,30,60,90,100,180,365];
+// ===== tips per template (4 stages: days 1–3, 4–7, 8–21, 22+) =====
+const TIPS={
+alc:{uk:['Перші дні тягне за звичкою — у ті самі години й місця. Підготуй заміну: газовану воду з лаймом, чай, безалкогольне пиво. Якщо ти пив щодня і багато, порадься з лікарем: різка відмова може бути небезпечною.','Скажи друзям про аскезу заздалегідь — так легше відмовлятися. Проста фраза «я зараз не п’ю, у мене челендж» працює краще за виправдання.','Багато хто помічає, що сон стає глибшим, а ранки бадьорішими. Запиши у вечірній підсумок, що змінилося в тебе.','Найнебезпечніша думка зараз — «я вже довів, можна один келих». Згадай, навіщо ти почав, і дійди до фінішу.'],
+ ru:['Первые дни тянет по привычке — в те же часы и места. Подготовь замену: газированную воду с лаймом, чай, безалкогольное пиво. Если ты пил каждый день и много, посоветуйся с врачом: резкий отказ может быть опасен.','Скажи друзьям об аскезе заранее — так легче отказываться. Простая фраза «я сейчас не пью, у меня челлендж» работает лучше оправданий.','Многие замечают, что сон становится глубже, а утро бодрее. Запиши в вечерний итог, что изменилось у тебя.','Самая опасная мысль сейчас — «я уже доказал, можно один бокал». Вспомни, зачем ты начал, и дойди до финиша.'],
+ en:['In the first days the urge comes from habit — same hours, same places. Prepare a swap: sparkling water with lime, tea, alcohol-free beer. If you drank heavily every day, talk to a doctor first: stopping abruptly can be dangerous.','Tell friends about your challenge in advance — it makes saying no easier. A simple “I’m not drinking right now, it’s a challenge” beats excuses.','Many people notice deeper sleep and brighter mornings. Write down in your evening review what has changed for you.','The riskiest thought now is “I’ve proven it, one glass is fine.” Remember why you started and reach the finish.']},
+sweet:{uk:['Тяга до солодкого найсильніша в перші дні. Тримай під рукою горіхи, фрукти, сир — і не ходи в магазин голодним.','Читай склад: цукор ховається в соусах, йогуртах, гранолі, «корисних» батончиках.','Смак перебудовується: фрукти здаються солодшими, а десерти — надто приторними. Це знак, що звичка змінюється.','Свята й гості — головна пастка. Вирішуй заздалегідь, що відповіси, коли запропонують торт.'],
+ ru:['Тяга к сладкому сильнее всего в первые дни. Держи под рукой орехи, фрукты, сыр — и не ходи в магазин голодным.','Читай состав: сахар прячется в соусах, йогуртах, гранолe, «полезных» батончиках.','Вкус перестраивается: фрукты кажутся слаще, а десерты — слишком приторными. Это знак, что привычка меняется.','Праздники и гости — главная ловушка. Реши заранее, что ответишь, когда предложат торт.'],
+ en:['Sugar cravings are strongest in the first days. Keep nuts, fruit or cheese at hand — and don’t shop hungry.','Read labels: sugar hides in sauces, yogurts, granola and “healthy” bars.','Your taste adjusts: fruit tastes sweeter and desserts feel too sweet. That’s the habit changing.','Parties and guests are the main trap. Decide in advance what you’ll say when someone offers cake.']},
+sm:{uk:['Видали застосунки з головного екрана або вийди з акаунтів — кожен зайвий крок зменшує автоматичні заходи.','Помічай, коли рука сама тягнеться до телефону: нудьга, черга, перед сном. Підготуй заміну — книжку, подкаст, прогулянку.','Звільнений час — твій бонус. Помічай, на що ти його тепер витрачаєш.','Подумай, як повернешся після аскези: які соцмережі справді потрібні і скільки часу ти їм даси.'],
+ ru:['Удали приложения с главного экрана или выйди из аккаунтов — каждый лишний шаг уменьшает автоматические заходы.','Замечай, когда рука сама тянется к телефону: скука, очередь, перед сном. Подготовь замену — книгу, подкаст, прогулку.','Освободившееся время — твой бонус. Замечай, на что ты его теперь тратишь.','Подумай, как вернёшься после аскезы: какие соцсети действительно нужны и сколько времени ты им дашь.'],
+ en:['Remove the apps from your home screen or log out — every extra step cuts automatic scrolling.','Notice when your hand reaches for the phone on its own: boredom, queues, bedtime. Prepare a swap — a book, a podcast, a walk.','The time you got back is your bonus. Notice what you spend it on now.','Think about how you’ll return afterwards: which apps you truly need and how much time you’ll give them.']},
+coffee:{uk:['У перші дні може боліти голова і хотітися спати — це звичайна реакція на відмову від кофеїну, зазвичай вона минає за кілька днів. Пий більше води.','Збережи ритуал без кофеїну: чашка трав’яного чаю чи цикорію в той самий час.','Енергія стає рівнішою — без різких підйомів і спадів. Спробуй лягати трохи раніше.','Якщо захочеш повернути каву після аскези — обмеж її до однієї чашки до обіду.'],
+ ru:['В первые дни может болеть голова и хотеться спать — это обычная реакция на отказ от кофеина, обычно она проходит за несколько дней. Пей больше воды.','Сохрани ритуал без кофеина: чашка травяного чая или цикория в то же время.','Энергия становится ровнее — без резких подъёмов и спадов. Попробуй ложиться чуть раньше.','Если захочешь вернуть кофе после аскезы — ограничь его одной чашкой до обеда.'],
+ en:['Headaches and sleepiness are common in the first days — a normal reaction to cutting caffeine that usually passes within a few days. Drink more water.','Keep the ritual without caffeine: a cup of herbal tea or chicory at the same time.','Your energy gets steadier — fewer spikes and crashes. Try going to bed a little earlier.','If you bring coffee back afterwards, keep it to one cup before lunch.']},
+shop:{uk:['Видали збережені картки з магазинів і відпишись від розсилок зі знижками.','Захотілося щось купити — додай у список і почекай 30 днів. Більшість бажань минає самі.','Порахуй, скільки вже заощадив порівняно зі звичайним місяцем, і відклади цю суму.','Подумай, які покупки справді приносили радість, а які були способом зняти стрес.'],
+ ru:['Удали сохранённые карты из магазинов и отпишись от рассылок со скидками.','Захотелось что-то купить — добавь в список и подожди 30 дней. Большинство желаний проходят сами.','Посчитай, сколько уже сэкономил по сравнению с обычным месяцем, и отложи эту сумму.','Подумай, какие покупки действительно приносили радость, а какие были способом снять стресс.'],
+ en:['Remove saved cards from shops and unsubscribe from sale newsletters.','Want to buy something? Add it to a list and wait 30 days. Most wants fade on their own.','Count how much you’ve saved compared with a normal month, and put that money aside.','Think about which purchases truly made you happy and which were a way to relieve stress.']},
+swear:{uk:['Помічай моменти, коли зриваєшся найчастіше: за кермом, у грі, на роботі. Усвідомлення — перший крок.','Придумай свої «безпечні» слова-заміни. Звучить смішно, але працює.','Попроси близьких м’яко нагадувати, коли зриваєшся, — без докорів.','Слова впливають на настрій: багато хто помічає, що стає спокійнішим. Як у тебе?'],
+ ru:['Замечай моменты, когда срываешься чаще всего: за рулём, в игре, на работе. Осознание — первый шаг.','Придумай свои «безопасные» слова-замены. Звучит смешно, но работает.','Попроси близких мягко напоминать, когда срываешься, — без упрёков.','Слова влияют на настроение: многие замечают, что становятся спокойнее. Как у тебя?'],
+ en:['Notice when you slip most: driving, gaming, at work. Awareness is the first step.','Come up with your own “safe” replacement words. It sounds silly, but it works.','Ask people close to you to gently remind you when you slip — no blaming.','Words shape mood: many people notice they get calmer. How about you?']},
+early:{uk:['Ранній підйом починається ввечері: лягай на 30–60 хвилин раніше і прибери телефон з ліжка.','Постав будильник подалі від ліжка і відкривай штори одразу після підйому — світло допомагає прокинутися.','Придумай приємний ранковий ритуал — каву, прогулянку, музику, — щоб було заради чого вставати.','Тримай режим і у вихідні: стрибки на 2–3 години збивають ритм.'],
+ ru:['Ранний подъём начинается вечером: ложись на 30–60 минут раньше и убери телефон из кровати.','Поставь будильник подальше от кровати и открывай шторы сразу после подъёма — свет помогает проснуться.','Придумай приятный утренний ритуал — кофе, прогулку, музыку, — чтобы было ради чего вставать.','Держи режим и в выходные: скачки на 2–3 часа сбивают ритм.'],
+ en:['Waking early starts the night before: go to bed 30–60 minutes earlier and keep your phone out of bed.','Put the alarm away from the bed and open the curtains right after waking — light helps you wake up.','Create a pleasant morning ritual — coffee, a walk, music — so there’s something to get up for.','Keep the schedule on weekends too: 2–3 hour shifts throw off your rhythm.']},
+sport:{uk:['Почни з малого: 15–20 хвилин щодня легше, ніж година раз на тиждень. Головне — регулярність.','Приготуй форму з вечора і тренуйся в той самий час — так не доведеться щоразу вирішувати.','Біль у м’язах після нових навантажень — нормально, але гострий біль — сигнал зупинитися і відпочити.','Чергуй навантаження: сила, кардіо, розтяжка. Легкий день — теж тренування.'],
+ ru:['Начни с малого: 15–20 минут каждый день легче, чем час раз в неделю. Главное — регулярность.','Приготовь форму с вечера и тренируйся в одно и то же время — так не придётся каждый раз решать.','Мышечная боль после новых нагрузок — нормально, но острая боль — сигнал остановиться и отдохнуть.','Чередуй нагрузки: сила, кардио, растяжка. Лёгкий день — тоже тренировка.'],
+ en:['Start small: 15–20 minutes a day is easier than an hour once a week. Consistency matters most.','Lay out your gear the night before and train at the same time — fewer decisions to make.','Muscle soreness after new training is normal, but sharp pain is a signal to stop and rest.','Mix it up: strength, cardio, stretching. An easy day is still a training day.']},
+smoke:{uk:['Перші дні найважчі: тяга приходить хвилями по кілька хвилин. Пий воду, жуй жуйку, виходь пройтися. Нікотинозамісна терапія може допомогти — порадься з лікарем.','Уникай тригерів: кава в тому ж місці, перерви з курцями. Зміни маршрут і ритуали хоча б на якийсь час.','Смак і запахи стають яскравішими, легше дихати. Записуй зміни — це нагадування, навіщо ти тримаєшся.','Головна пастка — «одна не зашкодить». Зазвичай саме з однієї й починається повернення.'],
+ ru:['Первые дни самые трудные: тяга приходит волнами по несколько минут. Пей воду, жуй жвачку, выходи пройтись. Никотинозаместительная терапия может помочь — посоветуйся с врачом.','Избегай триггеров: кофе в том же месте, перекуры с курящими. Поменяй маршрут и ритуалы хотя бы на время.','Вкус и запахи становятся ярче, легче дышать. Записывай изменения — это напоминание, зачем ты держишься.','Главная ловушка — «одна не повредит». Обычно именно с одной и начинается возвращение.'],
+ en:['The first days are the hardest: cravings come in waves of a few minutes. Drink water, chew gum, go for a walk. Nicotine replacement can help — ask a doctor.','Avoid triggers: coffee in the same spot, smoke breaks with smokers. Change routes and rituals, at least for a while.','Taste and smell get sharper, breathing gets easier. Write the changes down — they remind you why you’re holding on.','The main trap is “just one won’t hurt.” Going back usually starts with exactly one.']},
+fast:{uk:['Готуй їжу наперед і бери з собою — фастфуд виграє, коли ти голодний і поспішаєш.','Видали застосунки доставки або вимкни сповіщення про акції.','Знайди 2–3 швидкі домашні страви на 15 хвилин — твоя заміна фастфуду.','Порахуй заощаджені гроші — і подумай, на що їх витратити.'],
+ ru:['Готовь еду заранее и бери с собой — фастфуд выигрывает, когда ты голоден и спешишь.','Удали приложения доставки или выключи уведомления об акциях.','Найди 2–3 быстрых домашних блюда на 15 минут — твоя замена фастфуду.','Посчитай сэкономленные деньги — и подумай, на что их потратить.'],
+ en:['Prep food ahead and take it with you — fast food wins when you’re hungry and rushed.','Delete delivery apps or turn off promo notifications.','Find 2–3 quick 15-minute home meals — your fast-food replacement.','Count the money you saved — and decide what to spend it on.']},
+read:{uk:['Почни з 10 сторінок або 15 хвилин на день — краще мало, але щодня.','Тримай книжку там, де зазвичай гортаєш телефон: біля ліжка, в сумці.','Якщо книжка не йде — сміливо змінюй її. Аскеза про звичку читати, а не про конкретну книжку.','Записуй кілька думок із прочитаного у вечірній підсумок — так краще запам’ятовується.'],
+ ru:['Начни с 10 страниц или 15 минут в день — лучше мало, но каждый день.','Держи книгу там, где обычно листаешь телефон: у кровати, в сумке.','Если книга не идёт — смело меняй её. Аскеза про привычку читать, а не про конкретную книгу.','Записывай пару мыслей из прочитанного в вечерний итог — так лучше запоминается.'],
+ en:['Start with 10 pages or 15 minutes a day — a little, but every day.','Keep the book where you usually scroll your phone: by the bed, in your bag.','If a book isn’t working, switch it. The challenge is about the reading habit, not a specific book.','Jot a couple of thoughts from your reading in the evening review — it helps you remember.']},
+food:{uk:['Перші дні найважчі: тримай під рукою корисну заміну і не ходи в магазин голодним.','Читай склад продуктів — заборонене часто ховається там, де не чекаєш.','Смаки й звички перебудовуються — відзначай, що вже дається легше.','Вирішуй заздалегідь, що відповіси на «та трохи можна» в гостях.'],
+ ru:['Первые дни самые трудные: держи под рукой полезную замену и не ходи в магазин голодным.','Читай состав продуктов — запретное часто прячется там, где не ждёшь.','Вкусы и привычки перестраиваются — отмечай, что уже даётся легче.','Реши заранее, что ответишь на «да немного можно» в гостях.'],
+ en:['The first days are the hardest: keep a healthy swap at hand and don’t shop hungry.','Read labels — what you’re avoiding often hides where you don’t expect it.','Tastes and habits adjust — notice what already feels easier.','Decide in advance what you’ll say to “just a little is fine” at parties.']},
+digital:{uk:['Прибери спокусу з очей: видали застосунок або сховай його в папку на останньому екрані.','Помічай тригери — нудьгу, втому, черги — і готуй заміну заздалегідь.','Помічай, скільки часу звільнилося, і вирішуй, куди його вкласти.','Подумай, як користуватимешся цим після аскези — свідомо, а не автоматично.'],
+ ru:['Убери соблазн с глаз: удали приложение или спрячь его в папку на последнем экране.','Замечай триггеры — скуку, усталость, очереди — и готовь замену заранее.','Замечай, сколько времени освободилось, и решай, куда его вложить.','Подумай, как будешь пользоваться этим после аскезы — осознанно, а не автоматически.'],
+ en:['Get the temptation out of sight: delete the app or hide it in a folder on the last screen.','Notice triggers — boredom, tiredness, queues — and prepare a swap in advance.','Notice how much time you’ve freed up and decide where to invest it.','Think about how you’ll use it after the challenge — mindfully, not automatically.']},
+habit:{uk:['Прив’яжи нову звичку до того, що вже робиш щодня: після кави, після душу.','Зменш поріг: якщо немає сил — зроби хоча б мінімальну версію. Це теж рахується.','Не пропускай двічі поспіль: один пропуск — випадковість, два — початок старої звички.','Відзнач, що змінилося, і подумай, чи хочеш залишити цю звичку назавжди.'],
+ ru:['Привяжи новую привычку к тому, что уже делаешь каждый день: после кофе, после душа.','Снизь порог: если нет сил — сделай хотя бы минимальную версию. Это тоже считается.','Не пропускай два раза подряд: один пропуск — случайность, два — начало старой привычки.','Отметь, что изменилось, и подумай, хочешь ли оставить эту привычку навсегда.'],
+ en:['Attach the new habit to something you already do daily: after coffee, after a shower.','Lower the bar: if you’re out of energy, do at least a tiny version. It still counts.','Never skip twice in a row: one miss is an accident, two is the old habit returning.','Notice what has changed and decide whether you want to keep this habit for good.']},
+generic:{uk:['Перші дні найважчі. Просто проживи сьогодні — про завтра подумаєш завтра.','Помічай, що штовхає тебе зірватися, і май план на ці моменти.','Відзначай зміни у вечірньому підсумку — так видно, що зусилля не марні.','Фініш близько: згадай, навіщо почав, і дотисни.'],
+ ru:['Первые дни самые трудные. Просто проживи сегодня — о завтра подумаешь завтра.','Замечай, что подталкивает тебя сорваться, и имей план на эти моменты.','Отмечай изменения в вечернем итоге — так видно, что усилия не напрасны.','Финиш близко: вспомни, зачем начал, и дожми.'],
+ en:['The first days are the hardest. Just get through today — think about tomorrow tomorrow.','Notice what pushes you to slip and have a plan for those moments.','Note the changes in your evening review — it shows your effort isn’t wasted.','The finish is close: remember why you started and push through.']}
+};
+// ===== extended catalog (shown from the 2nd challenge) =====
+// [key, icon, days(0=forever), tipsKey, uk, ru, en]
+const CATALOG=[
+ ['food',[['alc','🍷',30,'alc'],['sweet','🍬',21,'sweet'],['fast','🍔',30,'fast'],['coffee','☕',14,'coffee'],
+   ['energy','⚡',30,'food','Без енергетиків','Без энергетиков','No energy drinks'],['soda','🥤',30,'food','Без газованки','Без газировки','No soda'],
+   ['flour','🥐',21,'food','Без борошняного','Без мучного','No pastries'],['meat','🥗',30,'food','Без м’яса','Без мяса','No meat'],
+   ['late','🌙',21,'food','Не їсти після 19:00','Не есть после 19:00','No food after 7 pm'],['water','💧',21,'habit','2 л води щодня','2 л воды в день','2 L of water daily'],
+   ['smoke','🚭',0,'smoke'],['vape','💨',0,'smoke','Без вейпу','Без вейпа','No vaping']]],
+ ['digital',[['sm','📵',7,'sm'],['shorts','🎞',14,'digital','Без TikTok і Reels','Без TikTok и Reels','No TikTok & Reels'],
+   ['games','🎮',14,'digital','Без ігор','Без игр','No video games'],['bedphone','📱',21,'digital','Без телефону в ліжку','Без телефона в кровати','No phone in bed'],
+   ['news','📰',14,'digital','Без новин','Без новостей','No news'],['series','📺',21,'digital','Без серіалів','Без сериалов','No TV series']]],
+ ['habits',[['early','⏰',21,'early'],['bedtime','😴',21,'habit','Відбій до 23:00','Отбой до 23:00','In bed by 11 pm'],
+   ['cold','🚿',21,'habit','Холодний душ','Холодный душ','Cold shower'],['sport','🏃',30,'sport'],
+   ['steps','👟',30,'habit','10 000 кроків','10 000 шагов','10,000 steps'],['meditate','🧘',21,'habit','Медитація 10 хв','Медитация 10 мин','Meditate 10 min'],
+   ['read','📖',30,'read'],['journal','✍️',21,'habit','Щоденник','Дневник','Daily journal'],['lang','🗣',30,'habit','Мова щодня 15 хв','Язык 15 мин в день','Language 15 min daily']]],
+ ['words',[['swear','🤐',21,'swear'],['complain','🙊',21,'swear','Без скарг','Без жалоб','No complaining'],
+   ['shop','🛍',30,'shop'],['delivery','🛵',30,'shop','Без доставки їжі','Без доставки еды','No food delivery']]]
+];
+const CAT_NAMES={food:['Їжа і тіло','Еда и тело','Food & body'],digital:['Цифровий детокс','Цифровой детокс','Digital detox'],habits:['Корисні звички','Полезные привычки','Good habits'],words:['Слова і гроші','Слова и деньги','Words & money']};
+
+const LI=()=>({uk:0,ru:1,en:2}[L]);
+function tplName(e){return e.length>4?e[4+LI()]:T('tpl')[e[0]];}
+const ALL_TPL=(()=>{const m={};CATALOG.forEach(([,list])=>list.forEach(e=>m[e[0]]=e));TPL.forEach(([k,ic,d])=>{if(!m[k])m[k]=[k,ic,d,k==='own'?'generic':k];});return m;})();
+function tipKeyOf(it){if(it.tipKey)return it.tipKey;const t=(it.title||'').trim().toLowerCase();
+  for(const k in ALL_TPL){const e=ALL_TPL[k];const names=e.length>4?[e[4],e[5],e[6]]:['uk','ru','en'].map(l=>I[l].tpl[k]);if(names.some(n=>n&&n.toLowerCase()===t))return e[3];}
+  return 'generic';}
+/*ICONS*/
+// ===== Own sticker icon set (48x48, ink outline + white die-cut rim via #stk filter) =====
+const IK='#2b2622';
+const C_={sf:'#e8903a',rd:'#c4553f',ms:'#7aa05f',in:'#5a74a0',pl:'#9a77b0',gd:'#f0c04f',cr:'#f8ead2',sk:'#9fd2f2',pk:'#f3a9b8',wh:'#ffffff',br:'#8a5a3c',gr:'#cfc6b8'};
+const O=`stroke="${IK}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"`;
+const L_=(d,w)=>`<path d="${d}" fill="none" stroke="${IK}" stroke-width="${w||2}" stroke-linecap="round" stroke-linejoin="round"/>`;
+const P_=(d,f)=>`<path d="${d}" fill="${f}" ${O}/>`;
+const R_=(x,y,w,h,r,f)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="${f}" ${O}/>`;
+const E_=(cx,cy,rx,ry,f)=>`<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="${f}" ${O}/>`;
+const SLASH=`<circle cx="24" cy="24" r="17" fill="none" stroke="${C_.rd}" stroke-width="4.5"/><path d="M12 12 L36 36" stroke="${C_.rd}" stroke-width="4.5" stroke-linecap="round"/>`;
+const ICON={
+ wine:P_('M15 7h18v6c0 9-4 13-9 13s-9-4-9-13z',C_.cr)+P_('M15.6 14h16.8c-.6 7-4 10.6-8.4 10.6S16.2 21 15.6 14z',C_.rd)+L_('M24 26v11')+R_(16,37,16,4,2,C_.cr),
+ beer:R_(12,15,19,25,4,C_.gd)+L_('M31 20h3a4 4 0 0 1 4 4v6a4 4 0 0 1-4 4h-3')+P_('M11 16c0-4 3-6 6-5 1-3 6-4 8-1 3-1 7 1 7 5 0 2-1 3-3 3H14c-2 0-3-1-3-2z',C_.wh)+L_('M18 24v10M24 24v10'),
+ candy:P_('M14 24 5 17v14z',C_.gd)+P_('M34 24l9-7v14z',C_.gd)+E_(24,24,11,9,C_.pk)+L_('M19 17c3 5 3 9 0 14M27 16c-3 5-3 11 0 16',1.6),
+ cake:P_('M8 26 38 14v26H8z',C_.cr)+P_('M8 26 38 14v6L8 32z',C_.pk)+`<circle cx="33" cy="11" r="4" fill="${C_.rd}" ${O}/>`+L_('M8 36h30',1.6),
+ croissant:P_('M6 30c2-12 12-19 18-19s16 7 18 19c-4 1-7-1-9-3-3 3-6 4-9 4s-6-1-9-4c-2 2-5 4-9 3z',C_.gd)+L_('M17 17l3 11M24 14v14M31 17l-3 11',1.6),
+ bolt:P_('M27 4 11 27h11l-3 17 18-24H26z',C_.gd),
+ soda:P_('M13 15h22l-3 27H16z',C_.rd)+R_(11,11,26,5,2,C_.cr)+L_('M27 11 31 3h5',2.4)+L_('M15 26h18',1.5),
+ phone:R_(14,5,20,38,5,C_.in)+R_(17,9,14,26,2,C_.sk)+`<circle cx="24" cy="39" r="1.6" fill="${IK}"/>`,
+ phoneoff:R_(15,7,18,34,5,C_.in)+R_(18,11,12,22,2,C_.sk)+SLASH,
+ film:R_(7,11,34,26,4,C_.pl)+P_('M21 18v12l10-6z',C_.wh)+'<g fill="#fff">'+[10,16,22,28,34].map(y=>'').join('')+'</g>'+L_('M7 17h4M7 24h4M7 31h4M37 17h4M37 24h4M37 31h4',1.6),
+ news:R_(9,8,30,33,3,C_.cr)+R_(13,13,10,9,1,C_.sk)+L_('M26 14h9M26 19h9M13 27h22M13 32h22M13 37h14',1.6),
+ tv:R_(7,13,34,24,5,C_.in)+R_(11,17,26,16,3,C_.sk)+L_('M18 6l6 7 6-7M16 37l-2 5M32 37l2 5'),
+ coffee:P_('M11 18h22v12a9 9 0 0 1-9 9h-4a9 9 0 0 1-9-9z',C_.cr)+L_('M33 21h2a4 4 0 0 1 0 8h-3')+P_('M11 18h22v4H11z',C_.br)+L_('M18 6c-2 3 2 5 0 8M25 6c-2 3 2 5 0 8',1.6),
+ bag:R_(9,17,30,24,5,C_.sf)+L_('M17 21v-6a7 7 0 0 1 14 0v6',2.4),
+ scooter:`<circle cx="13" cy="36" r="5" fill="${C_.gr}" ${O}/><circle cx="36" cy="36" r="5" fill="${C_.gr}" ${O}/>`+P_('M13 36h18l4-14h-6',C_.rd)+R_(9,16,14,13,2,C_.sf)+L_('M35 22l-2-8h4'),
+ zip:`<circle cx="24" cy="24" r="17" fill="${C_.gd}" ${O}/>`+`<circle cx="18" cy="19" r="2" fill="${IK}"/><circle cx="30" cy="19" r="2" fill="${IK}"/>`+L_('M14 29h20')+L_('M17 27v4M21 27v4M25 27v4M29 27v4',1.4)+R_(32,26.5,5,5,1,C_.gr),
+ nocomplain:P_('M8 12a5 5 0 0 1 5-5h22a5 5 0 0 1 5 5v14a5 5 0 0 1-5 5H21l-8 7v-7a5 5 0 0 1-5-5z',C_.cr)+L_('M24 12v8',3)+`<circle cx="24" cy="25" r="1.8" fill="${IK}"/>`+`<path d="M10 40 38 6" stroke="${C_.rd}" stroke-width="4" stroke-linecap="round"/>`,
+ alarm:L_('M10 13a6 6 0 0 1 8-6M38 13a6 6 0 0 0-8-6',2.4)+`<circle cx="24" cy="26" r="15" fill="${C_.rd}" ${O}/><circle cx="24" cy="26" r="11" fill="${C_.wh}" ${O}/>`+L_('M24 19v7l5 3')+L_('M14 40l-3 4M34 40l3 4'),
+ sleep:P_('M30 8a15 15 0 1 0 10 25A13 13 0 0 1 30 8z',C_.gd)+`<g font-family="Georgia,serif" font-weight="700" fill="${IK}"><text x="31" y="17" font-size="9">z</text><text x="37" y="10" font-size="7">z</text></g>`,
+ run:P_('M7 30c0-4 3-6 6-6l6-1 4-6c2-2 5-2 6 0l2 4h6c3 0 5 2 5 5v4c0 2-1 3-3 3H10c-2 0-3-1-3-3z',C_.sf)+R_(7,33,36,5,2.5,C_.wh)+L_('M3 18h7M1 24h6',1.8)+L_('M25 21l3 3M22 24l3 3',1.4),
+ steps:P_('M14 8c4 0 6 4 6 9s-2 9-6 9-5-4-5-9 1-9 5-9z',C_.ms)+P_('M10 29h8l-1 5c-1 2-6 2-7 0z',C_.ms)+P_('M33 14c4 0 5 4 5 9s-1 9-5 9-6-4-6-9 2-9 6-9z',C_.ms)+P_('M29 35h8l-1 5c-1 2-6 2-7 0z',C_.ms),
+ shower:L_('M10 42V14a7 7 0 0 1 14 0',2.4)+P_('M15 15h18l-3 6H18z',C_.gr)+'<g fill="'+C_.sk+'" '+O+'>'+['M19 27v4','M24 27v5','M29 27v4','M21 36v3','M27 36v3'].map(d=>`<path d="${d}" stroke="${C_.sk}" stroke-width="3" stroke-linecap="round"/>`).join('')+'</g>',
+ dumbbell:R_(4,18,6,12,2,C_.in)+R_(10,14,6,20,2,C_.in)+R_(32,14,6,20,2,C_.in)+R_(38,18,6,12,2,C_.in)+R_(16,21,16,6,2,C_.gr),
+ nosmoke:R_(8,20,32,8,2,C_.wh)+R_(30,20,10,8,2,C_.sf)+L_('M36 16c0-3 3-3 3-6',1.6)+SLASH,
+ vape:P_('M12 34a8 8 0 0 1 1-16 10 10 0 0 1 19-2 7 7 0 0 1 4 13 6 6 0 0 1-5 5z',C_.wh)+SLASH,
+ burger:P_('M9 21c0-8 7-13 15-13s15 5 15 13z',C_.sf)+P_('M7 24c3 3 6-1 9 1s5 2 8 0 5-2 8 0 6 2 9-1v3H7z',C_.ms)+R_(8,27,32,5,2.5,C_.br)+P_('M9 33h30v2a5 5 0 0 1-5 5H14a5 5 0 0 1-5-5z',C_.sf)+L_('M18 14l1 1M25 12l1 1M31 15l1 1',1.6),
+ book:P_('M24 12c-4-3-10-4-17-3v28c7-1 13 0 17 3z',C_.cr)+P_('M24 12c4-3 10-4 17-3v28c-7-1-13 0-17 3z',C_.wh)+L_('M11 16c3 0 6 0 9 2M11 22c3 0 6 0 9 2M28 18c3-2 6-2 9-2M28 24c3-2 6-2 9-2',1.4),
+ pen:P_('M30 6l8 8-20 20-10 2 2-10z',C_.gd)+P_('M30 6l8 8 3-3c2-2 0-5-2-6l-1-1c-1-1-4-3-6-1z',C_.pk)+P_('M10 26l-2 10 10-2z',C_.cr)+L_('M8 42h18',1.6),
+ speech:P_('M5 9a4 4 0 0 1 4-4h18a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H15l-6 5v-5a4 4 0 0 1-4-4z',C_.sk)+P_('M43 22a4 4 0 0 0-4-4H23a4 4 0 0 0-4 4v9a4 4 0 0 0 4 4h11l6 5v-5a4 4 0 0 0 3-4z',C_.cr)+L_('M11 14h14M25 26h12M25 30h8',1.6),
+ lotus:P_('M24 10c-5 5-6 12-4 20h8c2-8 1-15-4-20z',C_.pk)+P_('M20 30C13 29 8 23 7 16c7 0 12 5 14 12z',C_.pk)+P_('M28 30c7-1 12-7 13-14-7 0-12 5-14 12z',C_.pk)+P_('M8 33c4 3 10 4 16 4s12-1 16-4c-4-2-10-3-16-3S12 31 8 33z',C_.ms),
+ drop:P_('M24 5C18 15 12 21 12 29a12 12 0 0 0 24 0c0-8-6-14-12-24z',C_.sk)+L_('M18 30a6 6 0 0 0 5 6',1.8),
+ salad:P_('M8 23h32a16 16 0 0 1-32 0z',C_.cr)+P_('M12 23c0-6 4-10 9-9 2-4 8-4 10 0 5-1 8 4 6 9z',C_.ms)+`<circle cx="20" cy="20" r="3" fill="${C_.rd}" ${O}/>`,
+ gamepad:P_('M14 15h20c6 0 9 6 9 13 0 6-2 9-5 9-4 0-5-5-9-5H19c-4 0-5 5-9 5-3 0-5-3-5-9 0-7 3-13 9-13z',C_.in)+L_('M14 21v8M10 25h8',2.4)+`<circle cx="32" cy="22" r="2.2" fill="${C_.gd}" ${O}/><circle cx="36" cy="27" r="2.2" fill="${C_.rd}" ${O}/>`,
+ coin:`<circle cx="24" cy="24" r="17" fill="${C_.gd}" ${O}/><circle cx="24" cy="24" r="12" fill="none" stroke="${IK}" stroke-width="1.4" opacity=".5"/>`+L_('M20 18c1-2 7-3 8 1s-9 6-9 10 7 4 9 2M18 23h12M18 27h12',1.8),
+ moon:P_('M30 6a17 17 0 1 0 12 27A15 15 0 0 1 30 6z',C_.gd)+P_('M12 10l1.5 3 3 1.5-3 1.5L12 19l-1.5-3-3-1.5 3-1.5z',C_.wh),
+ ice:P_('M24 6l16 8v18l-16 9-16-9V14z',C_.sk)+P_('M8 14l16 8 16-8',C_.wh)+L_('M24 22v19')+L_('M14 20l-2 6',1.4),
+ heart:P_('M24 41C12 32 6 25 6 17a9 9 0 0 1 18-3 9 9 0 0 1 18 3c0 8-6 15-18 24z',C_.rd)+L_('M14 15a4 4 0 0 0-3 4',1.8),
+ sparkle:P_('M24 4c2 10 6 14 16 16-10 2-14 6-16 16-2-10-6-14-16-16 10-2 14-6 16-16z',C_.gd)+P_('M38 32c1 4 2 5 6 6-4 1-5 2-6 6-1-4-2-5-6-6 4-1 5-2 6-6z',C_.pk),
+ // ui stickers
+ sun:`<circle cx="24" cy="24" r="10" fill="${C_.gd}" ${O}/>`+L_('M24 4v6M24 38v6M4 24h6M38 24h6M10 10l4 4M34 34l4 4M38 10l-4 4M14 34l-4 4',2.6),
+ flame:P_('M24 4c4 8 13 13 13 24a13 13 0 0 1-26 0c0-6 3-10 6-13 1 4 3 6 5 7-1-6 0-12 2-18z',C_.sf)+P_('M24 26c3 4 6 6 6 10a6 6 0 0 1-12 0c0-4 3-6 6-10z',C_.gd),
+ sprout:L_('M24 42V22',2.6)+P_('M24 26C14 27 9 20 9 12c9 0 15 5 15 14z',C_.ms)+P_('M24 22c8 1 14-4 15-12-8 0-14 4-15 12z',C_.ms)+P_('M14 42h20',C_.br),
+ stones:E_(24,38,15,5,C_.gr)+E_(24,29,11,4.5,C_.cr)+E_(24,21,8,4,C_.gr)+E_(24,13.5,5,3.5,C_.cr),
+ mountain:`<circle cx="35" cy="12" r="5" fill="${C_.gd}" ${O}/>`+P_('M4 40 18 16l8 12 5-6 13 18z',C_.in)+P_('M18 16l-5 8 3 1 2-3 3 3 2-3z',C_.wh),
+ flag:L_('M12 44V6',2.8)+P_('M12 7h24l-6 7 6 7H12z',C_.rd),
+ dove:P_('M8 28c6 0 10-4 14-10 4-6 10-8 16-6l4-2-2 5c0 9-7 16-18 16H10z',C_.wh)+P_('M20 22c-3-6-9-9-14-8 1 6 5 10 12 11z',C_.cr)+`<circle cx="36" cy="15" r="1.5" fill="${IK}"/>`,
+ trophy:P_('M14 6h20v8a10 10 0 0 1-20 0z',C_.gd)+L_('M14 9H8c0 6 3 9 7 9M34 9h6c0 6-3 9-7 9')+R_(19,26,10,6,1,C_.gd)+R_(14,32,20,8,3,C_.br),
+ m0:`<circle cx="24" cy="24" r="18" fill="${C_.gd}" ${O}/>`+L_('M15 21q3-3 6 0M27 21q3-3 6 0')+L_('M17 29q7 6 14 0'),
+ m1:`<circle cx="24" cy="24" r="18" fill="${C_.cr}" ${O}/>`+`<circle cx="18" cy="21" r="2" fill="${IK}"/><circle cx="30" cy="21" r="2" fill="${IK}"/>`+L_('M17 31h14'),
+ m2:`<circle cx="24" cy="24" r="18" fill="${C_.pk}" ${O}/>`+L_('M14 18l6 3-6 3M34 18l-6 3 6 3')+L_('M16 33q4-5 8 0t8 0'),
+ bulb:P_('M24 5a12 12 0 0 0-7 22c1 1 2 3 2 5h10c0-2 1-4 2-5A12 12 0 0 0 24 5z',C_.gd)+R_(19,32,10,5,2,C_.gr)+L_('M21 41h6')+L_('M24 18v8M21 21h6',1.4),
+ quote:P_('M8 22c0-7 4-11 10-12v4c-3 1-4 3-4 6h4v10H8z',C_.sf)+P_('M26 22c0-7 4-11 10-12v4c-3 1-4 3-4 6h4v10H26z',C_.sf),
+ camera:R_(6,14,36,25,5,C_.pl)+P_('M16 14l3-5h10l3 5',C_.pl)+`<circle cx="24" cy="26" r="8" fill="${C_.sk}" ${O}/>`,
+ jar:P_('M14 10h20v4c4 2 6 6 6 10v14a5 5 0 0 1-5 5H13a5 5 0 0 1-5-5V24c0-4 2-8 6-10z',C_.sk)+R_(13,6,22,5,2,C_.gr),
+gift:R_(8,20,32,22,4,C_.sf)+R_(5,14,38,8,3,C_.gd)+`<path d="M24 14v28" stroke="${C_.rd}" stroke-width="5"/>`+P_('M24 14c-4-8-14-7-11 0zM24 14c4-8 14-7 11 0z',C_.rd)+L_('M24 14v28',1.4),
+ envelope:R_(5,11,38,27,4,C_.cr)+L_('M6 13l18 13 18-13')+`<circle cx="24" cy="26" r="6" fill="${C_.rd}" ${O}/>`+L_('M21.5 25q2.5 3 5 0',1.4),
+ envopen:P_('M5 22 24 8l19 14v18a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3z',C_.cr)+R_(11,12,26,20,2,C_.wh)+L_('M15 18h18M15 23h14M15 28h10',1.4)+P_('M5 22l19 13 19-13v18a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3z',C_.cr),
+ dedic:P_('M24 41C12 32 6 25 6 17a9 9 0 0 1 18-3 9 9 0 0 1 18 3c0 8-6 15-18 24z',C_.pk)+P_('M24 33c-5-4-8-7-8-11a4 4 0 0 1 8-1 4 4 0 0 1 8 1c0 4-3 7-8 11z',C_.rd),
+ chest:R_(6,20,36,20,3,C_.br)+P_('M6 20c0-7 8-11 18-11s18 4 18 11z',C_.sf)+R_(20,18,8,8,2,C_.gd)+L_('M6 28h36',1.6),
+ strict:P_('M9 9l22 22-3 3L6 12z',C_.gr)+P_('M39 9 17 31l3 3 22-22z',C_.gr)+L_('M8 38l6-6M40 38l-6-6',3),
+ soft:P_('M10 38C10 20 22 9 40 8c0 18-11 30-29 30z',C_.ms)+L_('M10 38 30 18',1.8)
+};
+const EMO={'🍷':'wine','🍺':'beer','🍬':'candy','🍰':'cake','🥐':'croissant','⚡':'bolt','🥤':'soda','📵':'phoneoff','📱':'phone','🎞':'film','📰':'news','📺':'tv','☕':'coffee','🛍':'bag','🛵':'scooter','🤐':'zip','🙊':'nocomplain','⏰':'alarm','😴':'sleep','🏃':'run','👟':'steps','🚿':'shower','💪':'dumbbell','🚭':'nosmoke','💨':'vape','🍔':'burger','📖':'book','✍️':'pen','🗣':'speech','🧘':'lotus','💧':'drop','🥗':'salad','🎮':'gamepad','💸':'coin','🌙':'moon','🧊':'ice','❤️':'heart','✨':'sparkle'};
+function stkInner(n){return ICON[EMO[n]||n];}
+function stk(n,size,cls){const inner=stkInner(n);if(!inner)return `<span style="font-size:${size*.8}px">${n}</span>`;
+  return `<svg class="stk ${cls||''}" viewBox="-3 -3 54 54" width="${size}" height="${size}" aria-hidden="true"><g filter="url(#stk)">${inner}</g></svg>`;}
+function stkStandalone(n,size){const inner=stkInner(n)||'';return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-3 -3 54 54" width="${size}" height="${size}">${STK_FILTER}<g filter="url(#stk)">${inner}</g></svg>`;}
+const STK_FILTER=`<defs><filter id="stk" x="-25%" y="-25%" width="150%" height="150%" color-interpolation-filters="sRGB"><feMorphology in="SourceAlpha" operator="dilate" radius="2.6" result="d"/><feFlood flood-color="#fff" result="w0"/><feComposite in="w0" in2="d" operator="in" result="w"/><feGaussianBlur in="d" stdDeviation="1.3" result="b"/><feOffset in="b" dy="1.2" result="s"/><feFlood flood-color="#3a2a1a" flood-opacity=".22" result="c"/><feComposite in="c" in2="s" operator="in" result="sh"/><feMerge><feMergeNode in="sh"/><feMergeNode in="w"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>`;
+// line icons for the tab bar
+const TABI={home:'<path d="M12 3c2 4 7 6 7 12a7 7 0 0 1-14 0c0-3 2-5 3-6 .5 2 1.5 3 2.5 3.5C10 9 10.5 6 12 3z"/>',
+ done:'<path d="M7 4h10v4a5 5 0 0 1-10 0z"/><path d="M7 6H4c0 3 1.5 4.5 3.5 4.5M17 6h3c0 3-1.5 4.5-3.5 4.5M12 13v4M8 20h8M9 17h6"/>',
+ settings:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/>',
+ friends:'<circle cx="9" cy="8" r="3.5"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-4 3-6 6-6s6 2 6 6M15 14c3 0 6 1.5 6 5"/>'};
+const tabIcon=k=>`<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${TABI[k]}</svg>`;
+
+/*SOCIAL*/
+// =====================================================================
+// SOCIAL DEMO (no server: friends are simulated locally)
+// =====================================================================
+const DEMO=false;
+const SX={
+ tab:['Друзі','Друзья','Friends'],
+ demo:['Демо-режим: друзі вигадані, сервер не підключено','Демо-режим: друзья вымышленные, сервер не подключён','Demo mode: friends are simulated, no server yet'],
+ joinT:['Аскеза разом із друзями','Аскеза вместе с друзьями','Challenges with friends'],
+ joinP:['Створи акаунт, щоб додавати друзів, бачити їхній прогрес, підтримувати і проходити аскези вдвох.','Создай аккаунт, чтобы добавлять друзей, видеть их прогресс, поддерживать и проходить аскезы вдвоём.','Create an account to add friends, see their progress, cheer them on and take on challenges together.'],
+ apple:['Продовжити з Apple','Продолжить с Apple','Continue with Apple'],google:['Продовжити з Google','Продолжить с Google','Continue with Google'],
+ orName:['або вкажи ім’я','или укажи имя','or enter a name'],nameL:['Як тебе звати?','Как тебя зовут?','What’s your name?'],namePh:['Наприклад, Андрій','Например, Андрей','For example, Alex'],
+ handleL:['Нікнейм','Никнейм','Username'],colorL:['Колір твого монаха','Цвет твоего монаха','Your monk’s color'],
+ createAcc:['Створити акаунт','Создать аккаунт','Create account'],accOk:['Акаунт створено 🎉','Аккаунт создан 🎉','Account created 🎉'],
+ me:['Це ти','Это ты','That’s you'],activeN:['активних','активных','active'],doneN:['завершено','завершено','completed'],cleanN:['чистих днів','чистых дней','clean days'],
+ add:['Додати друга','Добавить друга','Add friend'],invite:['Поділитися запрошенням','Поделиться приглашением','Share invite link'],inviteOk:['Посилання скопійовано (демо)','Ссылка скопирована (демо)','Link copied (demo)'],
+ search:['Пошук за @нікнеймом','Поиск по @никнейму','Search by @username'],maybe:['Можливо, ти знаєш','Возможно, ты знаешь','People you may know'],
+ reqs:['Запити в друзі','Запросы в друзья','Friend requests'],accept:['Прийняти','Принять','Accept'],decline:['Відхилити','Отклонить','Decline'],
+ sent:['Запит надіслано','Запрос отправлен','Request sent'],addBtn:['Додати','Добавить','Add'],
+ friends:['Друзі','Друзья','Friends'],none:['Поки немає друзів','Пока нет друзей','No friends yet'],
+ markedT:['✓ відмітив(ла) сьогодні','✓ отметил(а) сегодня','✓ checked in today'],notYet:['ще не відмітив(ла)','ещё не отметил(а)','not checked in yet'],
+ nAsc:n=>[`${n} ${pl(n,'аскеза','аскези','аскез')}`,`${n} ${pl(n,'аскеза','аскезы','аскез')}`,`${n} ${n===1?'challenge':'challenges'}`],
+ cheer:['🙏 Підтримати','🙏 Поддержать','🙏 Cheer'],cheered:n=>[`Ти підтримав(ла) ${n} 🙏`,`Ты поддержал(а) ${n} 🙏`,`You cheered ${n} on 🙏`],
+ together:['🤝 Разом','🤝 Вместе','🤝 Together'],togetherL:['Пройти разом із другом','Пройти вместе с другом','Do it with a friend'],solo:['Сам(а)','Сам(а)','Solo'],
+ withF:n=>[`Разом з ${n}`,`Вместе с ${n}`,`With ${n}`],jointStreak:['спільна серія','общая серия','joint streak'],
+ invitedT:n=>[`${n} отримає запрошення (демо) і почне разом із тобою`,`${n} получит приглашение (демо) и начнёт вместе с тобой`,`${n} gets an invite (demo) and starts with you`],
+ theirAsc:['Аскези','Аскезы','Challenges'],remove:['Видалити з друзів','Удалить из друзей','Remove friend'],
+ logout:['Вийти з акаунту','Выйти из аккаунта','Sign out'],accT:['👤 Акаунт','👤 Аккаунт','👤 Account'],
+ feed:['Стрічка друзів','Лента друзей','Friends feed'],
+ ev:[[n=>`${n} відмітив(ла) ще один день`,n=>`${n} отметил(а) ещё один день`,n=>`${n} checked in another day`],[n=>`${n} досяг(ла) нової віхи 🎉`,n=>`${n} достиг(ла) новой вехи 🎉`,n=>`${n} hit a new milestone 🎉`],[n=>`${n} почав(ла) нову аскезу`,n=>`${n} начал(а) новую аскезу`,n=>`${n} started a new challenge`]],
+ hoursAgo:h=>[`${h} год тому`,`${h} ч назад`,`${h}h ago`],
+ day:['день','день','day']
+};
+const X=(k,...a)=>{const v=SX[k];const arr=typeof v==='function'?v(...a):v;return arr[LI()];};
+// simulated people
+const PEOPLE={
+ olena:{n:['Олена','Елена','Olena'],ins:['Оленою', 'Еленой', 'Olena'],acc:['Олену', 'Елену', 'Olena'],h:'olena.zen',c:'#b5523b',items:[['alc',30,18],['sm',7,5]]},
+ andriy:{n:['Андрій','Андрей','Andriy'],ins:['Андрієм', 'Андреем', 'Andriy'],acc:['Андрія', 'Андрея', 'Andriy'],h:'andriy_fit',c:'#4f6a8f',items:[['sport',30,23],['smoke',0,41]]},
+ marta:{n:['Марта','Марта','Marta'],ins:['Мартою', 'Мартой', 'Marta'],acc:['Марту', 'Марту', 'Marta'],h:'marta.reads',c:'#8a6a9e',items:[['read',30,9],['sweet',21,12],['early',21,3]]},
+ dmytro:{n:['Дмитро','Дмитрий','Dmytro'],ins:['Дмитром', 'Дмитрием', 'Dmytro'],acc:['Дмитра', 'Дмитрия', 'Dmytro'],h:'dima.cold',c:'#5f8a87',items:[['cold',21,14]]},
+ sofia:{n:['Софія','София','Sofia'],ins:['Софією', 'Софией', 'Sofia'],acc:['Софію', 'Софию', 'Sofia'],h:'sofi.calm',c:'#6f8f5e',items:[['meditate',21,7],['coffee',14,10]]},
+ max:{n:['Максим','Максим','Maksym'],ins:['Максимом', 'Максимом', 'Maksym'],acc:['Максима', 'Максима', 'Maksym'],h:'max_nofast',c:'#c09a3a',items:[['fast',30,6]]},
+ iryna:{n:['Ірина','Ирина','Iryna'],ins:['Іриною', 'Ириной', 'Iryna'],acc:['Ірину', 'Ирину', 'Iryna'],h:'iryna.free',c:'#d9822b',items:[['shop',30,20]]}
+};
+const PN=id=>PEOPLE[id].n[LI()];const PNi=id=>PEOPLE[id].ins[LI()];const PNa=id=>PEOPLE[id].acc[LI()];
+function hsh(s){let h=2166136261;for(const ch of s){h^=ch.charCodeAt(0);h=Math.imul(h,16777619);}return ((h>>>0)%10000)/10000;}
+const ANCHOR='2026-11-05';
+function personItems(id){const t=today();return PEOPLE[id].items.map(([k,days,cur],i)=>{const e=ALL_TPL[k];const start=addDays(ANCHOR,-(cur-1));const d=diff(start,t)+1;
+  const forever=days===0;const dd=forever?d:Math.min(d,days);let ok=0;for(let j=0;j<dd-1;j++)if(hsh(id+k+j)<.88)ok++;
+  const todayOk=hsh(id+k+t)<Math.min(1,new Date().getHours()/18+.15);if(todayOk)ok++;
+  return {k,icon:e[1],title:tplName(e),days,forever,d:dd,ok,todayOk,color:PEOPLE[id].c,done:!forever&&d>days};});}
+function personMood(id){const its=personItems(id);return its.some(x=>!x.todayOk)?'calm':'joy';}
+function personStage(x){if(x.forever){const c=x.d;return c<3?0:c<14?1:c<30?2:c<90?3:4;}const p=x.ok/x.days;return p<.15?0:p<.4?1:p<.7?2:3;}
+function partnerMarks(it){const p=it.partner;if(!p)return {};const m={},t=today();for(let k=it.start;k<t;k=addDays(k,1))m[k]=hsh(p+it.id+k)<.9?'ok':'fail';
+  if(hsh(p+it.id+t)<Math.min(1,new Date().getHours()/18+.15))m[t]='ok';return m;}
+function jointStreak(it){const a=it.marks||{},b=partnerMarks(it),t=today();let k=(a[t]==='ok'&&b[t]==='ok')?t:addDays(t,-1),n=0;while(k>=it.start&&a[k]==='ok'&&b[k]==='ok'){n++;k=addDays(k,-1);}return n;}
+function avatar(id,size,mood){const p=PEOPLE[id];return `<div class="fav" style="width:${size}px;height:${size}px;background:color-mix(in srgb,${p.c} 16%,var(--card))">${monkSVG(2,mood||personMood(id),p.c,size,'p'+id+size)}</div>`;}
+function myAvatar(size){const a=S.account;return `<div class="fav" style="width:${size}px;height:${size}px;background:color-mix(in srgb,${a.color} 16%,var(--card))">${monkSVG(3,'joy',a.color,size,'me'+size)}</div>`;}
+
+// ---------- views ----------
+function vFriends(){
+  setBar(X('tab'));
+  let h=`<div class="view"><div class="demo">🧪 ${X('demo')}</div>`;
+  if(!S.account){
+    h+=`<div class="card" style="text-align:center;padding:26px 20px"><div style="display:flex;justify-content:center;gap:-10px;margin-bottom:8px">${avatar('olena',72,'joy')}${monkSVG(3,'joy','#d9822b',96,'jn')}${avatar('andriy',72,'joy')}</div>
+      <h2 class="zh" style="margin:6px 0 8px;font-size:24px">${X('joinT')}</h2><p class="muted" style="margin:0 0 18px;line-height:1.5">${X('joinP')}</p>
+      <button class="pri" id="goAcc">${X('createAcc')}</button></div></div>`;
+    main.innerHTML=h;main.querySelector('#goAcc').onclick=()=>go('account',{from:'friends'});return;}
+  const a=S.account,mine=S.items,act=mine.filter(i=>!i.doneAt).length,dn=mine.filter(i=>i.doneAt).length;
+  let clean=0;mine.forEach(it=>{clean+=isF(it)?fDays(it):info(it).ok;});
+  h+=`<div class="card me"><div style="display:flex;gap:14px;align-items:center">${myAvatar(64)}<div style="flex:1"><div class="zh" style="font-size:21px;font-weight:600">${esc(a.name)}</div><div class="muted">@${esc(a.handle)} · ${X('me')}</div></div></div>
+    <div class="stats" style="margin:14px 0 0"><div><b>${act}</b><small>${X('activeN')}</small></div><div><b>${dn}</b><small>${X('doneN')}</small></div><div><b>${clean}</b><small>${X('cleanN')}</small></div></div></div>
+    <div class="btnrow" style="display:flex;gap:8px;margin-bottom:12px"><button class="pri" id="fAdd" style="flex:1">＋ ${X('add')}</button><button class="sec" id="fInv" style="flex:0 0 auto">🔗</button></div>`;
+  const reqs=(S.requests||[]);
+  if(reqs.length){h+=`<div class="sec-t">${X('reqs')}</div>`+reqs.map(id=>`<div class="card frow">${avatar(id,48)}<div class="fb"><b>${PN(id)}</b><span>@${PEOPLE[id].h}</span></div><button class="sbtn acc" data-acc="${id}">${X('accept')}</button><button class="sbtn" data-dec="${id}">✕</button></div>`).join('');}
+  h+=`<div class="sec-t">${X('friends')} · ${S.friends.length}</div>`;
+  if(!S.friends.length)h+=`<div class="card muted" style="text-align:center">${X('none')}</div>`;
+  S.friends.forEach(id=>{const its=personItems(id).filter(x=>!x.done),allOk=its.every(x=>x.todayOk);
+    h+=`<div class="card frow" data-fr="${id}">${avatar(id,56)}<div class="fb"><b>${PN(id)}</b><span>${its.map(x=>x.icon).join(' ')} ${X('nAsc',its.length)}</span><span class="${allOk?'okt':''}">${allOk?X('markedT'):X('notYet')}</span></div><div class="chev">›</div></div>`;});
+  // feed
+  if(S.friends.length){h+=`<div class="sec-t">${X('feed')}</div><div class="card">`;
+    const ev=[];S.friends.forEach((id,i)=>{personItems(id).forEach((x,j)=>{const r=hsh(id+x.k+today());ev.push({id,x,type:r<.6?0:r<.85?1:2,ago:1+Math.floor(hsh(x.k+id)*9)+i});});});
+    ev.sort((a,b)=>a.ago-b.ago).slice(0,6).forEach(e=>{h+=`<div class="fev">${avatar(e.id,36)}<div><div>${SX.ev[e.type][LI()](`<b>${PN(e.id)}</b>`)} · ${e.x.icon} ${e.x.title}</div><small class="muted">${X('hoursAgo',e.ago)}</small></div></div>`;});
+    h+='</div>';}
+  main.innerHTML=h+'</div>';
+  const $=s=>main.querySelector(s);
+  $('#fAdd').onclick=addFriendSheet;
+  $('#fInv').onclick=()=>{try{navigator.clipboard.writeText('https://askeza.app/i/'+a.handle);}catch(e){}toast(X('inviteOk'));};
+  main.querySelectorAll('[data-acc]').forEach(b=>b.onclick=()=>{const id=b.dataset.acc;S.requests=S.requests.filter(x=>x!==id);S.friends.push(id);save();render();});
+  main.querySelectorAll('[data-dec]').forEach(b=>b.onclick=()=>{const id=b.dataset.dec;S.requests=S.requests.filter(x=>x!==id);save();render();});
+  main.querySelectorAll('[data-fr]').forEach(el=>el.onclick=()=>go('friend',{id:el.dataset.fr,from:'friends'}));
+}
+function addFriendSheet(){
+  const pool=Object.keys(PEOPLE).filter(id=>!S.friends.includes(id)&&!(S.requests||[]).includes(id));
+  const row=id=>`<div class="frow" style="padding:10px 0" data-row="${id}">${avatar(id,44)}<div class="fb"><b>${PN(id)}</b><span>@${PEOPLE[id].h}</span></div><button class="sbtn acc" data-add="${id}">${(S.sent||[]).includes(id)?'✓':X('addBtn')}</button></div>`;
+  sheet(`<h3>${X('add')}</h3><label class="fld" style="margin-top:8px"><input id="fq" placeholder="${X('search')}" autocomplete="off"></label><div class="lbl" style="margin-top:16px">${X('maybe')}</div><div id="fl">${pool.map(row).join('')}</div>
+   <button class="sec" id="inv2" style="width:100%;margin-top:12px">🔗 ${X('invite')}</button>`,root=>{
+    const bind=()=>root.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>{const id=b.dataset.add;S.sent=S.sent||[];if(!S.sent.includes(id)){S.sent.push(id);save();}b.textContent='✓';toast(X('sent'));
+      // demo: friend accepts after a moment
+      setTimeout(()=>{if(!S.friends.includes(id)){S.friends.push(id);S.sent=S.sent.filter(x=>x!==id);save();if(route.v==='friends'&&!layer.innerHTML)render();}},2500);});
+    bind();
+    root.querySelector('#fq').oninput=e=>{const q=e.target.value.replace('@','').toLowerCase();root.querySelector('#fl').innerHTML=pool.filter(id=>!q||PEOPLE[id].h.includes(q)||PEOPLE[id].n.some(n=>n.toLowerCase().includes(q))).map(row).join('');bind();};
+    root.querySelector('#inv2').onclick=()=>{try{navigator.clipboard.writeText('https://askeza.app/i/'+S.account.handle);}catch(e){}toast(X('inviteOk'));};});
+}
+function vFriend(){
+  const id=route.id,p=PEOPLE[id];if(!p){go('friends');return;}
+  setBar('',true,null,true);
+  const its=personItems(id);
+  let h=`<div class="view" style="--c:${p.c}"><div class="hero" style="padding-bottom:26px"><div style="display:flex;justify-content:center">${monkSVG(3,personMood(id),p.c,170,'fh'+id)}</div>
+   <h2>${PN(id)}</h2><div class="sub">@${p.h}</div>
+   <div style="display:flex;gap:8px;justify-content:center;margin-top:16px"><button class="pri" id="cheer" style="width:auto;padding:13px 22px;background:${p.c};color:#fff">${X('cheer')}</button><button class="sec" id="tog" style="background:var(--card)">${X('together')}</button></div></div>
+   <div class="sec-t">${X('theirAsc')}</div>`;
+  its.forEach(x=>{const pct=x.forever?Math.min(1,x.d/30):x.ok/x.days;
+    h+=`<div class="card" style="--c:${x.color};padding:0"><div class="ac"><div class="ring">${ringSVG(80,7,pct,x.color)}<div class="mk">${monkSVG(personStage(x),x.todayOk?'joy':'calm',x.color,64,'fi'+id+x.k)}</div><div class="em">${stk(x.icon,24)}</div></div>
+     <div class="bd"><div class="t">${esc(x.title)}</div>${x.forever?`<div class="big">${x.d} <small>${T('daysW')(x.d)} ${T('cleanFor')}</small></div>`:`<div class="s">${T('dayOf')(x.d,x.days)} · ${x.ok} ${T('clean')}</div>`}<div class="s ${x.todayOk?'okt':''}">${x.todayOk?X('markedT'):X('notYet')}</div></div></div></div>`;});
+  h+=`<button class="danger" id="rm">${X('remove')}</button></div>`;
+  main.innerHTML=h;
+  main.querySelector('#cheer').onclick=()=>{toast(X('cheered',PNa(id)));try{navigator.vibrate&&navigator.vibrate(20);}catch(e){}};
+  main.querySelector('#tog').onclick=()=>{draft=null;go('new',{from:'friend',partner:id});};
+  main.querySelector('#rm').onclick=()=>{S.friends=S.friends.filter(x=>x!==id);save();go('friends');};
+}
+function vAccount(){
+  setBar('',true);
+  const A=route.acc||(route.acc={name:'',handle:'',color:'#d9822b',touched:false});
+  const mkHandle=n=>(n||'').toLowerCase().replace(/[^a-z0-9а-яіїєґё]+/gi,'').replace(/[а-яіїєґё]/gi,c=>({а:'a',б:'b',в:'v',г:'h',ґ:'g',д:'d',е:'e',є:'ye',ж:'zh',з:'z',и:'y',і:'i',ї:'yi',й:'i',к:'k',л:'l',м:'m',н:'n',о:'o',п:'p',р:'r',с:'s',т:'t',у:'u',ф:'f',х:'kh',ц:'ts',ч:'ch',ш:'sh',щ:'shch',ь:'',ю:'yu',я:'ya',ё:'yo',ы:'y',э:'e',ъ:''}[c.toLowerCase()]||'')).slice(0,16);
+  main.innerHTML=`<div class="view"><div style="text-align:center"><div id="accMonk" style="display:inline-block">${monkSVG(1,'joy',A.color,150,'acc')}</div>
+   <h2 class="zh" style="font-size:26px;margin:6px 0 4px">${X('joinT')}</h2><p class="muted" style="margin:0 0 18px">${X('joinP')}</p></div>
+   <button class="soc apple" id="sApple"> ${X('apple')}</button><button class="soc google" id="sGoogle"><b style="color:#4285f4">G</b> ${X('google')}</button>
+   <div class="orl"><span>${X('orName')}</span></div>
+   <label class="fld"><span>${X('nameL')}</span><input id="aName" maxlength="24" placeholder="${X('namePh')}" value="${esc(A.name)}"></label>
+   <label class="fld"><span>${X('handleL')}</span><input id="aHandle" maxlength="16" placeholder="@" value="${esc(A.handle)}"></label>
+   <div class="fld"><span>${X('colorL')}</span><div class="colors">${COLORS.map(c=>`<button data-col="${c}" class="${A.color===c?'on':''}" style="background:${c}"></button>`).join('')}</div></div>
+   <div style="height:18px"></div><button class="pri" id="aGo">${X('createAcc')}</button></div>`;
+  const $=s=>main.querySelector(s);
+  $('#aName').oninput=e=>{A.name=e.target.value;if(!A.touched){A.handle=mkHandle(A.name);$('#aHandle').value=A.handle;}};
+  $('#aHandle').oninput=e=>{A.touched=true;A.handle=e.target.value.replace('@','');};
+  main.querySelectorAll('[data-col]').forEach(b=>b.onclick=()=>{A.color=b.dataset.col;main.querySelectorAll('[data-col]').forEach(x=>x.classList.toggle('on',x===b));$('#accMonk').innerHTML=monkSVG(1,'joy',A.color,150,'acc');});
+  const finish=(name,handle)=>{S.account={name,handle:handle||mkHandle(name)||'user'+Math.floor(Math.random()*999),color:A.color};S.friends=['olena','andriy','marta'];S.requests=['max'];S.sent=[];save();route.acc=null;go('friends');toast(X('accOk'));};
+  $('#sApple').onclick=()=>finish(A.name||({uk:'Аскет',ru:'Аскет',en:'Ascetic'}[L]),A.handle);
+  $('#sGoogle').onclick=()=>finish(A.name||({uk:'Аскет',ru:'Аскет',en:'Ascetic'}[L]),A.handle);
+  $('#aGo').onclick=()=>{if(!A.name.trim()){$('#aName').focus();$('#aName').style.borderColor='var(--bad)';return;}finish(A.name.trim(),A.handle);};
+}
+
+function tipFor(it){const d=isF(it)?fDays(it)+1:dayNo(it);const i=d<=3?0:d<=7?1:d<=21?2:3;const set=TIPS[tipKeyOf(it)]||TIPS.generic;return {d,text:(set[L]||set.uk)[i]};}
 
 // =====================================================================
 // state
@@ -429,6 +939,37 @@ function newMilestone(it){const cnt=progressCount(it);it.ms=it.ms||[];const hit=
   if(!hit.length)return null;hit.forEach(x=>it.ms.push(x.k));return hit[hit.length-1];}
 function phase(it){if(isF(it)){const c=fDays(it);return c<=3?T('ph')[0]:c<=7?T('ph')[1]:c<30?T('ph')[2]:T('phF');}
   const d=Math.max(1,dayNo(it)),p=d/it.days,P=T('ph');return d<=3?P[0]:d<=7?P[1]:p<.5?P[2]:p<.8?P[3]:P[4];}
+function goalFields(D){const g=D.goal;if(!g.type)return '';
+  if(g.type==='reward')return `<label class="fld"><span>${T('rewardL')}</span><input id="gText" maxlength="60" placeholder="${T('rewardPh')}" value="${esc(g.text)}"></label><label class="fld"><span>${T('costL')}</span><input id="gCost" type="number" inputmode="decimal" min="0" value="${esc(g.cost)}" placeholder="0"></label>`;
+  if(g.type==='wish')return `<label class="fld"><span>${T('wishL')}</span><textarea id="gText" maxlength="200" placeholder="${T('wishPh')}">${esc(g.text)}</textarea></label><div class="note">${stk('envelope',18)} ${T('wishNote')}</div>`;
+  return `<label class="fld"><span>${T('dedicL')}</span><input id="gText" maxlength="60" placeholder="${T('dedicPh')}" value="${esc(g.text)}"></label>`;}
+function goalPct(it){if(isF(it))return Math.min(1,fDays(it)/30);const f=info(it);return Math.max(0,Math.min(1,(it.strict?f.st:f.ok)/it.days));}
+function propOf(it){const g=it.goal;if(!g)return null;if(g.type==='wish')return g.opened?null:'env';if(g.type==='reward')return 'gift';return 'heart';}
+function goalLine(it){const g=it.goal;if(!g)return '';
+  if(g.type==='wish')return `<div class="gl">${stk(g.opened?'envopen':'envelope',18)}<span>${g.opened?esc(g.text):T('homeWish')}</span></div>`;
+  if(g.type==='reward')return `<div class="gl">${stk('gift',18)}<span>${T('homeReward')} ${esc(g.text)}</span></div>`;
+  return `<div class="gl">${stk('dedic',18)}<span>${T('homeDedic')} ${esc(g.text)}</span></div>`;}
+function goalCard(it){const g=it.goal;if(!g)return '';const pct=goalPct(it);
+  if(g.type==='reward'){const done=!!it.doneAt;return `<div class="card goalc"><div class="gc-ic">${stk('gift',56)}</div><div class="gc-b"><div class="lbl">${T('cardReward')}</div><div class="gt">${esc(g.text)}${g.cost?` · ${money(g.cost)}`:''}</div>
+    <div class="gbar"><div style="width:${done?100:Math.round(pct*100)}%"></div></div><div class="note" style="margin-top:6px">${done?T('rDoneK'):Math.round(pct*100)+'% '+T('rewardProg')}</div></div></div>`;}
+  if(g.type==='wish'){if(g.opened)return `<div class="card goalc"><div class="gc-ic">${stk('envopen',56)}</div><div class="gc-b"><div class="lbl">${T('wishK')}</div><div class="gt serif">«${esc(g.text)}»</div>
+     ${g.came==null?`<div class="came"><span>${T('came')}</span><button data-came="1">${T('yesC')}</button><button data-came="0">${T('noC')}</button></div>`:`<div class="note">${g.came?T('came1'):T('came0')}</div>`}</div></div>`;
+    return `<div class="card goalc sealed"><div class="gc-ic">${stk('envelope',56)}</div><div class="gc-b"><div class="lbl">${T('cardWish')}</div><div class="seal-lines"><i></i><i></i><i style="width:60%"></i></div>
+     <div class="note" style="margin-top:6px">${isF(it)?T('sealedF'):T('sealedTill')+' '+fmtDate(endKey(it))}</div></div></div>`;}
+  return `<div class="card goalc"><div class="gc-ic">${stk('dedic',56)}</div><div class="gc-b"><div class="lbl">${T('cardDedic')}</div><div class="gt serif">«${esc(g.text)}»</div></div></div>`;}
+function openWish(it,after){const g=it.goal;
+  modal(stk('envelope',96),T('envK'),T('envT'),T('envD'),T('envBtn'),()=>{g.opened=true;save();
+    modal(stk('envopen',96),T('wishK'),`<span class="serif" style="font-style:italic">«${esc(g.text)}»</span>`,T('wishD'),T('close'),()=>{render();after&&after();},120);},0);}
+const POS_TIPS=['habit','early','sport','read'];
+function isDo(it){return POS_TIPS.includes(tipKeyOf(it));}
+function cutHour(){return S.cut??18;}
+function canConfirm(it){return true;}
+function pledged(it,t){return !!((it.pledges||{})[t||today()]);}
+function pledge(it){const t=today();it.pledges=it.pledges||{};it.pledges[t]=true;save();}
+function holdAct(it){const t=today();if(canConfirm(it)){markOk(it);return;}
+  if(pledged(it,t))return;pledge(it);render();toast(T('pledgeToast'));try{navigator.vibrate&&navigator.vibrate(15);}catch(e){}}
+function holdTap(it){const t=today();if(!canConfirm(it)&&pledged(it,t)){toast(`${T('pledgedTap')} ${cutHour()}:00`,[T('undo'),()=>{delete it.pledges[t];save();render();}]);}else toast(T('quickTap'));}
+function phIcon(it){if(isF(it)){const c=fDays(it);return c<=3?'sprout':c<=7?'flame':c<30?'stones':'dove';}const d=Math.max(1,dayNo(it)),p=d/it.days;return d<=3?'sprout':d<=7?'flame':p<.5?'stones':p<.8?'mountain':'flag';}
 function nextMs(it){const c=fDays(it);return MS_F.find(n=>n>c)||Math.ceil((c+1)/365)*365;}
 function prevMs(it){const c=fDays(it);let p=0;MS_F.forEach(n=>{if(n<=c)p=n;});return p;}
 function uid(){return Math.random().toString(36).slice(2,9);}
@@ -445,15 +986,15 @@ const main=document.getElementById('main'),bar=document.getElementById('bar');
 function go(v,p){route={v,...(p||{})};render();window.scrollTo(0,0);}
 document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>go(b.dataset.tab));
 document.getElementById('back').onclick=()=>go(route.from||'home');
-document.getElementById('fab').onclick=()=>go('new',{from:'home'});
+document.getElementById('fab').innerHTML='<b>+</b><span></span>';document.getElementById('fab').onclick=()=>go('new',{from:'home'});
 function setBar(title,back,act,over){
   document.getElementById('title').textContent=title;
   document.getElementById('back').hidden=!back;
-  const a=document.getElementById('hAct');a.hidden=!act;if(act){a.textContent=act[0];a.onclick=act[1];}
+  const a=document.getElementById('hAct');a.hidden=!act;if(act){a.innerHTML=act[0];a.onclick=act[1];}
   bar.classList.toggle('over',!!over);main.classList.toggle('full',!!over);
-  const tabs=['home','done','settings'].includes(route.v);
+  const tabs=['home','friends','done','settings'].includes(route.v);document.getElementById('tabFr').hidden=!DEMO;document.getElementById('tabFrL').textContent=X('tab');
   document.getElementById('tabbar').hidden=!tabs;
-  document.getElementById('fab').hidden=!(route.v==='home'&&active().length);
+  document.getElementById('fab').hidden=!(route.v==='home'&&active().length);document.querySelector('#fab span').textContent=T('newBtn');
   document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('on',b.dataset.tab===route.v));
   document.querySelectorAll('[data-k]').forEach(e=>e.textContent=T(e.dataset.k));
   document.documentElement.lang=L;document.title=T('appName');
@@ -464,11 +1005,19 @@ function render(){
   // time-based milestones for forever items
   if(!pendingMs)for(const it of active()){if(isF(it)){const m=newMilestone(it);if(m){pendingMs=[it,m];changed=true;break;}}}
   if(changed)save();
-  ({home:vHome,done:vDone,settings:vSettings,new:vNew,detail:vDetail}[route.v]||vHome)();
+  ({home:vHome,done:vDone,settings:vSettings,new:vNew,detail:vDetail,friends:vFriends,friend:vFriend,account:vAccount}[route.v]||vHome)();
   if(pendingMs&&!layer.innerHTML){const [it,m]=pendingMs;pendingMs=null;milestone(it,m);}
+  if(!layer.innerHTML){const w=active().find(it=>isF(it)&&it.goal&&it.goal.type==='wish'&&!it.goal.opened&&fDays(it)>=30);if(w)openWish(w);}
 }
-function ringSVG(size,stroke,pct,color,track){const r=(size-stroke)/2,c=2*Math.PI*r;
-  return `<svg width="${size}" height="${size}"><circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="${track||'var(--soft)'}" stroke-width="${stroke}"/><circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="${color}" stroke-width="${stroke}" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c*(1-Math.max(0,Math.min(1,pct)))}" style="transition:stroke-dashoffset .6s ease"/></svg>`;}
+function ringSVG(size,stroke,pct,color,track){const r=(size-stroke)/2,c=2*Math.PI*r,p=Math.max(0,Math.min(1,pct)),o=c*(1-p),r2=r-stroke*.28;const c2=2*Math.PI*r2;
+  return `<svg width="${size}" height="${size}" style="transform:rotate(-100deg)"><circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="${track||'var(--soft)'}" stroke-width="${stroke*.55}"/>
+  <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="${color}" stroke-width="${stroke}" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${o}" style="transition:stroke-dashoffset .6s ease"/>
+  <circle cx="${size/2}" cy="${size/2}" r="${r2}" fill="none" stroke="${color}" stroke-opacity=".45" stroke-width="${stroke*.3}" stroke-linecap="round" stroke-dasharray="${c2}" stroke-dashoffset="${c2*(1-p*.93)}" style="transition:stroke-dashoffset .6s ease"/></svg>`;}
+function stageOf(it){if(it.doneAt)return 4;if(isF(it)){const c=fDays(it);return c<3?0:c<14?1:c<30?2:c<90?3:4;}const f=info(it);const p=(it.strict?f.st:f.ok)/it.days;return p<.15?0:p<.4?1:p<.7?2:3;}
+function moodOf(it){const t=today();if(it.doneAt)return 'joy';if(isF(it))return (it.relapses||[]).includes(t)?'sad':(fDays(it)>0?'joy':'calm');
+  if(dayNo(it)<1)return 'sleep';const m=(it.marks||{})[t];if(m==='fail')return 'sad';if(m==='ok')return 'joy';return new Date().getHours()>=Math.max(cutHour(),18)&&!isDo(it)?'worry':(new Date().getHours()>=21?'worry':'calm');}
+function sayOf(it){const m=moodOf(it),S2=T('say');if(it.doneAt)return S2.done;if(isF(it)&&m!=='sad'&&fDays(it)>0)return S2.free(fDays(it));return S2[m];}
+function jarSVG(pct,color){const h=Math.max(0,Math.min(1,pct))*78;return `<svg width="70" height="96" viewBox="0 0 70 96"><rect x="20" y="2" width="30" height="10" rx="4" fill="var(--muted)" opacity=".5"/><path d="M14 14 h42 q8 0 8 10 v60 q0 10 -10 10 h-38 q-10 0 -10 -10 v-60 q0 -10 8 -10z" fill="var(--soft)"/><clipPath id="jc"><path d="M14 14 h42 q8 0 8 10 v60 q0 10 -10 10 h-38 q-10 0 -10 -10 v-60 q0 -10 8 -10z"/></clipPath><g clip-path="url(#jc)"><rect x="0" y="${94-h}" width="70" height="${h+2}" fill="${color}"/><path d="M0 ${94-h} q9 -5 18 0 t18 0 t18 0 t18 0 v4 h-72z" fill="#fff" opacity=".25"/></g><path d="M18 30 v40" stroke="#fff" stroke-opacity=".5" stroke-width="4" stroke-linecap="round"/></svg>`;}
 function holdSVG(){const r=26,c=2*Math.PI*r;return `<svg width="58" height="58"><circle class="p" cx="29" cy="29" r="${r}" fill="none" stroke="var(--c,var(--acc))" stroke-width="4" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c}"/></svg>`;}
 // press-and-hold helper
 function bindHold(el,onDone,onTap){let t=null,start=0;
@@ -484,41 +1033,41 @@ function bindHold(el,onDone,onTap){let t=null,start=0;
 function vHome(){
   setBar(T('tabActive'));
   const list=active();
-  if(!list.length){main.innerHTML=`<div class="view empty"><div class="e">🔥</div><h2>${T('emptyT')}</h2><p>${T('emptyP')}</p><button class="pri" id="eNew">${T('emptyB')}</button></div>`;
+  if(!list.length){main.innerHTML=`<div class="view empty"><div class="monk">${monkSVG(0,'sleep','#d9822b',180,'emp')}</div><h2>${T('emptyT')}</h2><p>${T('meet')}<br><br>${T('emptyP')}</p><button class="pri" id="eNew">${T('emptyB')}</button></div>`;
     document.getElementById('eNew').onclick=()=>go('new',{from:'home'});return;}
   const t=today(),D=S.days[t]||{},h=new Date().getHours();
-  const due=dueToday(),unmarked=due.filter(it=>!(it.marks||{})[t]).length;
-  let html=`<div class="view"><div class="hello">${due.length?(unmarked?T('helloLeft')(unmarked)+' · '+T('helloHint'):T('helloAll')):''}</div>`;
+  const due=dueToday(),unmarked=due.filter(it=>!(it.marks||{})[t]).length,cut=h>=cutHour();
+  const abst=due.filter(it=>!isDo(it)),plN=abst.filter(it=>pledged(it,t)||(it.marks||{})[t]).length;
+  let hello=due.length?(unmarked?T('helloLeft')(unmarked)+' · '+T('helloHint'):T('helloAll')):'';
+  let html=`<div class="view"><div class="hello">${hello}</div>`;
   // rituals
-  if(h<17||!D.pledge){html+=D.pledge?`<div class="card ritual morning done"><div class="ri">☀️</div><div class="rb"><b>${T('mDone')}</b><span>${T('mDoneD')}</span></div></div>`
-    :`<div class="card ritual morning"><div class="ri">☀️</div><div class="rb"><b>${T('mT')}</b><span>${T('mD')}</span></div><button class="go" id="pledge">${T('mBtn')}</button></div>`;}
-  if(h>=17||D.review){html+=D.review?`<div class="card ritual evening done"><div class="ri">${T('moods')[D.mood??1][0]}</div><div class="rb"><b>${T('eDone')}</b><span>${esc(D.note||T('moods')[D.mood??1][1])}</span></div><button class="go" id="review" style="background:var(--soft);color:var(--ink)">✎</button></div>`
-    :`<div class="card ritual evening"><div class="ri">🌙</div><div class="rb"><b>${T('eT')}</b><span>${T('eD')}</span></div><button class="go" id="review">${T('eBtn')}</button></div>`;}
-  html+=`<div class="card motd"><div class="mk">${T('motdK')}</div><div class="q">${motd()}</div></div>`;
+  if(cut||D.review){html+=D.review?`<div class="card ritual evening done"><div class="ri">${stk('m'+(D.mood??1),40)}</div><div class="rb"><b>${T('eDone')}</b><span>${esc(D.note||T('moods')[D.mood??1][1])}</span></div><button class="go" id="review" style="background:var(--soft);color:var(--ink)">✎</button></div>`
+    :`<div class="card ritual evening"><div class="ri">${stk('moon',40)}</div><div class="rb"><b>${T('eT')}</b><span>${T('eD')}</span></div><button class="go" id="review">${T('eBtn')}</button></div>`;}
+  html+=`<div class="card motd"><div class="mk">${stk('quote',16)} ${T('motdK')}</div><div class="q">${motd()}</div></div>`;
   list.forEach(it=>{const f=info(it),c=it.color||COLORS[0];
     if(isF(it)){const nx=nextMs(it),pv=prevMs(it),pct=(f.cur-pv)/(nx-pv||1);
       const sv=it.perDay?` · ${T('saved')} ${money(it.perDay*f.cur)}`:'';
-      html+=`<div class="card" style="--c:${c};padding:0"><div class="ac" data-open="${it.id}"><div class="ring">${ringSVG(68,7,pct,c)}<div class="ic">${it.icon}</div></div>
-      <div class="bd"><div class="t">${esc(it.title)}</div><div class="big">${f.cur} <small>${T('daysW')(f.cur)} ${T('cleanFor')}</small></div><div class="s">${f.cur?(nx-f.cur)+' '+T('daysW')(nx-f.cur)+' '+T('nextMs')(nx):T('firstDay')}${sv}</div></div></div></div>`;return;}
+      html+=`<div class="card" style="--c:${c};padding:0"><div class="ac" data-open="${it.id}"><div class="ring">${ringSVG(80,7,pct,c)}<div class="mk">${monkSVG(stageOf(it),moodOf(it),c,64,'h'+it.id)}</div><div class="em">${stk(it.icon,30)}</div></div>
+      <div class="bd"><div class="t">${esc(it.title)}</div><div class="big">${f.cur} <small>${T('daysW')(f.cur)} ${T('cleanFor')}</small></div><div class="s">${f.cur?(nx-f.cur)+' '+T('daysW')(nx-f.cur)+' '+T('nextMs')(nx):T('firstDay')}${sv}</div>${goalLine(it)}</div></div></div>`;return;}
     const notStarted=f.d<1,pct=notStarted?0:(it.strict?f.st:f.ok)/it.days;
     const sub=notStarted?T('startsIn')(1-f.d):`${T('dayOf')(Math.min(f.d,it.days),it.days)} · ${f.d>=it.days?T('lastDay'):T('left')(it.days-f.d)}`;
-    const cls=notStarted?'wait':(f.todayMark==='ok'?'on':(f.todayMark==='fail'?'fail':''));
+    let cls=notStarted?'wait':(f.todayMark==='ok'?'on':(f.todayMark==='fail'?'fail':''));if(cls===''&&pledged(it,t)&&!canConfirm(it))cls='pledged';
     const askY=!notStarted&&f.d>1&&!(it.marks||{})[f.yKey];
     html+=`<div class="card" style="--c:${c};padding:0"><div class="ac" data-open="${it.id}">
-      <div class="ring">${ringSVG(68,7,pct,c)}<div class="ic">${it.icon}</div></div>
-      <div class="bd"><div class="t">${esc(it.title)}</div><div class="s">${sub}</div></div>
-      <div class="hold ${cls}" data-hold="${it.id}">${cls===''?holdSVG():''}${f.todayMark==='fail'?'✗':'✓'}</div></div>
+      <div class="ring">${ringSVG(80,7,pct,c)}<div class="mk">${monkSVG(stageOf(it),moodOf(it),c,64,'h'+it.id)}</div><div class="em">${stk(it.icon,30)}</div></div>
+      <div class="bd"><div class="t">${esc(it.title)}</div><div class="s">${sub}</div>${goalLine(it)}${it.partner&&DEMO&&PEOPLE[it.partner]?`<div class="pb">${avatar(it.partner,22)}<span>${X('withF',PNi(it.partner))} · ${partnerMarks(it)[today()]==='ok'?'✓':'…'}</span></div>`:''}</div>
+      <div class="hold ${cls}" data-hold="${it.id}">${cls===''?holdSVG():''}${f.todayMark==='fail'?'✗':(cls==='pledged'?stk('lotus',30):'✓')}</div></div>
       ${askY?`<div class="ask"><span>${T('yest')}</span><button data-y="${it.id}" data-v="ok">${T('yes')}</button><button data-y="${it.id}" data-v="fail">${T('no')}</button></div>`:''}
     </div>`;});
   main.innerHTML=html+'</div>';
   const $=s=>main.querySelector(s);
-  if($('#pledge'))$('#pledge').onclick=()=>{S.days[t]={...(S.days[t]||{}),pledge:true};save();render();toast(T('mToast'));};
+  if($('#pledge'))$('#pledge').onclick=()=>{S.days[t]={...(S.days[t]||{}),pledge:true};due.filter(it=>!isDo(it)&&!(it.marks||{})[t]).forEach(it=>{it.pledges=it.pledges||{};it.pledges[t]=true;});save();render();toast(T('mToast'));};
   if($('#review'))$('#review').onclick=openReview;
   main.querySelectorAll('[data-open]').forEach(el=>el.onclick=e=>{if(e.target.closest('[data-hold]'))return;go('detail',{id:el.dataset.open,from:'home'});});
   main.querySelectorAll('[data-hold]').forEach(el=>{const it=byId(el.dataset.hold),m=(it.marks||{})[t];
     el.addEventListener('click',e=>e.stopPropagation());
     if(m){el.onclick=e=>{e.stopPropagation();toast(m==='ok'?T('marked'):'✗',[T('undo'),()=>setMark(it,t,null)]);};}
-    else bindHold(el,()=>markOk(it),()=>toast(T('quickTap')));});
+    else bindHold(el,()=>holdAct(it),()=>holdTap(it));});
   main.querySelectorAll('[data-y]').forEach(b=>b.onclick=()=>{const it=byId(b.dataset.y),k=info(it).yKey;if(b.dataset.v==='fail')askFail(it,k);else setMark(it,k,'ok');});
 }
 function setMark(it,k,v){it.marks=it.marks||{};if(v)it.marks[k]=v;else delete it.marks[k];
@@ -543,8 +1092,8 @@ function openReview(){
   const ans={};items.forEach(it=>{ans[it.id]=isF(it)?((it.relapses||[]).includes(t)?'fail':'ok'):((it.marks||{})[t]||'ok');});
   let mood=D.mood??null;
   const html=`<h3>${T('eQ')}</h3>
-   ${items.length?`<div class="lbl" style="margin-top:14px">${T('eHeld')}</div>`+items.map(it=>`<div class="ev-it"><span class="ei">${it.icon}</span><span class="et">${esc(it.title)}</span><div class="yn" data-id="${it.id}"><button class="y" data-v="ok">${T('yes').replace(' ✓','')}</button><button class="n" data-v="fail">${T('no')}</button></div></div>`).join(''):''}
-   <div class="lbl" style="margin-top:18px">${T('eMood')}</div><div class="moods">${T('moods').map((m,i)=>`<button data-m="${i}"><b>${m[0]}</b>${m[1]}</button>`).join('')}</div>
+   ${items.length?`<div class="lbl" style="margin-top:14px">${T('eHeld')}</div>`+items.map(it=>`<div class="ev-it"><span class="ei">${stk(it.icon,30)}</span><span class="et">${esc(it.title)}</span><div class="yn" data-id="${it.id}"><button class="y" data-v="ok">${T('yes').replace(' ✓','')}</button><button class="n" data-v="fail">${T('no')}</button></div></div>`).join(''):''}
+   <div class="lbl" style="margin-top:18px">${T('eMood')}</div><div class="moods">${T('moods').map((m,i)=>`<button data-m="${i}"><b>${stk('m'+i,36)}</b>${m[1]}</button>`).join('')}</div>
    <label class="fld"><span>${T('eNote')}</span><textarea id="eNote" maxlength="400" placeholder="${T('eNotePh')}">${esc(D.note||'')}</textarea></label>
    <div style="height:14px"></div><button class="pri" id="eSave">${T('eSave')}</button>`;
   sheet(html,root=>{
@@ -569,39 +1118,50 @@ function openReview(){
 // =====================================================================
 let draft=null;
 function vNew(){
-  if(!draft)draft={tpl:null,icon:'✨',title:'',days:30,forever:false,startOff:0,why:'',strict:false,perDay:'',color:COLORS[S.items.length%COLORS.length]};
+  if(!draft)draft={goal:{type:'',text:'',cost:''},partner:route.partner||null,tipKey:'generic',tpl:null,icon:'✨',title:'',days:30,forever:false,startOff:0,why:'',strict:false,perDay:'',color:COLORS[S.items.length%COLORS.length]};
   setBar(T('newT'),true);const D=draft;
-  let h=`<div class="view"><div class="sec-t">${T('pick')}</div><div class="tpl">`;
-  TPL.forEach(([k,ic])=>{h+=`<button data-tpl="${k}" class="${D.tpl===k?'on':''}"><b>${ic}</b>${T('tpl')[k]}</button>`;});
+  let h;
+  if(!S.items.length){h=`<div class="view"><div class="sec-t">${T('pick')}</div><div class="tpl">`;
+    TPL.forEach(([k,ic])=>{h+=`<button data-tpl="${k}" class="${D.tpl===k?'on':''}"><b>${stk(ic,38)}</b>${T('tpl')[k]}</button>`;});}
+  else{h=`<div class="view">`;
+    CATALOG.forEach(([cat,list])=>{h+=`<div class="sec-t">${CAT_NAMES[cat][LI()]}</div><div class="tpl">`+list.map(e=>`<button data-tpl="${e[0]}" class="${D.tpl===e[0]?'on':''}"><b>${stk(e[1],38)}</b>${tplName(e)}</button>`).join('')+`</div>`;});
+    h+=`<div class="sec-t">${T('ownL')}</div><div class="tpl"><button data-tpl="own" class="${D.tpl==='own'?'on':''}"><b>${stk('sparkle',38)}</b>${T('tpl').own}</button>`;}
   const P=[7,14,21,30,40,90];
   h+=`</div>
   <label class="fld"><span>${T('name')}</span><input id="nTitle" maxlength="40" placeholder="${T('namePh')}" value="${esc(D.title)}"></label>
-  <div class="fld"><span>${T('icon')}</span><div class="icons">${ICONS.map(i=>`<button data-ic="${i}" class="${D.icon===i?'on':''}">${i}</button>`).join('')}</div></div>
+  <div class="fld"><span>${T('icon')}</span><div class="icons">${ICONS.map(i=>`<button data-ic="${i}" class="${D.icon===i?'on':''}">${stk(i,30)}</button>`).join('')}</div></div>
   <div class="fld"><span>${T('color')}</span><div class="colors">${COLORS.map(c=>`<button data-col="${c}" class="${D.color===c?'on':''}" style="background:${c}"></button>`).join('')}</div></div>
   <div class="fld"><span>${T('dur')}</span><div class="pills">${P.map(n=>`<button data-days="${n}" class="${!D.forever&&D.days===n?'on':''}">${n}</button>`).join('')}<button data-days="0" class="${D.forever?'on':''}">${T('forever')}</button><input id="nDays" type="number" inputmode="numeric" min="1" max="365" value="${!D.forever&&!P.includes(D.days)?D.days:''}" placeholder="${T('daysShort')}"></div></div>
   <div class="fld"><span>${T('start')}</span><div class="pills"><button data-so="0" class="${D.startOff===0?'on':''}">${T('today')}</button><button data-so="1" class="${D.startOff===1?'on':''}">${T('tomorrow')}</button></div></div>
+  ${DEMO&&S.account&&S.friends&&S.friends.length?`<div class="fld"><span>${X('togetherL')}</span><div class="pills"><button data-pt="" class="${!D.partner?'on':''}">🧘 ${X('solo')}</button>${S.friends.map(id=>`<button data-pt="${id}" class="ptb ${D.partner===id?'on':''}">${avatar(id,24,'joy')}${PN(id)}</button>`).join('')}</div></div>`:''}
   <label class="fld" id="moneyF" ${D.forever?'':'hidden'}><span>${T('money')}</span><input id="nMoney" type="number" inputmode="decimal" min="0" value="${esc(D.perDay)}" placeholder="0"></label>
   <label class="fld"><span>${T('why')}</span><textarea id="nWhy" maxlength="200" placeholder="${T('whyPh')}">${esc(D.why)}</textarea></label>
+  <div class="fld"><span>${T('goalL')}</span><div class="goals">${[['','sparkle','gNone'],['reward','gift','gReward'],['wish','envelope','gWish'],['dedic','dedic','gDedic']].map(([k,ic,l])=>`<button data-goal="${k}" class="${D.goal.type===k?'on':''}">${stk(ic,30)}<span>${T(l)}</span></button>`).join('')}</div><div class="note" style="margin-top:6px">${T('goalHint')}</div></div>
+  <div id="goalBox">${goalFields(D)}</div>
   <div class="fld" id="modeF" ${D.forever?'hidden':''}><span>${T('mode')}</span><div class="mode">
-    <button data-mode="0" class="${!D.strict?'on':''}"><b>🌿 ${T('soft')}</b><small>${T('softD')}</small></button>
-    <button data-mode="1" class="${D.strict?'on':''}"><b>⚔️ ${T('strict')}</b><small>${T('strictD')}</small></button></div></div>
+    <button data-mode="0" class="${!D.strict?'on':''}"><b>${stk('soft',20)} ${T('soft')}</b><small>${T('softD')}</small></button>
+    <button data-mode="1" class="${D.strict?'on':''}"><b>${stk('strict',20)} ${T('strict')}</b><small>${T('strictD')}</small></button></div></div>
   <div style="height:20px"></div><button class="pri" id="nGo" style="background:${D.color};color:#fff">${T('create')}</button></div>`;
   main.innerHTML=h;const $=s=>main.querySelector(s);
   const sel=(attr,el)=>main.querySelectorAll(`[${attr}]`).forEach(x=>x.classList.toggle('on',x===el));
   $('#nTitle').oninput=e=>{D.title=e.target.value;e.target.style.borderColor='';};
   $('#nWhy').oninput=e=>{D.why=e.target.value;};
+  const bindGoal=()=>{const g=$('#gText'),c=$('#gCost');if(g)g.oninput=e=>{D.goal.text=e.target.value;e.target.style.borderColor='';};if(c)c.oninput=e=>{D.goal.cost=e.target.value;};};bindGoal();
+  main.querySelectorAll('[data-goal]').forEach(b=>b.onclick=()=>{D.goal.type=b.dataset.goal;sel('data-goal',b);$('#goalBox').innerHTML=goalFields(D);bindGoal();const g=$('#gText');if(g)g.focus();});
   $('#nMoney').oninput=e=>{D.perDay=e.target.value;};
   $('#nDays').oninput=e=>{const v=parseInt(e.target.value);if(v>0){D.days=Math.min(365,v);D.forever=false;sel('data-days',null);$('#moneyF').hidden=true;$('#modeF').hidden=false;}};
-  main.querySelectorAll('[data-tpl]').forEach(b=>b.onclick=()=>{const t=TPL.find(x=>x[0]===b.dataset.tpl);D.tpl=t[0];D.icon=t[1];if(t[2]===0){D.forever=true;}else{D.forever=false;D.days=t[2];}D.title=t[0]==='own'?'':T('tpl')[t[0]];vNew();if(t[0]==='own')$('#nTitle').focus();});
+  main.querySelectorAll('[data-tpl]').forEach(b=>b.onclick=()=>{const t=ALL_TPL[b.dataset.tpl];D.tpl=t[0];D.icon=t[1];D.tipKey=t[3];if(t[2]===0){D.forever=true;}else{D.forever=false;D.days=t[2];}D.title=t[0]==='own'?'':tplName(t);const y=window.scrollY;vNew();window.scrollTo(0,y);if(t[0]==='own')$('#nTitle').focus();});
   main.querySelectorAll('[data-ic]').forEach(b=>b.onclick=()=>{D.icon=b.dataset.ic;sel('data-ic',b);});
   main.querySelectorAll('[data-col]').forEach(b=>b.onclick=()=>{D.color=b.dataset.col;sel('data-col',b);$('#nGo').style.background=D.color;});
   main.querySelectorAll('[data-days]').forEach(b=>b.onclick=()=>{const n=+b.dataset.days;D.forever=n===0;if(n)D.days=n;$('#nDays').value='';sel('data-days',b);$('#moneyF').hidden=!D.forever;$('#modeF').hidden=D.forever;});
+  main.querySelectorAll('[data-pt]').forEach(b=>b.onclick=()=>{D.partner=b.dataset.pt||null;sel('data-pt',b);});
   main.querySelectorAll('[data-so]').forEach(b=>b.onclick=()=>{D.startOff=+b.dataset.so;sel('data-so',b);});
   main.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{D.strict=b.dataset.mode==='1';sel('data-mode',b);});
   $('#nGo').onclick=()=>{const title=D.title.trim();if(!title){$('#nTitle').focus();$('#nTitle').style.borderColor='var(--bad)';return;}
+    if(D.goal.type&&!D.goal.text.trim()){const g=$('#gText');g.focus();g.style.borderColor='var(--bad)';return;}
     const st=addDays(today(),D.startOff);
-    S.items.push({id:uid(),icon:D.icon,title,days:D.forever?0:D.days,forever:D.forever,start:st,created:st,why:D.why.trim(),strict:!D.forever&&D.strict,color:D.color,marks:{},restarts:0,relapses:[],best:0,perDay:D.forever?Math.max(0,+D.perDay||0):0,ms:[]});
-    save();draft=null;go('home');toast(T('savedOk'));};
+    const P2=D.partner;const GL=D.goal.type?{type:D.goal.type,text:D.goal.text.trim(),cost:Math.max(0,+D.goal.cost||0),opened:false,came:null}:null;S.items.push({id:uid(),goal:GL||undefined,partner:P2||undefined,tpl:D.tpl,tipKey:D.tipKey||'generic',icon:D.icon,title,days:D.forever?0:D.days,forever:D.forever,start:st,created:st,why:D.why.trim(),strict:!D.forever&&D.strict,color:D.color,marks:{},restarts:0,relapses:[],best:0,perDay:D.forever?Math.max(0,+D.perDay||0):0,ms:[]});
+    save();draft=null;go('home');toast(P2?X('invitedT',PN(P2)):T('savedOk'));};
 }
 
 // =====================================================================
@@ -625,27 +1185,43 @@ function heatmap(it){
 function vDetail(){
   const it=byId(route.id);if(!it){go('home');return;}
   const f=info(it),c=it.color||COLORS[0],m=it.marks||{},t=today(),F=isF(it);
-  setBar('',true,['📸',()=>storyCard(it)],true);
+  setBar('',true,[stk('camera',26),()=>storyCard(it)],true);
   const notStarted=!F&&f.d<1;
   let pct,num,den,lbl;
   if(F){const nx=nextMs(it),pv=prevMs(it);pct=(f.cur-pv)/(nx-pv||1);num=f.cur;den='';lbl=T('daysW')(f.cur)+' '+T('cleanFor');}
   else{pct=notStarted?0:(it.strict?f.st:f.ok)/it.days;num=it.doneAt?f.ok:Math.max(0,Math.min(f.d,it.days));den='/'+it.days;lbl=it.doneAt?T('clean'):(notStarted?T('startsIn')(1-f.d):T('stDay'));}
   let h=`<div class="view" style="--c:${c}"><div class="hero">
-    <div class="bigring">${ringSVG(200,12,pct,'#fff','rgba(255,255,255,.22)')}<div class="in"><div class="ic">${it.icon}</div><div class="n">${num}<small>${den}</small></div><div class="l">${lbl}</div></div></div>
-    <h2>${esc(it.title)}</h2><div class="sub">${F?`${T('forever')} · ${fmtDate(it.start)}`:`${fmtDate(it.start)} — ${fmtDate(endKey(it))} · ${it.strict?'⚔️ '+T('strict'):'🌿 '+T('soft')}`}</div>
-    ${it.doneAt?`<div class="badge">🏆 ${T('doneOn')(fmtDate(it.doneAt))}</div>`:''}</div>`;
+    <div class="bigring">${ringSVG(250,16,pct,c)}<div class="in">${monkSVG(stageOf(it),moodOf(it),c,186,'b'+it.id,propOf(it))}</div></div>
+    <div class="zn">${num}<small>${den}</small></div><div class="zl">${lbl}</div>
+    <h2>${esc(it.title)}</h2><div class="sub">${F?`${T('forever')} · ${fmtDate(it.start)}`:`${fmtDate(it.start)} — ${fmtDate(endKey(it))} · ${it.strict?T('strict'):T('soft')}`}</div>
+    ${it.doneAt?`<div class="badge">${stk('trophy',18)} ${T('doneOn')(fmtDate(it.doneAt))}</div>`:''}</div>`;
+  {const st=stageOf(it),SN=T('stages');
+   h+=`<div class="card"><div class="speech"><div class="av">${monkSVG(st,moodOf(it),c,52,'s'+it.id)}</div><div class="bubble"><div class="who">${stk(it.icon,18)} ${T('charL')} · ${SN[st]}</div>${sayOf(it)}</div></div>
+   <div class="stage">${SN.map((n,i)=>`<span class="${i<=st?'on':''} ${i===st?'cur':''}">${n}</span>`).join('')}</div></div>`;}
+  h+=goalCard(it);
+  if(DEMO&&it.partner&&PEOPLE[it.partner]&&!F&&!notStarted){const pm=partnerMarks(it),pid=it.partner;let pok=0;Object.values(pm).forEach(v=>{if(v==='ok')pok++;});
+    h+=`<div class="card duo"><div class="lbl">🤝 ${X('withF',PNi(pid))}</div><div class="duo-row">
+      <div class="dc">${S.account?myAvatar(64):monkSVG(stageOf(it),moodOf(it),c,64,'dm')}<b>${S.account?esc(S.account.name):'—'}</b><span>${f.ok} ${T('clean')}</span><i class="${m[t]==='ok'?'okt':''}">${m[t]==='ok'?'✓':'…'}</i></div>
+      <div class="dj"><b>${jointStreak(it)}</b><span>${X('jointStreak')}</span></div>
+      <div class="dc">${avatar(pid,64)}<b>${PN(pid)}</b><span>${pok} ${T('clean')}</span><i class="${pm[t]==='ok'?'okt':''}">${pm[t]==='ok'?'✓':'…'}</i></div></div>
+      <button class="sec" id="dCheer" style="width:100%;margin-top:12px">${X('cheer')}</button></div>`;}
   // stats
-  if(F)h+=`<div class="stats"><div><b>${f.best}</b><small>${T('best')}</small></div><div><b>${f.fail}</b><small>${T('relapses')}</small></div><div><b>${it.perDay?money(it.perDay*f.cur):nextMs(it)-f.cur}</b><small>${it.perDay?T('saved'):T('nextMs')(nextMs(it))}</small></div></div>`;
+  if(F)h+=`<div class="stats"><div><b>${f.best}</b><small>${T('best')}</small></div><div><b>${f.fail}</b><small>${T('relapses')}</small></div><div><b>${nextMs(it)-f.cur}</b><small>${T('nextMs')(nextMs(it))}</small></div></div>`;
   else{const left=Math.max(0,it.days-Math.max(0,f.d));h+=`<div class="stats"><div><b>${f.st}</b><small>${T('streak')}</small></div><div><b>${f.ok}</b><small>${T('clean')}</small></div><div><b>${it.strict?(it.restarts||0):(it.doneAt?f.fail:left)}</b><small>${it.strict?T('restarts'):(it.doneAt?T('lgFail'):T('leftL'))}</small></div></div>`;}
+  if(F&&it.perDay){const nx=nextMs(it),pv=prevMs(it);h+=`<div class="card jar">${jarSVG((f.cur-pv)/(nx-pv||1),c)}<div><div class="jl">${T('jarL')}</div><div class="jv">${money(it.perDay*f.cur)}</div><div class="jl">${nx-f.cur} ${T('daysW')(nx-f.cur)} ${T('jarSub')(nx)}</div></div></div>`;}
   // action
   if(!it.doneAt&&!notStarted){
     if(F)h+=`<div class="card"><button class="failbtn" id="dFail" style="margin:0">${T('failToday')}</button></div>`;
-    else{const tm=m[t];h+=`<div class="card">${tm?`<button class="holdbar done" id="dUndo"><span>${tm==='ok'?T('marked'):'✗ '+T('setFail')}</span></button><div class="hint">${T('tapUndo')}</div>`
-      :`<div class="holdbar" id="dHold"><div class="fill"></div><span>${T('holdToday')}</span></div><button class="failbtn" id="dFail">${T('failToday')}</button>`}</div>`;}}
+    else{const tm=m[t],pl=pledged(it,t),cc=canConfirm(it);let inner;
+      if(tm)inner=`<button class="holdbar done" id="dUndo"><span>${tm==='ok'?T('marked'):'✗ '+T('setFail')}</span></button><div class="hint">${T('tapUndo')}</div>${tm==='ok'?`<button class="failbtn" id="dFail">${T('failToday')}</button>`:''}`;
+      else if(!cc&&pl)inner=`<div class="holdbar pledged"><span>${stk('lotus',22)} ${T('pledgedBar')}</span></div><div class="hint">${T('confirmAt')} ${cutHour()}:00</div><button class="failbtn" id="dFail">${T('failToday')}</button>`;
+      else inner=`<div class="holdbar" id="dHold"><div class="fill"></div><span>${isDo(it)?T('hDo'):T('holdToday')}</span></div><button class="failbtn" id="dFail">${T('failToday')}</button>`;
+      h+=`<div class="card">${inner}</div>`;}}
   // phase + milestones
   if(!it.doneAt&&!notStarted){const ph=phase(it),cnt=progressCount(it);
-    h+=`<div class="card"><div class="lbl">${T('phaseL')}</div><div class="phase"><div class="pi">${ph[0]}</div><div><b>${ph[1]}</b><span>${ph[2]}</span></div></div>
-    <div class="ms">${milestonesFor(it).map(x=>`<span class="${cnt>=x.n?'got':''}">${cnt>=x.n?'✓ ':''}${T('ms')[x.k]}</span>`).join('')}${F?'':`<span>🏁 ${it.days}</span>`}</div></div>`;}
+    h+=`<div class="card"><div class="lbl">${T('phaseL')}</div><div class="phase"><div class="pi">${stk(phIcon(it),36)}</div><div><b>${ph[1]}</b><span>${ph[2]}</span></div></div>
+    <div class="ms">${milestonesFor(it).map(x=>`<span class="${cnt>=x.n?'got':''}">${cnt>=x.n?'✓ ':''}${T('ms')[x.k]}</span>`).join('')}${F?'':`<span>${stk('flag',14)} ${it.days}</span>`}</div></div>`;}
+  if(!it.doneAt&&!notStarted){const tp=tipFor(it);h+=`<div class="card"><div class="lbl">${stk('bulb',18)} ${T('tipL')} · ${T('dayT')(tp.d)}</div><div style="font-size:15.5px;line-height:1.5">${tp.text}</div></div>`;}
   if(it.why)h+=`<div class="card"><div class="lbl">${T('why')}</div><div class="why">«${esc(it.why)}»</div></div>`;
   // heatmap
   h+=`<div class="card"><div class="lbl">${T('map')}</div>${heatmap(it)}
@@ -654,10 +1230,12 @@ function vDetail(){
   // diary
   const from=F?(it.created||it.start):it.start,to=F?t:(it.doneAt||t);
   const notes=Object.keys(S.days).filter(k=>k>=from&&k<=to&&S.days[k].review).sort().reverse().slice(0,10);
-  if(notes.length)h+=`<div class="card diary"><div class="lbl">${T('diary')}</div>${notes.map(k=>{const d=S.days[k];return `<div class="de"><div class="dm">${T('moods')[d.mood??1][0]}</div><div><div class="dd">${fmtShort(k)}</div><div class="dn">${esc(d.note||T('moods')[d.mood??1][1])}</div></div></div>`;}).join('')}</div>`;
-  h+=`<button class="sharebtn" id="dStory">${T('story')}</button><button class="danger" id="dDel">${T('del')}</button></div>`;
+  if(notes.length)h+=`<div class="card diary"><div class="lbl">${T('diary')}</div>${notes.map(k=>{const d=S.days[k];return `<div class="de"><div class="dm">${stk('m'+(d.mood??1),30)}</div><div><div class="dd">${fmtShort(k)}</div><div class="dn">${esc(d.note||T('moods')[d.mood??1][1])}</div></div></div>`;}).join('')}</div>`;
+  h+=`<button class="sharebtn" id="dStory">${stk('camera',22)} ${T('story')}</button><button class="danger" id="dDel">${T('del')}</button></div>`;
   main.innerHTML=h;const $=s=>main.querySelector(s);
-  if($('#dHold'))bindHold($('#dHold'),()=>markOk(it),()=>toast(T('quickTap')));
+  main.querySelectorAll('[data-came]').forEach(b=>b.onclick=()=>{it.goal.came=b.dataset.came==='1';save();render();});
+  if($('#dCheer'))$('#dCheer').onclick=()=>toast(X('cheered',PNa(it.partner)));
+  if($('#dHold'))bindHold($('#dHold'),()=>holdAct(it),()=>holdTap(it));
   if($('#dUndo'))$('#dUndo').onclick=()=>setMark(it,t,null);
   if($('#dFail'))$('#dFail').onclick=()=>askFail(it,t);
   $('#dStory').onclick=()=>storyCard(it);
@@ -676,22 +1254,32 @@ function vDetail(){
 // =====================================================================
 function vDone(){
   setBar(T('tabDone'));const list=finished();
-  if(!list.length){main.innerHTML=`<div class="view empty"><div class="e">🏆</div><p>${T('doneNone')}</p></div>`;return;}
+  if(!list.length){main.innerHTML=`<div class="view empty"><div class="e">${stk('trophy',84)}</div><p>${T('doneNone')}</p></div>`;return;}
   let h='<div class="view">';
   list.forEach(it=>{const f=info(it),c=it.color||COLORS[0];
-    h+=`<div class="card" style="--c:${c};padding:0"><div class="ac" data-open="${it.id}"><div class="ring">${ringSVG(68,7,f.ok/it.days,c)}<div class="ic">${it.icon}</div></div>
-    <div class="bd"><div class="t">${esc(it.title)}</div><div class="s">${T('result')(f.ok,it.days)} · ${T('doneOn')(fmtDate(it.doneAt))}</div></div><div style="font-size:28px">🏆</div></div></div>`;});
+    h+=`<div class="card" style="--c:${c};padding:0"><div class="ac" data-open="${it.id}"><div class="ring">${ringSVG(80,7,f.ok/it.days,c)}<div class="mk">${monkSVG(4,'joy',c,64,'d'+it.id)}</div><div class="em">${stk(it.icon,30)}</div></div>
+    <div class="bd"><div class="t">${esc(it.title)}</div><div class="s">${T('result')(f.ok,it.days)} · ${T('doneOn')(fmtDate(it.doneAt))}</div></div>${stk('trophy',34)}</div></div>`;});
+  const wishes=S.items.filter(it=>it.goal&&it.goal.type==='wish'&&it.goal.opened);
+  if(wishes.length){h+=`<div class="sec-t">${stk('chest',22)} ${T('chestT')}</div>`+wishes.map(it=>{const g=it.goal;return `<div class="card goalc"><div class="gc-ic">${stk('envopen',44)}</div><div class="gc-b"><div class="gt serif">«${esc(g.text)}»</div><div class="note" style="margin-top:2px">${stk(it.icon,16)} ${esc(it.title)}</div>
+    ${g.came==null?`<div class="came"><span>${T('came')}</span><button data-came="1" data-id="${it.id}">${T('yesC')}</button><button data-came="0" data-id="${it.id}">${T('noC')}</button></div>`:`<div class="cameb ${g.came?'y':''}">${g.came?T('came1'):T('came0')}</div>`}</div></div>`;}).join('');}
   main.innerHTML=h+'</div>';
   main.querySelectorAll('[data-open]').forEach(el=>el.onclick=()=>go('detail',{id:el.dataset.open,from:'done'}));
+  main.querySelectorAll('[data-came]').forEach(b=>b.onclick=()=>{const it=byId(b.dataset.id);it.goal.came=b.dataset.came==='1';save();render();});
 }
 function vSettings(){
   setBar(T('tabSettings'));
   main.innerHTML=`<div class="view"><div class="card"><b>${T('langT')}</b><div class="seg3"><button data-l="uk" class="${L==='uk'?'on':''}">Українська</button><button data-l="ru" class="${L==='ru'?'on':''}">Русский</button><button data-l="en" class="${L==='en'?'on':''}">English</button></div></div>
-  <div class="card"><b>${T('themeT')}</b><div class="seg3"><button data-th="auto" class="${TH==='auto'?'on':''}">🌓 ${T('thAuto')}</button><button data-th="light" class="${TH==='light'?'on':''}">☀️ ${T('thLight')}</button><button data-th="dark" class="${TH==='dark'?'on':''}">🌙 ${T('thDark')}</button></div></div>
+  <div class="card"><b>${T('themeT')}</b><div class="seg3"><button data-th="auto" class="${TH==='auto'?'on':''}">${T('thAuto')}</button><button data-th="light" class="${TH==='light'?'on':''}">${T('thLight')}</button><button data-th="dark" class="${TH==='dark'?'on':''}">${T('thDark')}</button></div></div>
+  ${DEMO?`<div class="card"><b>${X('accT')}</b>${S.account?`<div style="display:flex;gap:12px;align-items:center;margin-top:12px">${myAvatar(48)}<div style="flex:1"><b>${esc(S.account.name)}</b><div class="muted">@${esc(S.account.handle)}</div></div><button class="sbtn" id="sOut">${X('logout')}</button></div>`:`<button class="pri" id="sAcc" style="margin-top:12px">${X('createAcc')}</button>`}<div class="note">🧪 ${X('demo')}</div></div>`:''}
+  <div class="card"><b>${stk('moon',22)} ${T('cutL')}</b><div class="cutrow"><button id="cMinus">−</button><span id="cVal">${cutHour()}:00</span><button id="cPlus">+</button></div><div class="note">${T('cutD')}</div></div>
   <div class="card"><b>${T('aboutT')}</b><div class="note" style="font-size:14px">${T('about')}</div></div>
   <button class="danger" id="sReset">${T('resetAll')}</button></div>`;
   main.querySelectorAll('[data-th]').forEach(b=>b.onclick=()=>{TH=b.dataset.th;try{localStorage.setItem('askeza.theme',TH);}catch(e){}applyTheme();render();});
   main.querySelectorAll('[data-l]').forEach(b=>b.onclick=()=>{L=b.dataset.l;S.lang=L;try{localStorage.setItem('askeza.lang',L);}catch(e){}save();render();});
+  if(main.querySelector('#sAcc'))main.querySelector('#sAcc').onclick=()=>go('account',{from:'settings'});
+  if(main.querySelector('#sOut'))main.querySelector('#sOut').onclick=()=>{S.account=null;S.friends=[];S.requests=[];save();render();};
+  main.querySelector('#cMinus').onclick=()=>{S.cut=Math.max(12,cutHour()-1);save();render();};
+  main.querySelector('#cPlus').onclick=()=>{S.cut=Math.min(23,cutHour()+1);save();render();};
   let arm=0;main.querySelector('#sReset').onclick=()=>{const n=Date.now();if(n-arm>4000){arm=n;toast(T('resetQ'));return;}S={items:[],days:{},lang:L};save();go('home');};
 }
 
@@ -713,42 +1301,56 @@ function modal(icon,kick,title,desc,btn,onBtn,conf,extra){
   confetti(conf);try{navigator.vibrate&&navigator.vibrate([40,60,40]);}catch(e){}
   document.getElementById('mOk').onclick=()=>{layer.innerHTML='';onBtn&&onBtn();};
   if(extra)document.getElementById('mEx').onclick=()=>{layer.innerHTML='';extra[1]();};}
-function milestone(it,x){modal('🎉',T('msK'),T('msT')[x.k],`${it.icon} ${esc(it.title)}<br>${T('msD')}`,T('msBtn'),null,40,[T('story'),()=>storyCard(it)]);}
-function celebrate(it){const f=info(it);modal(it.icon,T('doneK'),esc(it.title),T('doneD')(it.days,f.ok),T('close'),()=>go('done'),90,[T('story'),()=>storyCard(it)]);}
+function milestone(it,x){modal(stk('sparkle',84),T('msK'),T('msT')[x.k],`${it.icon} ${esc(it.title)}<br>${T('msD')}`,T('msBtn'),null,40,[T('story'),()=>storyCard(it)]);}
+function celebrate(it){const f=info(it),g=it.goal;
+  const after=()=>{if(g&&g.type==='wish'&&!g.opened)openWish(it,()=>go('done'));else if(g&&g.type==='reward')modal(stk('gift',96),T('rDoneK'),esc(g.text),T('rDoneD'),T('close'),()=>go('done'),60);else go('done');};
+  const desc=T('doneD')(it.days,f.ok)+(g&&g.type==='dedic'?`<br><br><b>${T('dDoneK')}:</b> ${esc(g.text)}`:'');
+  modal(stk(it.icon,84),T('doneK'),esc(it.title),desc,g&&g.type!=='dedic'?T('msBtn'):T('close'),after,90,[T('story'),()=>storyCard(it)]);}
 
-// story card (1080x1920 canvas)
+// story card (1080x1920 canvas) — zen style with the monk
 function storyCard(it){
   const f=info(it),c=it.color||COLORS[0],F=isF(it);
   const W=1080,H=1920,cv=document.createElement('canvas');cv.width=W;cv.height=H;const x=cv.getContext('2d');
-  const shade=(hex,p)=>{const n=parseInt(hex.slice(1),16);let r=n>>16,g=n>>8&255,b=n&255;const t=p<0?0:255,a=Math.abs(p);r=Math.round((t-r)*a+r);g=Math.round((t-g)*a+g);b=Math.round((t-b)*a+b);return `rgb(${r},${g},${b})`;};
-  const gr=x.createLinearGradient(0,0,W,H);gr.addColorStop(0,shade(c,.18));gr.addColorStop(1,shade(c,-.35));x.fillStyle=gr;x.fillRect(0,0,W,H);
-  x.fillStyle='rgba(255,255,255,.07)';x.beginPath();x.arc(W-80,260,420,0,7);x.fill();x.beginPath();x.arc(120,H-200,300,0,7);x.fill();
-  const FONT='-apple-system,system-ui,"Segoe UI",Roboto,sans-serif';
-  x.textAlign='center';x.fillStyle='#fff';
-  // ring
-  const cx=W/2,cy=820,R=330;let pct;
+  const dark=document.documentElement.dataset.theme==='dark'||(!document.documentElement.dataset.theme&&matchMedia('(prefers-color-scheme: dark)').matches);
+  const BG=dark?'#0b0b0b':'#f3ede2',INK=dark?'#f4efe6':'#2b2622',MUT=dark?'#9b948a':'#8a7f73';
+  x.fillStyle=BG;x.fillRect(0,0,W,H);
+  const rg=x.createRadialGradient(W/2,760,40,W/2,760,900);rg.addColorStop(0,c+'55');rg.addColorStop(.5,c+'18');rg.addColorStop(1,BG);x.fillStyle=rg;x.fillRect(0,0,W,H);
+  const SERIF='Lora,Georgia,serif',SANS='-apple-system,system-ui,"Segoe UI",Roboto,sans-serif';
+  const cx=W/2,cy=760,R=360;let pct;
   if(F){const nx=nextMs(it),pv=prevMs(it);pct=(f.cur-pv)/(nx-pv||1);}else pct=it.doneAt?f.ok/it.days:Math.min(1,Math.max(0,(it.strict?f.st:f.ok)/it.days));
-  x.lineWidth=34;x.lineCap='round';x.strokeStyle='rgba(255,255,255,.22)';x.beginPath();x.arc(cx,cy,R,0,Math.PI*2);x.stroke();
-  x.strokeStyle='#fff';x.beginPath();x.arc(cx,cy,R,-Math.PI/2,-Math.PI/2+Math.PI*2*Math.max(.001,pct));x.stroke();
-  x.font=`150px ${FONT}`;x.fillText(it.icon,cx,cy-90);
+  x.lineCap='round';x.lineWidth=18;x.strokeStyle=dark?'#22201e':'#e6dccb';x.beginPath();x.arc(cx,cy,R,0,Math.PI*2);x.stroke();
+  const a0=-Math.PI*0.56,a1=a0+Math.PI*2*Math.max(.02,pct);
+  x.lineWidth=40;x.strokeStyle=c;x.beginPath();x.arc(cx,cy,R,a0,a1);x.stroke();
+  x.lineWidth=12;x.globalAlpha=.45;x.beginPath();x.arc(cx,cy,R-22,a0,a0+(a1-a0)*.93);x.stroke();x.globalAlpha=1;
+  x.textAlign='center';
   let big,small;
   if(F){big=String(f.cur);small=`${T('daysW')(f.cur)} ${T('stClean')}`;}
   else if(it.doneAt){big=`${f.ok}/${it.days}`;small=T('stDone');}
-  else{const d=Math.max(1,Math.min(f.d,it.days));big=`${d}`;small=`${T('stDay')} ${T('stOf')} ${it.days}`;}
-  x.font=`800 ${big.length>4?170:220}px ${FONT}`;x.fillText(big,cx,cy+120);
-  x.font=`600 54px ${FONT}`;x.globalAlpha=.85;x.fillText(small,cx,cy+200);x.globalAlpha=1;
-  // title
-  x.font=`800 88px ${FONT}`;const words=it.title;x.fillText(words.length>22?words.slice(0,21)+'…':words,cx,1330);
-  if(F&&it.perDay){x.font=`600 52px ${FONT}`;x.globalAlpha=.9;x.fillText(`💰 ${T('saved')} ${money(it.perDay*f.cur)}`,cx,1420);x.globalAlpha=1;}
-  else if(!F){x.font=`600 48px ${FONT}`;x.globalAlpha=.8;x.fillText(`${fmtDate(it.start)} — ${fmtDate(endKey(it))}`,cx,1420);x.globalAlpha=1;}
-  // footer
-  x.font=`800 46px ${FONT}`;x.globalAlpha=.9;x.fillText('🔥 '+T('appName').toUpperCase(),cx,H-140);x.globalAlpha=1;
-  const url=cv.toDataURL('image/png');
-  sheet(`<h3>${T('storyT')}</h3><img class="storyimg" src="${url}" alt=""><p style="margin-top:12px;text-align:center">${T('storyHint')}</p><div class="col"><button class="pri" id="stShare" style="background:${c};color:#fff">${T('share')}</button><a class="sec" id="stDl" href="${url}" download="askeza.png" style="text-align:center;text-decoration:none;border-radius:14px;color:var(--ink)">${T('download')}</a></div>`,
-   root=>{root.querySelector('#stShare').onclick=async()=>{try{const blob=await (await fetch(url)).blob();const file=new File([blob],'askeza.png',{type:'image/png'});
-      if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file]});}else{toast(T('storyHint'));}}catch(e){if(e&&e.name!=='AbortError')toast(T('storyHint'));}};});
+  else{const d=Math.max(1,Math.min(f.d,it.days));big=`${d}/${it.days}`;small=T('stDay');}
+  x.fillStyle=INK;x.font=`800 190px ${SANS}`;x.fillText(big,cx,1330);
+  x.fillStyle=MUT;x.font=`600 52px ${SANS}`;x.fillText(small,cx,1405);
+  x.fillStyle=INK;x.font=`600 92px ${SERIF}`;const tt=it.title.length>22?it.title.slice(0,21)+'…':it.title;x.fillText(tt,cx+60,1560);const tw=x.measureText(tt).width;
+  x.fillStyle=MUT;x.font=`italic 500 46px ${SERIF}`;x.fillText(`${T('charL')} · ${T('stages')[stageOf(it)]}`,cx,1640);
+  if(F&&it.perDay){x.fillStyle=c;x.font=`700 50px ${SANS}`;x.fillText(money(it.perDay*f.cur),cx,1720);}
+  x.fillStyle=INK;x.globalAlpha=.75;x.font=`700 40px ${SANS}`;x.fillText('◯  '+T('appName').toUpperCase(),cx,H-90);x.globalAlpha=1;
+  const svg=monkSVG(stageOf(it),it.doneAt||isF(it)?'joy':moodOf(it),c,600,'st');
+  const img=new Image();
+  const finish=()=>{const url=cv.toDataURL('image/png');
+  sheet(`<h3>${T('storyT')}</h3><img class="storyimg" src="${url}" alt=""><p style="margin-top:12px;text-align:center">${T('storyHint')}</p><div class="col"><button class="pri" id="stShare" style="background:${c};color:#fff">${T('share')}</button><a class="sec" id="stDl" href="${url}" download="askezik.png" style="text-align:center;text-decoration:none;color:var(--ink)">${T('download')}</a></div>`,
+   root=>{root.querySelector('#stShare').onclick=async()=>{try{const blob=await (await fetch(url)).blob();const file=new File([blob],'askezik.png',{type:'image/png'});
+      if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file]});}else{toast(T('storyHint'));}}catch(e){if(e&&e.name!=='AbortError')toast(T('storyHint'));}};});};
+  const ic=new Image();ic.onload=()=>{x.drawImage(ic,cx+60-tw/2-130,1470,112,112);finish();};ic.onerror=finish;
+  img.onload=()=>{x.drawImage(img,cx-280,cy-300,560,560);ic.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(stkStandalone(it.icon,224));};
+  img.onerror=finish;
+  img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
 }
 
+document.getElementById('stkdefs').innerHTML=STK_FILTER;
+document.querySelectorAll('[data-ti]').forEach(e=>e.innerHTML=tabIcon(e.dataset.ti));
+(function deEmoji(){const RX=/\s*(?:\p{Extended_Pictographic}|[\u{1F3FB}-\u{1F3FF}])(?:\uFE0F|\u200D\p{Extended_Pictographic})*\s*/gu;
+  const clean=v=>typeof v==='string'?v.replace(RX,' ').replace(/\s{2,}/g,' ').replace(/ ([.,!?…:)])/g,'$1').trim():v;
+  const walk=o=>{for(const k in o){const v=o[k];if(typeof v==='string')o[k]=clean(v);else if(typeof v==='function'){o[k]=(...a)=>clean(v(...a));}else if(v&&typeof v==='object')walk(v);}};
+  walk(I);walk(SX);})();
 render();
 let lastDay=today();setInterval(()=>{if(today()!==lastDay){lastDay=today();render();}},30000);
 if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
